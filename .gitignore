@@ -13,9 +13,13 @@ Thumbs.db
 .env.*
 !.env.example
 
-# Dependencies (framework-agnostic)
+# Dependencies
 node_modules/
 vendor/
+
+# Astro build output
+dist/
+.astro/
 
 # Conversation logs (auto-generated, keep folder structure)
 _conversation/*

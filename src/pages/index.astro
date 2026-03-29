@@ -1,0 +1,176 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+
+const prototypes = [
+  {
+    id: "001",
+    name: "Minimal Editorial",
+    folder: "prototype-001-minimal-editorial",
+    description: "Clean typography-focused blog/magazine. Serif headings, 680px column, black and white with deep blue accent. Content-first, no sidebar.",
+    vibe: "Medium, Bear Blog, print editorial",
+    palette: ["#ffffff", "#1a3a5c", "#1a1a1a"],
+  },
+  {
+    id: "002",
+    name: "Bold Creative",
+    folder: "prototype-002-bold-creative",
+    description: "Dark background with electric purple and neon cyan. Animated gradient hero, card-based grid, hover effects. Statement piece.",
+    vibe: "Awwwards, agency portfolio",
+    palette: ["#0a0a0a", "#8b5cf6", "#22d3ee"],
+  },
+  {
+    id: "003",
+    name: "Developer Terminal",
+    folder: "prototype-003-developer-terminal",
+    description: "Green-on-black terminal aesthetic. Monospace font, ASCII art, blinking cursor, content styled as shell commands.",
+    vibe: "Hacker, retro CRT, terminal.css",
+    palette: ["#0d1117", "#00ff41", "#58a6ff"],
+  },
+  {
+    id: "004",
+    name: "Magazine Grid",
+    folder: "prototype-004-magazine-grid",
+    description: "Pinterest-style masonry layout with large cover images, category pills, sidebar with tags. Optimized for visual browsing.",
+    vibe: "Pinterest, Behance, visual discovery",
+    palette: ["#faf9f6", "#f97316", "#1a1a1a"],
+  },
+  {
+    id: "005",
+    name: "Bento Dashboard",
+    folder: "prototype-005-bento-dashboard",
+    description: "iOS widget-style bento grid. Mixed-size glassmorphism cards for about, articles, video, stats, social links. Single-page overview.",
+    vibe: "Linear, Vercel, bento.me",
+    palette: ["#f5f5f5", "#6366f1", "#1a1a1a"],
+  },
+  {
+    id: "006",
+    name: "Paco Minimal",
+    folder: "prototype-006-paco-minimal",
+    description: "Ultra-minimal index-style site inspired by paco.me. No navbar, section-based homepage, year-grouped writing, 520px column. Sans-serif.",
+    vibe: "paco.me — the content IS the design",
+    palette: ["#fafafa", "#171717", "#999999"],
+  },
+  {
+    id: "007",
+    name: "Lee Editorial",
+    folder: "prototype-007-lee-editorial",
+    description: "Prose-first editorial site inspired by leerob.com. Homepage reads like a letter with inline links. Serif font, 580px column. No footer.",
+    vibe: "leerob.com — reading a personal letter",
+    palette: ["#ffffff", "#1a1a1a", "#737373"],
+  },
+  {
+    id: "008",
+    name: "Hybrid Minimal",
+    folder: "prototype-008-hybrid-minimal",
+    description: "Combines Paco's structural clarity (sectioned index, year-grouped articles) with Lee's typographic warmth (serif body, conversational prose). 550px column.",
+    vibe: "paco.me structure + leerob.com warmth",
+    palette: ["#fafafa", "#1a1a1a", "#6b6b6b"],
+  },
+];
+---
+
+<BaseLayout title="Portfolio Prototypes">
+  <header class="mb-12">
+    <h1 class="font-sans text-2xl font-bold tracking-tight text-ink-light dark:text-ink-dark">
+      Portfolio Prototypes
+    </h1>
+    <p class="text-muted-light dark:text-muted-dark mt-2 leading-relaxed">
+      Eight design directions for a personal portfolio. Each prototype is a
+      self-contained Astro project exploring a different aesthetic and content
+      strategy. Built with Astro + Tailwind CSS.
+    </p>
+  </header>
+
+  <section class="mb-14">
+    <h2 class="font-sans text-xs font-semibold text-muted-light dark:text-muted-dark uppercase tracking-widest mb-6">
+      General Explorations
+    </h2>
+    <ul class="space-y-8">
+      {prototypes.slice(0, 5).map((p) => (
+        <li class="group">
+          <div class="flex items-start gap-3 mb-2">
+            <span class="font-sans text-xs text-muted-light dark:text-muted-dark font-mono mt-0.5">
+              {p.id}
+            </span>
+            <div class="flex-1">
+              <h3 class="font-sans text-base font-semibold text-ink-light dark:text-ink-dark">
+                {p.name}
+              </h3>
+              <p class="text-sm text-muted-light dark:text-muted-dark leading-relaxed mt-1">
+                {p.description}
+              </p>
+              <p class="text-xs text-muted-light dark:text-muted-dark mt-2 italic">
+                Vibe: {p.vibe}
+              </p>
+              <div class="flex items-center gap-1.5 mt-2">
+                {p.palette.map((color) => (
+                  <span
+                    class="w-4 h-4 rounded-full border border-rule-light dark:border-rule-dark"
+                    style={`background-color: ${color};`}
+                    title={color}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mb-14">
+    <h2 class="font-sans text-xs font-semibold text-muted-light dark:text-muted-dark uppercase tracking-widest mb-6">
+      Refined Direction
+    </h2>
+    <p class="text-sm text-muted-light dark:text-muted-dark leading-relaxed mb-6">
+      After exploring five general directions, the design settled on the
+      ultra-minimal, text-first philosophy of
+      <a href="https://paco.me" target="_blank" rel="noopener noreferrer">paco.me</a> and
+      <a href="https://leerob.com" target="_blank" rel="noopener noreferrer">leerob.com</a>.
+      Clean backgrounds left intentionally empty for a future HTML5 3D canvas layer.
+    </p>
+    <ul class="space-y-8">
+      {prototypes.slice(5).map((p) => (
+        <li class="group">
+          <div class="flex items-start gap-3 mb-2">
+            <span class="font-sans text-xs text-muted-light dark:text-muted-dark font-mono mt-0.5">
+              {p.id}
+            </span>
+            <div class="flex-1">
+              <h3 class="font-sans text-base font-semibold text-ink-light dark:text-ink-dark">
+                {p.name}
+              </h3>
+              <p class="text-sm text-muted-light dark:text-muted-dark leading-relaxed mt-1">
+                {p.description}
+              </p>
+              <p class="text-xs text-muted-light dark:text-muted-dark mt-2 italic">
+                Vibe: {p.vibe}
+              </p>
+              <div class="flex items-center gap-1.5 mt-2">
+                {p.palette.map((color) => (
+                  <span
+                    class="w-4 h-4 rounded-full border border-rule-light dark:border-rule-dark"
+                    style={`background-color: ${color};`}
+                    title={color}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="font-sans text-xs font-semibold text-muted-light dark:text-muted-dark uppercase tracking-widest mb-4">
+      Tech Stack
+    </h2>
+    <ul class="text-sm text-muted-light dark:text-muted-dark space-y-1">
+      <li>Astro — static site framework</li>
+      <li>Tailwind CSS — utility-first styling</li>
+      <li>Markdown/MDX — content as files</li>
+      <li>GitHub Pages — free hosting</li>
+    </ul>
+  </section>
+</BaseLayout>
