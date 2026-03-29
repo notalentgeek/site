@@ -1,0 +1,143 @@
+---
+import CategoryPill from "./category_pill.astro";
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = "/" } = Astro.props;
+
+const navigation = [
+  { label: "All", href: "/" },
+  { label: "Articles", href: "/article/" },
+  { label: "Videos", href: "/video/" },
+  { label: "Links", href: "/link/" },
+];
+
+const categories = [
+  "design",
+  "development",
+  "tutorial",
+  "photography",
+  "music",
+  "general",
+];
+
+const popularTags = [
+  "css",
+  "portfolio",
+  "masonry",
+  "grid",
+  "layout",
+  "astro",
+  "tailwind",
+  "responsive",
+];
+
+const socialLinks = [
+  { label: "GitHub", url: "https://github.com", icon: "GH" },
+  { label: "Twitter", url: "https://twitter.com", icon: "TW" },
+  { label: "LinkedIn", url: "https://linkedin.com", icon: "LI" },
+  { label: "Dribbble", url: "https://dribbble.com", icon: "DR" },
+];
+---
+
+<aside
+  class="w-full lg:w-72 shrink-0 bg-warm-card border-r border-warm-border lg:min-h-screen p-6"
+>
+  <!-- Logo / site title -->
+  <div class="mb-8">
+    <a href="/" class="block">
+      <h1 class="font-serif text-2xl font-bold text-warm-text">
+        Portfolio<span class="text-accent">.</span>
+      </h1>
+      <p class="text-xs text-warm-muted mt-1">Magazine Grid Layout</p>
+    </a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="mb-8">
+    <h2 class="text-xs font-semibold uppercase tracking-wider text-warm-muted mb-3">
+      Browse
+    </h2>
+    <ul class="space-y-1">
+      {
+        navigation.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                "block px-3 py-2 rounded-lg text-sm transition-colors",
+                currentPath === item.href
+                  ? "bg-accent text-white font-medium"
+                  : "text-warm-text hover:bg-warm-bg",
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <!-- Categories -->
+  <div class="mb-8">
+    <h2
+      class="text-xs font-semibold uppercase tracking-wider text-warm-muted mb-3"
+    >
+      Categories
+    </h2>
+    <div class="flex flex-wrap gap-2">
+      {categories.map((cat) => <CategoryPill label={cat} />)}
+    </div>
+  </div>
+
+  <!-- Popular tags -->
+  <div class="mb-8">
+    <h2
+      class="text-xs font-semibold uppercase tracking-wider text-warm-muted mb-3"
+    >
+      Popular Tags
+    </h2>
+    <div class="flex flex-wrap gap-1">
+      {
+        popularTags.map((tag) => (
+          <span class="text-xs text-warm-muted bg-warm-bg px-2 py-1 rounded-full hover:text-accent cursor-pointer transition-colors">
+            #{tag}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Social links -->
+  <div class="mb-8">
+    <h2
+      class="text-xs font-semibold uppercase tracking-wider text-warm-muted mb-3"
+    >
+      Connect
+    </h2>
+    <div class="flex gap-3">
+      {
+        socialLinks.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={link.label}
+            class="w-10 h-10 rounded-full bg-warm-bg flex items-center justify-center text-xs font-bold text-warm-muted hover:bg-accent hover:text-white transition-colors"
+          >
+            {link.icon}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="text-xs text-warm-muted border-t border-warm-border pt-4">
+    <p>&copy; 2026 Portfolio</p>
+    <p class="mt-1">Magazine Grid Prototype</p>
+  </div>
+</aside>

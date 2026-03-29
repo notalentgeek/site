@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import MasonryCard from "../../component/masonry_card.astro";
+
+const videos = [
+  {
+    title: "CSS Grid Mastery: Advanced Layout Techniques",
+    description:
+      "A deep dive into CSS Grid and how to create complex magazine-style layouts without JavaScript.",
+    coverColor: "#7cb5a0",
+    coverHeight: "10rem",
+    tags: ["css", "tutorial", "grid"],
+    category: "tutorial",
+    duration: "12:34",
+    date: new Date("2026-03-28"),
+  },
+  {
+    title: "Building Accessible Components",
+    description:
+      "Best practices for ARIA roles, keyboard navigation, and screen reader compatibility.",
+    coverColor: "#f472b6",
+    coverHeight: "11rem",
+    tags: ["a11y", "html", "ux"],
+    category: "development",
+    duration: "8:15",
+    date: new Date("2026-03-25"),
+  },
+  {
+    title: "Responsive Design Patterns",
+    description:
+      "Modern approaches to responsive layouts using container queries and fluid typography.",
+    coverColor: "#4ade80",
+    coverHeight: "9rem",
+    tags: ["responsive", "css", "layout"],
+    category: "tutorial",
+    duration: "15:42",
+    date: new Date("2026-03-22"),
+  },
+  {
+    title: "Animating with CSS Transitions",
+    description:
+      "Creating smooth, performant animations using only CSS transition and animation properties.",
+    coverColor: "#c084fc",
+    coverHeight: "10rem",
+    tags: ["animation", "css"],
+    category: "tutorial",
+    duration: "11:08",
+    date: new Date("2026-03-18"),
+  },
+  {
+    title: "Git Workflow for Designers",
+    description:
+      "A beginner-friendly guide to version control for design files and code.",
+    coverColor: "#fb7185",
+    coverHeight: "12rem",
+    tags: ["git", "workflow", "beginner"],
+    category: "tutorial",
+    duration: "20:00",
+    date: new Date("2026-03-15"),
+  },
+];
+---
+
+<BaseLayout title="Videos" currentPath="/video/">
+  <!-- Page header -->
+  <div class="mb-8">
+    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-warm-text mb-2">
+      Videos<span class="text-accent">.</span>
+    </h2>
+    <p class="text-warm-muted text-sm">
+      Tutorials, walkthroughs, and creative process recordings.
+    </p>
+  </div>
+
+  <!-- Masonry grid -->
+  <div
+    class="columns-1 sm:columns-2 xl:columns-3 gap-6"
+    style="column-fill: balance;"
+  >
+    {
+      videos.map((item) => (
+        <MasonryCard
+          title={item.title}
+          description={item.description}
+          coverColor={item.coverColor}
+          coverHeight={item.coverHeight}
+          tags={item.tags}
+          category={item.category}
+          type="video"
+          duration={item.duration}
+          date={item.date}
+          href="#"
+        />
+      ))
+    }
+  </div>
+</BaseLayout>

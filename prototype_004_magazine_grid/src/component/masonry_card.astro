@@ -1,0 +1,126 @@
+---
+import CategoryPill from "./category_pill.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  href?: string;
+  coverColor?: string;
+  coverHeight?: string;
+  tags?: string[];
+  category?: string;
+  date?: Date;
+  type?: "article" | "video" | "link";
+  duration?: string;
+  linkUrl?: string;
+}
+
+const {
+  title,
+  description,
+  href = "#",
+  coverColor = "#d4a574",
+  coverHeight = "12rem",
+  tags = [],
+  category,
+  date,
+  type = "article",
+  duration,
+  linkUrl,
+} = Astro.props;
+
+const formattedDate = date
+  ? date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  : null;
+
+const typeIcons: Record<string, string> = {
+  article: "📝",
+  video: "🎬",
+  link: "🔗",
+};
+---
+
+<article
+  class="break-inside-avoid mb-6 bg-warm-card rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-warm-border group"
+>
+  <!-- Cover image placeholder -->
+  <a href={href} class="block">
+    <div
+      class="w-full relative overflow-hidden"
+      style={`background-color: ${coverColor}; height: ${coverHeight};`}
+    >
+      <div
+        class="absolute inset-0 flex items-center justify-center text-white/30 text-6xl font-serif"
+      >
+        {typeIcons[type]}
+      </div>
+      {
+        type === "video" && duration && (
+          <span class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+            {duration}
+          </span>
+        )
+      }
+      {
+        type === "link" && (
+          <div class="absolute bottom-2 left-2 bg-white/90 text-warm-text text-xs px-2 py-1 rounded truncate max-w-[80%]">
+            {linkUrl || "external link"}
+          </div>
+        )
+      }
+    </div>
+  </a>
+
+  <!-- Card body -->
+  <div class="p-4">
+    <!-- Category + type badge -->
+    <div class="flex items-center gap-2 mb-2">
+      {category && <CategoryPill label={category} />}
+      <span class="text-xs text-warm-muted uppercase tracking-wide">
+        {type}
+      </span>
+    </div>
+
+    <!-- Title -->
+    <a href={href} class="block">
+      <h3
+        class="font-serif text-lg font-bold text-warm-text group-hover:text-accent transition-colors leading-snug mb-2"
+      >
+        {title}
+      </h3>
+    </a>
+
+    <!-- Description -->
+    {
+      description && (
+        <p class="text-sm text-warm-muted leading-relaxed mb-3 line-clamp-3">
+          {description}
+        </p>
+      )
+    }
+
+    <!-- Tags -->
+    {
+      tags.length > 0 && (
+        <div class="flex flex-wrap gap-1 mb-3">
+          {tags.slice(0, 4).map((tag) => (
+            <span class="text-xs text-warm-muted bg-warm-bg px-2 py-0.5 rounded-full">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )
+    }
+
+    <!-- Date -->
+    {
+      formattedDate && (
+        <time class="text-xs text-warm-muted">{formattedDate}</time>
+      )
+    }
+  </div>
+</article>

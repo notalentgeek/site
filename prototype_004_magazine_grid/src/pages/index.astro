@@ -1,0 +1,188 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import MasonryCard from "../component/masonry_card.astro";
+
+const mixedContent = [
+  {
+    title: "Hello World: Building a Magazine Grid Portfolio",
+    description:
+      "Exploring the design process behind a masonry-style portfolio layout inspired by Pinterest and Behance.",
+    coverColor: "#d4a574",
+    coverHeight: "14rem",
+    tags: ["design", "css", "portfolio", "masonry"],
+    category: "design",
+    type: "article" as const,
+    date: new Date("2026-03-29"),
+    href: "/article/",
+  },
+  {
+    title: "CSS Grid Mastery: Advanced Layout Techniques",
+    description:
+      "A deep dive into CSS Grid and how to create complex magazine-style layouts.",
+    coverColor: "#7cb5a0",
+    coverHeight: "10rem",
+    tags: ["css", "tutorial", "grid"],
+    category: "tutorial",
+    type: "video" as const,
+    duration: "12:34",
+    date: new Date("2026-03-28"),
+    href: "/video/",
+  },
+  {
+    title: "Tailwind CSS Documentation",
+    description: "The official Tailwind CSS docs — an essential reference.",
+    coverColor: "#38bdf8",
+    coverHeight: "8rem",
+    tags: ["tailwind", "css", "reference"],
+    category: "development",
+    type: "link" as const,
+    linkUrl: "tailwindcss.com",
+    date: new Date("2026-03-27"),
+    href: "/link/",
+  },
+  {
+    title: "The Future of Web Typography",
+    description:
+      "How variable fonts and new CSS features are reshaping text on the web. A look at the latest developments in font technology.",
+    coverColor: "#a78bfa",
+    coverHeight: "16rem",
+    tags: ["typography", "design", "css"],
+    category: "design",
+    type: "article" as const,
+    date: new Date("2026-03-26"),
+    href: "/article/",
+  },
+  {
+    title: "Building Accessible Components",
+    description: "Best practices for ARIA roles, keyboard navigation, and screen readers.",
+    coverColor: "#f472b6",
+    coverHeight: "11rem",
+    tags: ["a11y", "html", "ux"],
+    category: "development",
+    type: "video" as const,
+    duration: "8:15",
+    date: new Date("2026-03-25"),
+    href: "/video/",
+  },
+  {
+    title: "Astro Framework",
+    description: "The web framework for content-driven websites.",
+    coverColor: "#fb923c",
+    coverHeight: "7rem",
+    tags: ["astro", "framework"],
+    category: "development",
+    type: "link" as const,
+    linkUrl: "astro.build",
+    date: new Date("2026-03-24"),
+    href: "/link/",
+  },
+  {
+    title: "Color Theory for Digital Designers",
+    description:
+      "Understanding warm vs cool palettes, contrast ratios, and how to evoke mood through color.",
+    coverColor: "#f97316",
+    coverHeight: "13rem",
+    tags: ["color", "design", "theory"],
+    category: "design",
+    type: "article" as const,
+    date: new Date("2026-03-23"),
+    href: "/article/",
+  },
+  {
+    title: "Responsive Design Patterns",
+    description: "Modern approaches to responsive layouts in 2026.",
+    coverColor: "#4ade80",
+    coverHeight: "9rem",
+    tags: ["responsive", "css", "layout"],
+    category: "tutorial",
+    type: "video" as const,
+    duration: "15:42",
+    date: new Date("2026-03-22"),
+    href: "/video/",
+  },
+  {
+    title: "Photography Composition Rules",
+    description:
+      "Rule of thirds, leading lines, and other techniques to elevate your photography portfolio.",
+    coverColor: "#e879a8",
+    coverHeight: "18rem",
+    tags: ["photography", "composition"],
+    category: "photography",
+    type: "article" as const,
+    date: new Date("2026-03-21"),
+    href: "/article/",
+  },
+  {
+    title: "MDN Web Docs",
+    description: "Resources for developers, by developers.",
+    coverColor: "#1e40af",
+    coverHeight: "7rem",
+    tags: ["reference", "docs"],
+    category: "development",
+    type: "link" as const,
+    linkUrl: "developer.mozilla.org",
+    date: new Date("2026-03-20"),
+    href: "/link/",
+  },
+  {
+    title: "Minimalism in UI Design",
+    description:
+      "Why less is more: reducing cognitive load through deliberate simplicity.",
+    coverColor: "#94a3b8",
+    coverHeight: "11rem",
+    tags: ["design", "minimalism", "ui"],
+    category: "design",
+    type: "article" as const,
+    date: new Date("2026-03-19"),
+    href: "/article/",
+  },
+  {
+    title: "Animating with CSS Transitions",
+    description: "Smooth, performant animations using only CSS.",
+    coverColor: "#c084fc",
+    coverHeight: "10rem",
+    tags: ["animation", "css"],
+    category: "tutorial",
+    type: "video" as const,
+    duration: "11:08",
+    date: new Date("2026-03-18"),
+    href: "/video/",
+  },
+];
+---
+
+<BaseLayout title="Home" currentPath="/">
+  <!-- Page header -->
+  <div class="mb-8">
+    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-warm-text mb-2">
+      Explore<span class="text-accent">.</span>
+    </h2>
+    <p class="text-warm-muted text-sm">
+      A curated collection of articles, videos, and resources.
+    </p>
+  </div>
+
+  <!-- Masonry grid -->
+  <div
+    class="columns-1 sm:columns-2 xl:columns-3 gap-6"
+    style="column-fill: balance;"
+  >
+    {
+      mixedContent.map((item) => (
+        <MasonryCard
+          title={item.title}
+          description={item.description}
+          coverColor={item.coverColor}
+          coverHeight={item.coverHeight}
+          tags={item.tags}
+          category={item.category}
+          type={item.type}
+          date={item.date}
+          href={item.href}
+          duration={item.duration}
+          linkUrl={item.linkUrl}
+        />
+      ))
+    }
+  </div>
+</BaseLayout>

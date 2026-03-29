@@ -1,0 +1,108 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import MasonryCard from "../../component/masonry_card.astro";
+
+const links = [
+  {
+    title: "Tailwind CSS Documentation",
+    description:
+      "The official Tailwind CSS docs — an essential reference for utility-first CSS.",
+    coverColor: "#38bdf8",
+    coverHeight: "8rem",
+    tags: ["tailwind", "css", "reference"],
+    category: "development",
+    linkUrl: "tailwindcss.com",
+    date: new Date("2026-03-27"),
+  },
+  {
+    title: "Astro Framework",
+    description:
+      "The web framework for content-driven websites. Ship less JavaScript.",
+    coverColor: "#fb923c",
+    coverHeight: "7rem",
+    tags: ["astro", "framework"],
+    category: "development",
+    linkUrl: "astro.build",
+    date: new Date("2026-03-24"),
+  },
+  {
+    title: "MDN Web Docs",
+    description:
+      "Comprehensive resources for web developers, maintained by Mozilla and the community.",
+    coverColor: "#1e40af",
+    coverHeight: "7rem",
+    tags: ["reference", "docs"],
+    category: "development",
+    linkUrl: "developer.mozilla.org",
+    date: new Date("2026-03-20"),
+  },
+  {
+    title: "Dribbble — Design Inspiration",
+    description:
+      "Discover the world's top designers and creatives. A go-to for visual inspiration.",
+    coverColor: "#ea4c89",
+    coverHeight: "9rem",
+    tags: ["design", "inspiration"],
+    category: "design",
+    linkUrl: "dribbble.com",
+    date: new Date("2026-03-16"),
+  },
+  {
+    title: "Coolors — Color Palette Generator",
+    description:
+      "Super fast color palette generator. Create, browse, and save palettes.",
+    coverColor: "#00c9b1",
+    coverHeight: "7rem",
+    tags: ["color", "tools"],
+    category: "design",
+    linkUrl: "coolors.co",
+    date: new Date("2026-03-14"),
+  },
+  {
+    title: "Can I Use",
+    description:
+      "Browser support tables for modern web technologies. Essential for cross-browser development.",
+    coverColor: "#8b5cf6",
+    coverHeight: "8rem",
+    tags: ["compatibility", "reference"],
+    category: "development",
+    linkUrl: "caniuse.com",
+    date: new Date("2026-03-12"),
+  },
+];
+---
+
+<BaseLayout title="Links" currentPath="/link/">
+  <!-- Page header -->
+  <div class="mb-8">
+    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-warm-text mb-2">
+      Links<span class="text-accent">.</span>
+    </h2>
+    <p class="text-warm-muted text-sm">
+      Curated resources, tools, and bookmarks worth sharing.
+    </p>
+  </div>
+
+  <!-- Masonry grid -->
+  <div
+    class="columns-1 sm:columns-2 xl:columns-3 gap-6"
+    style="column-fill: balance;"
+  >
+    {
+      links.map((item) => (
+        <MasonryCard
+          title={item.title}
+          description={item.description}
+          coverColor={item.coverColor}
+          coverHeight={item.coverHeight}
+          tags={item.tags}
+          category={item.category}
+          type="link"
+          linkUrl={item.linkUrl}
+          date={item.date}
+          href="#"
+        />
+      ))
+    }
+  </div>
+</BaseLayout>

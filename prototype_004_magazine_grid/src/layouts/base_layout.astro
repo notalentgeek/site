@@ -1,0 +1,65 @@
+---
+import Sidebar from "../component/sidebar.astro";
+
+interface Props {
+  title: string;
+  currentPath?: string;
+}
+
+const { title, currentPath = "/" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Portfolio — Magazine Grid Layout" />
+    <title>{title} — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-warm-bg text-warm-text font-sans min-h-screen">
+    <div class="flex flex-col lg:flex-row">
+      <!-- Mobile header toggle -->
+      <div class="lg:hidden sticky top-0 z-50 bg-warm-card border-b border-warm-border">
+        <div class="flex items-center justify-between p-4">
+          <a href="/" class="font-serif text-xl font-bold">
+            Portfolio<span class="text-accent">.</span>
+          </a>
+          <button
+            id="sidebar-toggle"
+            class="w-10 h-10 rounded-lg bg-warm-bg flex items-center justify-center text-warm-text"
+            aria-label="Toggle sidebar"
+          >
+            <span class="text-lg">☰</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div id="sidebar" class="hidden lg:block lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto">
+        <Sidebar currentPath={currentPath} />
+      </div>
+
+      <!-- Main content -->
+      <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8">
+        <slot />
+      </main>
+    </div>
+
+    <script is:inline>
+      const toggle = document.getElementById("sidebar-toggle");
+      const sidebar = document.getElementById("sidebar");
+      if (toggle && sidebar) {
+        toggle.addEventListener("click", () => {
+          sidebar.classList.toggle("hidden");
+        });
+      }
+    </script>
+  </body>
+</html>

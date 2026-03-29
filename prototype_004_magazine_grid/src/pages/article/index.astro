@@ -1,0 +1,101 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import MasonryCard from "../../component/masonry_card.astro";
+
+const articles = [
+  {
+    title: "Hello World: Building a Magazine Grid Portfolio",
+    description:
+      "Exploring the design process behind a masonry-style portfolio layout inspired by Pinterest and Behance.",
+    coverColor: "#d4a574",
+    coverHeight: "14rem",
+    tags: ["design", "css", "portfolio", "masonry"],
+    category: "design",
+    date: new Date("2026-03-29"),
+  },
+  {
+    title: "The Future of Web Typography",
+    description:
+      "How variable fonts and new CSS features are reshaping text on the web. A look at the latest developments in font technology and their practical applications.",
+    coverColor: "#a78bfa",
+    coverHeight: "16rem",
+    tags: ["typography", "design", "css"],
+    category: "design",
+    date: new Date("2026-03-26"),
+  },
+  {
+    title: "Color Theory for Digital Designers",
+    description:
+      "Understanding warm vs cool palettes, contrast ratios, and how to evoke mood through color choices in digital products.",
+    coverColor: "#f97316",
+    coverHeight: "13rem",
+    tags: ["color", "design", "theory"],
+    category: "design",
+    date: new Date("2026-03-23"),
+  },
+  {
+    title: "Photography Composition Rules",
+    description:
+      "Rule of thirds, leading lines, symmetry, and other techniques to elevate your photography portfolio to professional standards.",
+    coverColor: "#e879a8",
+    coverHeight: "18rem",
+    tags: ["photography", "composition"],
+    category: "photography",
+    date: new Date("2026-03-21"),
+  },
+  {
+    title: "Minimalism in UI Design",
+    description:
+      "Why less is more: reducing cognitive load through deliberate simplicity and purposeful whitespace.",
+    coverColor: "#94a3b8",
+    coverHeight: "11rem",
+    tags: ["design", "minimalism", "ui"],
+    category: "design",
+    date: new Date("2026-03-19"),
+  },
+  {
+    title: "Responsive Images: A Complete Guide",
+    description:
+      "srcset, sizes, picture element, and modern image formats for optimal loading performance.",
+    coverColor: "#34d399",
+    coverHeight: "12rem",
+    tags: ["images", "performance", "html"],
+    category: "development",
+    date: new Date("2026-03-17"),
+  },
+];
+---
+
+<BaseLayout title="Articles" currentPath="/article/">
+  <!-- Page header -->
+  <div class="mb-8">
+    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-warm-text mb-2">
+      Articles<span class="text-accent">.</span>
+    </h2>
+    <p class="text-warm-muted text-sm">
+      Long-form writing on design, development, and creative process.
+    </p>
+  </div>
+
+  <!-- Masonry grid -->
+  <div
+    class="columns-1 sm:columns-2 xl:columns-3 gap-6"
+    style="column-fill: balance;"
+  >
+    {
+      articles.map((item) => (
+        <MasonryCard
+          title={item.title}
+          description={item.description}
+          coverColor={item.coverColor}
+          coverHeight={item.coverHeight}
+          tags={item.tags}
+          category={item.category}
+          type="article"
+          date={item.date}
+          href="#"
+        />
+      ))
+    }
+  </div>
+</BaseLayout>

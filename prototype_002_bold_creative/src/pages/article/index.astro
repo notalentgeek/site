@@ -1,0 +1,93 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import ContentCard from "../../component/content_card.astro";
+
+const articles = [
+  {
+    title: "Hello World: Building a Bold Creative Portfolio",
+    description:
+      "A deep dive into crafting a visually striking portfolio that stands out from the crowd.",
+    href: "#",
+    tags: ["design", "portfolio", "web"],
+    date: "Mar 29, 2026",
+  },
+  {
+    title: "The Art of Visual Hierarchy",
+    description:
+      "How strategic use of scale, color, and space can guide the viewer through your work.",
+    href: "#",
+    tags: ["design", "typography"],
+    date: "Mar 25, 2026",
+  },
+  {
+    title: "Performance Meets Aesthetics",
+    description:
+      "Exploring the balance between visual richness and web performance in modern portfolios.",
+    href: "#",
+    tags: ["performance", "web"],
+    date: "Mar 20, 2026",
+  },
+  {
+    title: "Motion Design for the Web",
+    description:
+      "Principles of meaningful animation that enhance user experience without sacrificing speed.",
+    href: "#",
+    tags: ["animation", "ux"],
+    date: "Mar 15, 2026",
+  },
+  {
+    title: "Color Theory in Dark Interfaces",
+    description:
+      "Understanding how vibrant accents interact with dark backgrounds to create depth and focus.",
+    href: "#",
+    tags: ["color", "dark-mode", "ui"],
+    date: "Mar 10, 2026",
+  },
+  {
+    title: "Typography as Identity",
+    description:
+      "Choosing and pairing typefaces that define a brand's voice in digital spaces.",
+    href: "#",
+    tags: ["typography", "branding"],
+    date: "Mar 05, 2026",
+  },
+];
+---
+
+<BaseLayout title="Articles | Bold Creative Portfolio">
+  <section class="max-w-7xl mx-auto px-6 pt-32 pb-24">
+    <!-- Page Header -->
+    <div class="mb-16">
+      <p class="text-accent-purple text-xs font-semibold tracking-[0.3em] uppercase mb-3">
+        Writing
+      </p>
+      <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-4">
+        Articles
+      </h1>
+      <p class="text-white/40 text-lg max-w-2xl leading-relaxed">
+        Thoughts on design, development, and the creative process.
+        Deep dives into the craft of building for the web.
+      </p>
+    </div>
+
+    <!-- Divider -->
+    <div class="h-px bg-gradient-to-r from-accent-purple/50 via-accent-cyan/30 to-transparent mb-12">
+    </div>
+
+    <!-- Article Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        articles.map((article, i) => (
+          <ContentCard
+            title={article.title}
+            description={article.description}
+            href={article.href}
+            tags={article.tags}
+            date={article.date}
+            variant={i === 0 ? "featured" : "default"}
+          />
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
