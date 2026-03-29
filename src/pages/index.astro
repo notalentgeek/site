@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/base_layout.astro";
 
+const REPO_URL = "https://github.com/notalentgeek/site/tree/master";
+
 const prototypes = [
   {
     id: "001",
@@ -94,7 +96,15 @@ const prototypes = [
             </span>
             <div class="flex-1">
               <h3 class="font-sans text-base font-semibold text-ink-light dark:text-ink-dark">
-                {p.name}
+                <a
+                  href={`${REPO_URL}/${p.folder}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="no-underline hover:underline"
+                  style="text-decoration: none;"
+                >
+                  {p.name}
+                </a>
               </h3>
               <p class="text-sm text-muted-light dark:text-muted-dark leading-relaxed mt-1">
                 {p.description}
@@ -102,14 +112,25 @@ const prototypes = [
               <p class="text-xs text-muted-light dark:text-muted-dark mt-2 italic">
                 Vibe: {p.vibe}
               </p>
-              <div class="flex items-center gap-1.5 mt-2">
-                {p.palette.map((color) => (
-                  <span
-                    class="w-4 h-4 rounded-full border border-rule-light dark:border-rule-dark"
-                    style={`background-color: ${color};`}
-                    title={color}
-                  />
-                ))}
+              <div class="flex items-center gap-2 mt-2">
+                <div class="flex items-center gap-1.5">
+                  {p.palette.map((color) => (
+                    <span
+                      class="w-4 h-4 rounded-full border border-rule-light dark:border-rule-dark"
+                      style={`background-color: ${color};`}
+                      title={color}
+                    />
+                  ))}
+                </div>
+                <span class="text-muted-light dark:text-muted-dark">·</span>
+                <a
+                  href={`${REPO_URL}/${p.folder}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-xs text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark transition-colors"
+                >
+                  View source &rarr;
+                </a>
               </div>
             </div>
           </div>
@@ -138,7 +159,15 @@ const prototypes = [
             </span>
             <div class="flex-1">
               <h3 class="font-sans text-base font-semibold text-ink-light dark:text-ink-dark">
-                {p.name}
+                <a
+                  href={`${REPO_URL}/${p.folder}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="no-underline hover:underline"
+                  style="text-decoration: none;"
+                >
+                  {p.name}
+                </a>
               </h3>
               <p class="text-sm text-muted-light dark:text-muted-dark leading-relaxed mt-1">
                 {p.description}
@@ -146,14 +175,25 @@ const prototypes = [
               <p class="text-xs text-muted-light dark:text-muted-dark mt-2 italic">
                 Vibe: {p.vibe}
               </p>
-              <div class="flex items-center gap-1.5 mt-2">
-                {p.palette.map((color) => (
-                  <span
-                    class="w-4 h-4 rounded-full border border-rule-light dark:border-rule-dark"
-                    style={`background-color: ${color};`}
-                    title={color}
-                  />
-                ))}
+              <div class="flex items-center gap-2 mt-2">
+                <div class="flex items-center gap-1.5">
+                  {p.palette.map((color) => (
+                    <span
+                      class="w-4 h-4 rounded-full border border-rule-light dark:border-rule-dark"
+                      style={`background-color: ${color};`}
+                      title={color}
+                    />
+                  ))}
+                </div>
+                <span class="text-muted-light dark:text-muted-dark">·</span>
+                <a
+                  href={`${REPO_URL}/${p.folder}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-xs text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark transition-colors"
+                >
+                  View source &rarr;
+                </a>
               </div>
             </div>
           </div>
