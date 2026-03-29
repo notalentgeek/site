@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A minimal editorial portfolio" />
+    <title>Demo 001 — Minimal Editorial</title>
+    <style>
+      /* Reset & Base */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        background-color: #ffffff;
+        color: #000000;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .font-serif {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+
+      /* Max-width container */
+      .max-w-content {
+        max-width: 680px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+
+      /* Colors */
+      .text-accent { color: #1a3a5c; }
+      .text-accent:hover { color: #2a5a8c; }
+      .text-gray-400 { color: #9ca3af; }
+      .text-gray-500 { color: #6b7280; }
+      .text-gray-600 { color: #4b5563; }
+
+      /* Back link */
+      .back-link {
+        display: inline-block;
+        padding: 0.75rem 0;
+        font-size: 0.875rem;
+        color: #6b7280;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .back-link:hover { color: #1a3a5c; }
+
+      /* Header */
+      header {
+        border-bottom: 1px solid #e5e7eb;
+      }
+      header nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+      }
+      header .logo {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        color: #000;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      header .logo:hover { color: #1a3a5c; }
+      header .nav-links {
+        display: flex;
+        gap: 1.5rem;
+        list-style: none;
+        font-size: 0.875rem;
+      }
+      header .nav-links a {
+        color: #4b5563;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      header .nav-links a:hover,
+      header .nav-links a.active {
+        color: #1a3a5c;
+      }
+      header .nav-links a.active {
+        font-weight: 500;
+      }
+
+      /* Main content */
+      main {
+        flex: 1;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        width: 100%;
+      }
+
+      /* Sections */
+      section { margin-bottom: 4rem; }
+
+      /* Intro */
+      .intro h1 {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1.15;
+        margin-bottom: 1.5rem;
+      }
+      @media (min-width: 768px) {
+        .intro h1 { font-size: 3rem; }
+      }
+      .intro p {
+        font-size: 1.125rem;
+        color: #4b5563;
+        line-height: 1.75;
+        max-width: 32rem;
+      }
+
+      /* Section header row */
+      .section-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+      }
+      .section-header h2 {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+      .section-header a {
+        font-size: 0.875rem;
+        color: #1a3a5c;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .section-header a:hover { color: #2a5a8c; }
+
+      /* Article list */
+      .article-list { display: flex; flex-direction: column; gap: 2rem; }
+      .article-item a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+      }
+      .article-item time {
+        font-size: 0.875rem;
+        color: #9ca3af;
+      }
+      .article-item h3 {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-top: 0.25rem;
+        transition: color 0.2s;
+      }
+      .article-item:hover h3 { color: #1a3a5c; }
+      .article-item p {
+        color: #4b5563;
+        margin-top: 0.5rem;
+        line-height: 1.75;
+      }
+
+      /* Video embed placeholder */
+      .video-embed {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background-color: #f3f4f6;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9ca3af;
+        font-size: 0.875rem;
+        border: 1px solid #e5e7eb;
+      }
+      .video-embed .play-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: #1a3a5c;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+      }
+      .video-meta h3 {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-top: 1rem;
+      }
+      .video-meta p {
+        color: #4b5563;
+        margin-top: 0.25rem;
+      }
+
+      /* Social links grid */
+      .social-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      @media (min-width: 640px) {
+        .social-grid { grid-template-columns: 1fr 1fr; }
+      }
+      .social-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        padding: 1rem 1.25rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .social-link:hover {
+        border-color: #1a3a5c;
+        box-shadow: 0 1px 3px rgba(26, 58, 92, 0.1);
+      }
+      .social-link .link-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+      .social-link .link-desc {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-top: 0.25rem;
+      }
+      .social-link:hover .link-name { color: #1a3a5c; }
+
+      .see-all-links {
+        margin-top: 1rem;
+        text-align: center;
+      }
+      .see-all-links a {
+        font-size: 0.875rem;
+        color: #1a3a5c;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .see-all-links a:hover { color: #2a5a8c; }
+
+      /* Footer */
+      footer {
+        border-top: 1px solid #e5e7eb;
+      }
+      footer .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+      footer .footer-links {
+        display: flex;
+        gap: 1rem;
+      }
+      footer .footer-links a {
+        color: #6b7280;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      footer .footer-links a:hover { color: #1a3a5c; }
+    </style>
+  </head>
+  <body>
+    <!-- Back to index -->
+    <div class="max-w-content">
+      <a href="/site/" class="back-link">&larr; Back to index</a>
+    </div>
+
+    <!-- Navigation -->
+    <header>
+      <nav class="max-w-content">
+        <a href="#" class="logo">Portfolio</a>
+        <ul class="nav-links">
+          <li><a href="#" class="active">Home</a></li>
+          <li><a href="#">Articles</a></li>
+          <li><a href="#">Videos</a></li>
+          <li><a href="#">Links</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <div class="max-w-content">
+        <!-- Intro -->
+        <section class="intro">
+          <h1 class="font-serif">Hello, I'm a creator.</h1>
+          <p>
+            I write about technology, design, and the things I learn along the way.
+            This is my corner of the internet — a place for articles, videos, and
+            curated links.
+          </p>
+        </section>
+
+        <!-- Recent Articles -->
+        <section>
+          <div class="section-header">
+            <h2>Recent Articles</h2>
+            <a href="#">View all &rarr;</a>
+          </div>
+          <div class="article-list">
+            <article class="article-item">
+              <a href="#">
+                <time>March 28, 2026</time>
+                <h3>Building Resilient Design Systems at Scale</h3>
+                <p>
+                  A practical guide to creating design systems that evolve gracefully
+                  as teams grow and requirements shift over time.
+                </p>
+              </a>
+            </article>
+            <article class="article-item">
+              <a href="#">
+                <time>March 22, 2026</time>
+                <h3>The Quiet Power of Minimalism in Web Design</h3>
+                <p>
+                  Why stripping away the unnecessary leads to stronger
+                  communication, better usability, and more memorable experiences.
+                </p>
+              </a>
+            </article>
+            <article class="article-item">
+              <a href="#">
+                <time>March 15, 2026</time>
+                <h3>Typography on the Web: Beyond Google Fonts</h3>
+                <p>
+                  Exploring self-hosted type, variable fonts, and optical sizing
+                  for a more refined reading experience.
+                </p>
+              </a>
+            </article>
+            <article class="article-item">
+              <a href="#">
+                <time>March 8, 2026</time>
+                <h3>Rethinking Navigation Patterns for Content Sites</h3>
+                <p>
+                  How editorial websites can move beyond hamburger menus and embrace
+                  navigation that serves readers first.
+                </p>
+              </a>
+            </article>
+          </div>
+        </section>
+
+        <!-- Featured Video -->
+        <section>
+          <div class="section-header">
+            <h2>Featured Video</h2>
+            <a href="#">View all &rarr;</a>
+          </div>
+          <div>
+            <div class="video-embed">
+              <div class="play-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
+              </div>
+              <span>Video: Designing for Readability</span>
+            </div>
+            <div class="video-meta">
+              <h3>Designing for Readability: A Practical Walkthrough</h3>
+              <p>
+                A 20-minute deep dive into line height, measure, and contrast ratios
+                that make long-form content a pleasure to read.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Social Links -->
+        <section>
+          <div class="section-header">
+            <h2>Find Me Online</h2>
+          </div>
+          <div class="social-grid">
+            <a href="https://github.com" class="social-link" target="_blank" rel="noopener noreferrer">
+              <div class="link-name">GitHub</div>
+              <div class="link-desc">Open source projects and code</div>
+            </a>
+            <a href="https://linkedin.com" class="social-link" target="_blank" rel="noopener noreferrer">
+              <div class="link-name">LinkedIn</div>
+              <div class="link-desc">Professional network and resume</div>
+            </a>
+            <a href="https://twitter.com" class="social-link" target="_blank" rel="noopener noreferrer">
+              <div class="link-name">Twitter / X</div>
+              <div class="link-desc">Thoughts and conversations</div>
+            </a>
+            <a href="https://youtube.com" class="social-link" target="_blank" rel="noopener noreferrer">
+              <div class="link-name">YouTube</div>
+              <div class="link-desc">Video tutorials and talks</div>
+            </a>
+          </div>
+          <div class="see-all-links">
+            <a href="#">See all links &rarr;</a>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="max-w-content footer-inner">
+        <p>&copy; 2026 Portfolio. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="https://github.com">GitHub</a>
+          <a href="https://linkedin.com">LinkedIn</a>
+          <a href="https://twitter.com">Twitter</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
