@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import VideoEmbed from "../../component/video_embed.astro";
+import { getCollection } from "astro:content";
+
+const videos = (await getCollection("video")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+---
+
+<BaseLayout title="Video">
+  <!-- _Index link for navigation back (Paco style) -->
+  <a
+    href="/"
+    class="inline-block font-sans text-sm text-muted-light dark:text-muted-dark
+           hover:text-ink-light dark:hover:text-ink-dark transition-colors mb-10"
+  >
+    _Index
+  </a>
+
+  <h1 class="font-sans text-2xl font-bold tracking-tight text-ink-light dark:text-ink-dark mb-4">
+    Video
+  </h1>
+  <p class="text-muted-light dark:text-muted-dark leading-relaxed mb-10">
+    Tutorials, talks, and visual explorations.
+  </p>
+
+  <div class="space-y-14">
+    {videos.map((video) => (
+      <article>
+        <VideoEmbed
+          url={video.data.embed_url}
+          title={video.data.title}
+          platform={video.data.platform}
+        />
+        <div class="mt-4">
+          <time class="text-xs text-muted-light dark:text-muted-dark font-sans">
+            {new Date(video.data.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </time>
+          <h2 class="font-sans text-sm font-semibold text-ink-light dark:text-ink-dark mt-1">
+            {video.data.title}
+          </h2>
+          {video.data.description && (
+            <p class="text-sm text-muted-light dark:text-muted-dark mt-2 leading-relaxed">
+              {video.data.description}
+            </p>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+
+  {videos.length === 0 && (
+    <p class="text-muted-light dark:text-muted-dark text-center py-16">
+      No videos yet. Check back soon.
+    </p>
+  )}
+</BaseLayout>

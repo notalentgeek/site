@@ -1,0 +1,163 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+const videos = (await getCollection("video")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+
+// Group articles by year for Paco-style year grouping
+const articlesByYear: Record<string, typeof articles> = {};
+for (const article of articles) {
+  const year = new Date(article.data.date).getFullYear().toString();
+  if (!articlesByYear[year]) articlesByYear[year] = [];
+  articlesByYear[year].push(article);
+}
+const sortedYears = Object.keys(articlesByYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<BaseLayout title="Your Name">
+  <!-- 1. Name + tagline (sans-serif, bold — Paco style) -->
+  <header class="mb-10">
+    <h1 class="font-sans text-2xl font-bold tracking-tight text-ink-light dark:text-ink-dark">
+      Your Name
+    </h1>
+    <p class="font-sans text-sm text-muted-light dark:text-muted-dark mt-1">
+      Designer, developer, maker of things.
+    </p>
+  </header>
+
+  <!-- 2. Intro: conversational serif prose with inline social links (Lee style) -->
+  <section class="mb-14">
+    <p class="leading-relaxed text-ink-light dark:text-ink-dark">
+      I build tools and write about technology, design, and the things I learn
+      along the way. Currently working on open source projects and exploring the
+      intersection of code and craft. You can find me on
+      <a href="https://github.com">GitHub</a>,
+      <a href="https://twitter.com">Twitter</a>, and sometimes
+      <a href="https://linkedin.com">LinkedIn</a>.
+    </p>
+  </section>
+
+  <!-- 3. Building (Paco-style section: heading + link-description list) -->
+  <section class="mb-14">
+    <h2 class="font-sans text-lg font-semibold text-ink-light dark:text-ink-dark mb-4">
+      Building
+    </h2>
+    <p class="text-sm text-muted-light dark:text-muted-dark mb-6 leading-relaxed">
+      A few things I'm working on right now.
+    </p>
+    <ul class="space-y-3">
+      <li class="flex flex-col">
+        <a href="https://github.com" class="font-sans text-sm font-medium">
+          Project Alpha
+        </a>
+        <span class="text-sm text-muted-light dark:text-muted-dark">
+          A CLI tool for managing development environments
+        </span>
+      </li>
+      <li class="flex flex-col">
+        <a href="https://github.com" class="font-sans text-sm font-medium">
+          Project Beta
+        </a>
+        <span class="text-sm text-muted-light dark:text-muted-dark">
+          An open source design system for small teams
+        </span>
+      </li>
+      <li class="flex flex-col">
+        <a href="https://github.com" class="font-sans text-sm font-medium">
+          Project Gamma
+        </a>
+        <span class="text-sm text-muted-light dark:text-muted-dark">
+          Exploring generative art with code
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 4. Writing (Paco-style year grouping with Lee's prose intro) -->
+  <section class="mb-14">
+    <h2 class="font-sans text-lg font-semibold text-ink-light dark:text-ink-dark mb-4">
+      Writing
+    </h2>
+    <p class="text-sm text-muted-light dark:text-muted-dark mb-6 leading-relaxed">
+      Here are some recent pieces.
+    </p>
+    {sortedYears.map((year) => (
+      <div class="mb-6">
+        <h3 class="font-sans text-xs font-semibold text-muted-light dark:text-muted-dark uppercase tracking-widest mb-3">
+          {year}
+        </h3>
+        <ul class="space-y-2">
+          {articlesByYear[year].map((article) => (
+            <li class="flex items-baseline justify-between gap-4">
+              <a
+                href={`/writing/${article.slug}/`}
+                class="font-sans text-sm font-medium truncate"
+              >
+                {article.data.title}
+              </a>
+              <time class="text-xs text-muted-light dark:text-muted-dark whitespace-nowrap font-sans">
+                {new Date(article.data.date).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </time>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+    <a href="/writing/" class="text-sm text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark transition-colors">
+      All writing &rarr;
+    </a>
+  </section>
+
+  <!-- 5. Video (heading + prose intro + linked titles) -->
+  <section class="mb-14">
+    <h2 class="font-sans text-lg font-semibold text-ink-light dark:text-ink-dark mb-4">
+      Video
+    </h2>
+    <p class="text-sm text-muted-light dark:text-muted-dark mb-6 leading-relaxed">
+      I also make videos.
+    </p>
+    <ul class="space-y-2">
+      {videos.map((video) => (
+        <li class="flex items-baseline justify-between gap-4">
+          <a
+            href={`/video/`}
+            class="font-sans text-sm font-medium truncate"
+          >
+            {video.data.title}
+          </a>
+          <time class="text-xs text-muted-light dark:text-muted-dark whitespace-nowrap font-sans">
+            {new Date(video.data.date).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}
+          </time>
+        </li>
+      ))}
+    </ul>
+    <a href="/video/" class="text-sm text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark transition-colors mt-4 inline-block">
+      All videos &rarr;
+    </a>
+  </section>
+
+  <!-- 6. Connect (Lee-style natural paragraph with inline links) -->
+  <section class="mb-14">
+    <h2 class="font-sans text-lg font-semibold text-ink-light dark:text-ink-dark mb-4">
+      Connect
+    </h2>
+    <p class="leading-relaxed text-ink-light dark:text-ink-dark">
+      The best way to reach me is by <a href="mailto:hello@example.com">email</a>.
+      I'm also on <a href="https://github.com">GitHub</a> where I share most of
+      my work, <a href="https://twitter.com">Twitter</a> for shorter thoughts,
+      and <a href="https://linkedin.com">LinkedIn</a> if that's more your style.
+      You can find a full list of links <a href="/link/">here</a>.
+    </p>
+  </section>
+</BaseLayout>

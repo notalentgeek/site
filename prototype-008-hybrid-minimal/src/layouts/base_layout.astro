@@ -1,0 +1,102 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "A hybrid minimal portfolio" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <style>
+      /* Base layer: clean background ready for future 3D canvas behind */
+      html {
+        background-color: #fafafa;
+        color: #1a1a1a;
+      }
+      html.dark {
+        background-color: #141414;
+        color: #e5e5e5;
+      }
+
+      /* Serif body, sans-serif headings */
+      body {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+      }
+
+      /* Link style: underlined with gray decoration, subtle hover */
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: #999;
+        text-underline-offset: 3px;
+        transition: text-decoration-color 0.2s ease;
+      }
+      a:hover {
+        text-decoration-color: currentColor;
+      }
+    </style>
+    <script is:inline>
+      // Persist dark mode preference
+      (function () {
+        const stored = localStorage.getItem("theme");
+        if (stored === "light") {
+          document.documentElement.classList.remove("dark");
+        } else if (stored === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          // Default to system preference
+          if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+            document.documentElement.classList.remove("dark");
+          }
+        }
+      })();
+    </script>
+  </head>
+  <body class="antialiased min-h-screen relative">
+    <!-- Dark mode toggle — small button, top-right -->
+    <button
+      id="theme-toggle"
+      class="fixed top-4 right-4 z-50 w-8 h-8 flex items-center justify-center
+             text-sm rounded-full
+             bg-rule-light dark:bg-rule-dark
+             text-muted-light dark:text-muted-dark
+             hover:text-ink-light dark:hover:text-ink-dark
+             transition-colors"
+      aria-label="Toggle dark mode"
+    >
+      <!-- Sun icon (shown in dark mode) -->
+      <span class="hidden dark:inline">&sun;</span>
+      <!-- Moon icon (shown in light mode) -->
+      <span class="dark:hidden">&moon;</span>
+    </button>
+
+    <!-- Main content: narrow centered column -->
+    <main class="max-w-content mx-auto px-6 py-16 w-full">
+      <slot />
+    </main>
+
+    <script is:inline>
+      document.getElementById("theme-toggle").addEventListener("click", function () {
+        const html = document.documentElement;
+        if (html.classList.contains("dark")) {
+          html.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        } else {
+          html.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>

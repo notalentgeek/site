@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+
+const linkCategories = [
+  {
+    title: "Social",
+    links: [
+      { name: "GitHub", url: "https://github.com", description: "Code and open source" },
+      { name: "Twitter / X", url: "https://twitter.com", description: "Short thoughts and threads" },
+      { name: "LinkedIn", url: "https://linkedin.com", description: "Professional network" },
+      { name: "Instagram", url: "https://instagram.com", description: "Photography and visual stories" },
+    ],
+  },
+  {
+    title: "Content",
+    links: [
+      { name: "YouTube", url: "https://youtube.com", description: "Long-form video" },
+      { name: "Medium", url: "https://medium.com", description: "Extended essays" },
+      { name: "Dev.to", url: "https://dev.to", description: "Technical articles" },
+    ],
+  },
+  {
+    title: "Contact",
+    links: [
+      { name: "Email", url: "mailto:hello@example.com", description: "Get in touch directly" },
+      { name: "RSS Feed", url: "/rss.xml", description: "Subscribe to updates" },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Links">
+  <!-- _Index link for navigation back (Paco style) -->
+  <a
+    href="/"
+    class="inline-block font-sans text-sm text-muted-light dark:text-muted-dark
+           hover:text-ink-light dark:hover:text-ink-dark transition-colors mb-10"
+  >
+    _Index
+  </a>
+
+  <h1 class="font-sans text-2xl font-bold tracking-tight text-ink-light dark:text-ink-dark mb-4">
+    Links
+  </h1>
+  <p class="text-muted-light dark:text-muted-dark leading-relaxed mb-10">
+    All the places you can find me around the internet.
+  </p>
+
+  {linkCategories.map((category) => (
+    <section class="mb-10">
+      <h2 class="font-sans text-xs font-semibold text-muted-light dark:text-muted-dark uppercase tracking-widest mb-4">
+        {category.title}
+      </h2>
+      <ul class="space-y-3">
+        {category.links.map((link) => (
+          <li class="flex flex-col">
+            <a
+              href={link.url}
+              class="font-sans text-sm font-medium"
+              target={link.url.startsWith("http") ? "_blank" : undefined}
+              rel={link.url.startsWith("http") ? "noopener noreferrer" : undefined}
+            >
+              {link.name}
+            </a>
+            <span class="text-sm text-muted-light dark:text-muted-dark">
+              {link.description}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</BaseLayout>
