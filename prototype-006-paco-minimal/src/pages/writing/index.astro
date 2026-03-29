@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+
+// Group articles by year
+const articlesByYear: Record<string, typeof articles> = {};
+for (const article of articles) {
+  const year = new Date(article.data.date).getFullYear().toString();
+  if (!articlesByYear[year]) {
+    articlesByYear[year] = [];
+  }
+  articlesByYear[year].push(article);
+}
+const years = Object.keys(articlesByYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<BaseLayout title="Writing">
+  <div class="pt-10 pb-6">
+    <a
+      href="/"
+      class="text-ink-muted dark:text-ink-dark-muted text-sm hover:underline"
+    >
+      _Index
+    </a>
+  </div>
+
+  <section class="pt-4 pb-20">
+    <h1 class="text-base font-normal mb-12">Writing</h1>
+
+    {years.map((year) => (
+      <div class="mb-12">
+        <h2 class="text-ink-faint dark:text-ink-dark-faint text-xs mb-4">
+          {year}
+        </h2>
+        <ul class="space-y-4">
+          {articlesByYear[year].map((article) => (
+            <li>
+              <a href={`/writing/${article.slug}/`} class="hover:underline">
+                {article.data.title}
+              </a>
+              <span class="text-ink-muted dark:text-ink-dark-muted text-sm ml-2">
+                {new Date(article.data.date).toLocaleDateString("en-US", {
+                  month: "short",
+                })}
+              </span>
+              {article.data.description && (
+                <p class="text-ink-muted dark:text-ink-dark-muted text-sm mt-1">
+                  {article.data.description}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+
+    {articles.length === 0 && (
+      <p class="text-ink-muted dark:text-ink-dark-muted">
+        No articles yet.
+      </p>
+    )}
+  </section>
+</BaseLayout>

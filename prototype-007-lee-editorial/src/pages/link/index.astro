@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+
+const linkCategories = [
+  {
+    title: "Social",
+    links: [
+      { name: "GitHub", url: "https://github.com" },
+      { name: "Twitter / X", url: "https://twitter.com" },
+      { name: "LinkedIn", url: "https://linkedin.com" },
+      { name: "YouTube", url: "https://youtube.com" },
+    ],
+  },
+  {
+    title: "Reading",
+    links: [
+      { name: "Hacker News", url: "https://news.ycombinator.com" },
+      { name: "Lobsters", url: "https://lobste.rs" },
+      { name: "Dan Abramov's Blog", url: "https://overreacted.io" },
+      { name: "Josh Comeau's Blog", url: "https://joshwcomeau.com" },
+    ],
+  },
+  {
+    title: "Tools I Use",
+    links: [
+      { name: "VS Code", url: "https://code.visualstudio.com" },
+      { name: "Figma", url: "https://figma.com" },
+      { name: "Linear", url: "https://linear.app" },
+      { name: "Vercel", url: "https://vercel.com" },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Links — Alex Chen">
+  <!-- Back link -->
+  <p class="mb-8">
+    <a
+      href="/"
+      class="underline decoration-link-decoration hover:decoration-link-hover
+             dark:hover:decoration-link-hover-dark transition-colors"
+    >By Alex Chen</a>
+  </p>
+
+  <h1 class="text-2xl font-medium mb-6">Links</h1>
+
+  <p class="mb-10 text-muted-light dark:text-muted-dark">
+    Things I use, read, and recommend.
+  </p>
+
+  {linkCategories.map((category) => (
+    <div class="mb-10">
+      <h2 class="text-lg font-medium mb-4">{category.title}</h2>
+      <ul class="space-y-2">
+        {category.links.map((link) => (
+          <li>
+            <a
+              href={link.url}
+              class="underline decoration-link-decoration hover:decoration-link-hover
+                     dark:hover:decoration-link-hover-dark transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {link.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</BaseLayout>

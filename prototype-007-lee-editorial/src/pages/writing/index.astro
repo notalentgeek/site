@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article"))
+  .filter((a) => !a.data.draft)
+  .sort(
+    (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+  );
+---
+
+<BaseLayout title="Writing — Alex Chen">
+  <!-- Back link — "By [Name]" pattern from leerob.com -->
+  <p class="mb-8">
+    <a
+      href="/"
+      class="underline decoration-link-decoration hover:decoration-link-hover
+             dark:hover:decoration-link-hover-dark transition-colors"
+    >By Alex Chen</a>
+  </p>
+
+  <h1 class="text-2xl font-medium mb-6">Writing</h1>
+
+  <p class="mb-8 text-muted-light dark:text-muted-dark">
+    Thoughts on web development, software, and whatever else comes to mind.
+  </p>
+
+  <ul class="space-y-3">
+    {articles.map((article) => (
+      <li>
+        <a
+          href={`/writing/${article.slug}/`}
+          class="underline decoration-link-decoration hover:decoration-link-hover
+                 dark:hover:decoration-link-hover-dark transition-colors"
+        >
+          {article.data.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  {articles.length === 0 && (
+    <p class="text-muted-light dark:text-muted-dark">
+      Nothing here yet. Check back soon.
+    </p>
+  )}
+</BaseLayout>

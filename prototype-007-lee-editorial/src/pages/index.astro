@@ -1,0 +1,107 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article"))
+  .filter((a) => !a.data.draft)
+  .sort(
+    (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+  );
+
+const featuredArticles = articles.slice(0, 6);
+---
+
+<BaseLayout title="Alex Chen">
+  <!-- Name -->
+  <h1 class="text-2xl font-medium mb-8">Alex Chen</h1>
+
+  <!-- Intro paragraphs — conversational, like a letter -->
+  <p class="mb-6">
+    I'm a developer and writer based in Seattle. I work at
+    <a
+      href="https://example.com"
+      class="underline decoration-link-decoration hover:decoration-link-hover
+             dark:hover:decoration-link-hover-dark transition-colors"
+      target="_blank"
+      rel="noopener noreferrer"
+    >Acme Corp</a>, where I build tools for the web. Before that I was at a
+    small agency where I learned that the best design is the kind you don't
+    notice.
+  </p>
+
+  <p class="mb-6">
+    I write about web development, software craft, and the occasional
+    tangent about typography. You can watch my videos on
+    <a
+      href="https://youtube.com"
+      class="underline decoration-link-decoration hover:decoration-link-hover
+             dark:hover:decoration-link-hover-dark transition-colors"
+      target="_blank"
+      rel="noopener noreferrer"
+    >YouTube</a>, read my code on
+    <a
+      href="https://github.com"
+      class="underline decoration-link-decoration hover:decoration-link-hover
+             dark:hover:decoration-link-hover-dark transition-colors"
+      target="_blank"
+      rel="noopener noreferrer"
+    >GitHub</a>, or connect with me on
+    <a
+      href="https://linkedin.com"
+      class="underline decoration-link-decoration hover:decoration-link-hover
+             dark:hover:decoration-link-hover-dark transition-colors"
+      target="_blank"
+      rel="noopener noreferrer"
+    >LinkedIn</a>.
+  </p>
+
+  <p class="mb-10">
+    I believe the web should be fast, accessible, and a little bit fun.
+    This site is where I put that into practice — no frameworks fighting
+    each other, no cookie banners, no analytics scripts. Just text.
+  </p>
+
+  <!-- Featured writing -->
+  <p class="mb-4">Here's some of my writing:</p>
+
+  <ul class="mb-10 space-y-2">
+    {featuredArticles.map((article) => (
+      <li>
+        <a
+          href={`/writing/`}
+          class="underline decoration-link-decoration hover:decoration-link-hover
+                 dark:hover:decoration-link-hover-dark transition-colors"
+        >
+          {article.data.title}
+        </a>
+      </li>
+    ))}
+    <li>
+      <a
+        href="/writing/"
+        class="underline decoration-link-decoration hover:decoration-link-hover
+               dark:hover:decoration-link-hover-dark transition-colors"
+      >
+        All articles &rarr;
+      </a>
+    </li>
+  </ul>
+
+  <!-- Closing paragraph -->
+  <p>
+    Want to chat? Email me at
+    <a
+      href="mailto:alex@example.com"
+      class="underline decoration-link-decoration hover:decoration-link-hover
+             dark:hover:decoration-link-hover-dark transition-colors"
+    >alex@example.com</a>
+    or find me on
+    <a
+      href="https://twitter.com"
+      class="underline decoration-link-decoration hover:decoration-link-hover
+             dark:hover:decoration-link-hover-dark transition-colors"
+      target="_blank"
+      rel="noopener noreferrer"
+    >Twitter</a>.
+  </p>
+</BaseLayout>

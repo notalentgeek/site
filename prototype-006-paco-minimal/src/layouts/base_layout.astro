@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Personal site" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="bg-surface dark:bg-surface-dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <script is:inline>
+      (function () {
+        const theme = localStorage.getItem("theme");
+        if (
+          theme === "dark" ||
+          (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+  </head>
+  <body class="text-ink dark:text-ink-dark font-sans antialiased min-h-screen">
+    <!-- Dark mode toggle -->
+    <div class="max-w-content mx-auto px-5 pt-6 flex justify-end">
+      <button
+        id="theme-toggle"
+        type="button"
+        class="text-ink-muted dark:text-ink-dark-muted hover:text-ink dark:hover:text-ink-dark text-sm"
+        aria-label="Toggle dark mode"
+      >
+        <span id="theme-icon-light" class="hidden dark:inline">&#9788;</span>
+        <span id="theme-icon-dark" class="inline dark:hidden">&#9789;</span>
+      </button>
+    </div>
+
+    <!-- Main content -->
+    <main class="max-w-content mx-auto px-5 pb-24">
+      <slot />
+    </main>
+
+    <script is:inline>
+      document
+        .getElementById("theme-toggle")
+        .addEventListener("click", function () {
+          const html = document.documentElement;
+          html.classList.toggle("dark");
+          localStorage.setItem(
+            "theme",
+            html.classList.contains("dark") ? "dark" : "light"
+          );
+        });
+    </script>
+  </body>
+</html>

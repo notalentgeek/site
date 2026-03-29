@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+
+const linkCategories = [
+  {
+    title: "Social",
+    links: [
+      { name: "Twitter", url: "https://twitter.com" },
+      { name: "GitHub", url: "https://github.com" },
+      { name: "LinkedIn", url: "https://linkedin.com" },
+      { name: "Instagram", url: "https://instagram.com" },
+    ],
+  },
+  {
+    title: "Content",
+    links: [
+      { name: "YouTube", url: "https://youtube.com" },
+      { name: "Medium", url: "https://medium.com" },
+      { name: "Dev.to", url: "https://dev.to" },
+    ],
+  },
+  {
+    title: "Tools",
+    links: [
+      { name: "Linear", url: "https://linear.app" },
+      { name: "Figma", url: "https://figma.com" },
+      { name: "Raycast", url: "https://raycast.com" },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Links">
+  <div class="pt-10 pb-6">
+    <a
+      href="/"
+      class="text-ink-muted dark:text-ink-dark-muted text-sm hover:underline"
+    >
+      _Index
+    </a>
+  </div>
+
+  <section class="pt-4 pb-20">
+    <h1 class="text-base font-normal mb-12">Links</h1>
+
+    {linkCategories.map((category) => (
+      <div class="mb-12">
+        <h2 class="text-ink-faint dark:text-ink-dark-faint text-xs mb-4">
+          {category.title}
+        </h2>
+        <ul class="space-y-3">
+          {category.links.map((link) => (
+            <li>
+              <a
+                href={link.url}
+                class="hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+</BaseLayout>
