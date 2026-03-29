@@ -1,0 +1,36 @@
+---
+interface SocialLink {
+  name: string;
+  url: string;
+  icon: string;
+  color: string;
+}
+
+const links: SocialLink[] = [
+  { name: "GitHub", url: "https://github.com", icon: "GH", color: "#333" },
+  { name: "Twitter", url: "https://twitter.com", icon: "TW", color: "#1DA1F2" },
+  { name: "LinkedIn", url: "https://linkedin.com", icon: "LI", color: "#0A66C2" },
+  { name: "YouTube", url: "https://youtube.com", icon: "YT", color: "#FF0000" },
+  { name: "Dribbble", url: "https://dribbble.com", icon: "DR", color: "#EA4C89" },
+  { name: "Email", url: "mailto:hello@example.com", icon: "EM", color: "#6366f1" },
+];
+---
+
+<div class="grid grid-cols-3 gap-3">
+  {links.map((link) => (
+    <a
+      href={link.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/50 p-3 text-center transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/80 hover:shadow-md"
+    >
+      <span
+        class="flex h-9 w-9 items-center justify-center rounded-lg text-xs font-bold text-white"
+        style={`background-color: ${link.color};`}
+      >
+        {link.icon}
+      </span>
+      <span class="text-[11px] font-medium text-gray-600">{link.name}</span>
+    </a>
+  ))}
+</div>

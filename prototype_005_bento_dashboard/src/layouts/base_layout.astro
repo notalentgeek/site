@@ -1,0 +1,65 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Portfolio — Bento Dashboard",
+  description = "A bento-style portfolio dashboard.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="min-h-screen bg-neutral-bg font-sans text-gray-800 antialiased"
+  >
+    <header class="sticky top-0 z-50 border-b border-white/20 bg-white/40 backdrop-blur-glass">
+      <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="/" class="text-lg font-bold tracking-tight text-gray-900">
+          portfolio<span class="text-accent">.</span>
+        </a>
+        <div class="flex items-center gap-6 text-sm font-medium text-gray-600">
+          <a href="/" class="transition-colors hover:text-accent">Home</a>
+          <a href="/article" class="transition-colors hover:text-accent">Articles</a>
+          <a href="/video" class="transition-colors hover:text-accent">Videos</a>
+          <a href="/link" class="transition-colors hover:text-accent">Links</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-6 py-8">
+      <slot />
+    </main>
+
+    <footer class="border-t border-white/20 bg-white/20 py-8 text-center text-sm text-gray-500">
+      <p>&copy; 2026 Portfolio. Built with Astro.</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background-color: #6366f1;
+    color: white;
+  }
+</style>

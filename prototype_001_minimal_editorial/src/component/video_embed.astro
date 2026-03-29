@@ -1,0 +1,38 @@
+---
+interface Props {
+  url: string;
+  title: string;
+  platform?: "youtube" | "tiktok";
+}
+
+const { url, title, platform = "youtube" } = Astro.props;
+
+const isYouTube = platform === "youtube";
+const isTikTok = platform === "tiktok";
+
+// For TikTok embeds, the aspect ratio is taller (9:16)
+const aspectClass = isTikTok ? "aspect-[9/16] max-w-[325px] mx-auto" : "aspect-video";
+---
+
+<div class={`relative w-full overflow-hidden rounded-lg bg-gray-100 ${aspectClass}`}>
+  {isYouTube && (
+    <iframe
+      src={url}
+      title={title}
+      class="absolute inset-0 w-full h-full"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    ></iframe>
+  )}
+  {isTikTok && (
+    <iframe
+      src={url}
+      title={title}
+      class="absolute inset-0 w-full h-full"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  )}
+</div>

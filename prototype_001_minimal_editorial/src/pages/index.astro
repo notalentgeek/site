@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import VideoEmbed from "../component/video_embed.astro";
+import SocialLink from "../component/social_link.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+const videos = (await getCollection("video")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+---
+
+<BaseLayout title="Portfolio — Home">
+  <!-- Intro -->
+  <section class="mb-16">
+    <h1 class="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
+      Hello, I'm a creator.
+    </h1>
+    <p class="text-lg text-gray-600 leading-relaxed max-w-lg">
+      I write about technology, design, and the things I learn along the way.
+      This is my corner of the internet — a place for articles, videos, and
+      curated links.
+    </p>
+  </section>
+
+  <!-- Recent Articles -->
+  <section class="mb-16">
+    <div class="flex items-baseline justify-between mb-8">
+      <h2 class="font-serif text-2xl font-bold">Recent Articles</h2>
+      <a href="/article/" class="text-sm text-accent hover:text-accent-light transition-colors">
+        View all &rarr;
+      </a>
+    </div>
+    <div class="space-y-8">
+      {articles.map((article) => (
+        <article class="group">
+          <a href={`/article/${article.slug}/`} class="block">
+            <time class="text-sm text-gray-400 font-sans">
+              {new Date(article.data.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+            <h3 class="font-serif text-xl font-semibold mt-1 group-hover:text-accent transition-colors">
+              {article.data.title}
+            </h3>
+            <p class="text-gray-600 mt-2 leading-relaxed">
+              {article.data.description}
+            </p>
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Featured Video -->
+  {videos.length > 0 && (
+    <section class="mb-16">
+      <div class="flex items-baseline justify-between mb-8">
+        <h2 class="font-serif text-2xl font-bold">Featured Video</h2>
+        <a href="/video/" class="text-sm text-accent hover:text-accent-light transition-colors">
+          View all &rarr;
+        </a>
+      </div>
+      <div>
+        <VideoEmbed
+          url={videos[0].data.embed_url}
+          title={videos[0].data.title}
+          platform={videos[0].data.platform}
+        />
+        <h3 class="font-serif text-lg font-semibold mt-4">
+          {videos[0].data.title}
+        </h3>
+        <p class="text-gray-600 mt-1">{videos[0].data.description}</p>
+      </div>
+    </section>
+  )}
+
+  <!-- Social Links -->
+  <section class="mb-16">
+    <h2 class="font-serif text-2xl font-bold mb-8">Find Me Online</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <SocialLink
+        name="GitHub"
+        url="https://github.com"
+        description="Open source projects and code"
+      />
+      <SocialLink
+        name="LinkedIn"
+        url="https://linkedin.com"
+        description="Professional network and resume"
+      />
+      <SocialLink
+        name="Twitter / X"
+        url="https://twitter.com"
+        description="Thoughts and conversations"
+      />
+      <SocialLink
+        name="YouTube"
+        url="https://youtube.com"
+        description="Video tutorials and talks"
+      />
+    </div>
+    <div class="mt-4 text-center">
+      <a href="/link/" class="text-sm text-accent hover:text-accent-light transition-colors">
+        See all links &rarr;
+      </a>
+    </div>
+  </section>
+</BaseLayout>

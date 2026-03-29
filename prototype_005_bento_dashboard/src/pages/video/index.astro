@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import VideoEmbed from "../../component/video_embed.astro";
+import { getCollection } from "astro:content";
+
+const videos = (await getCollection("video")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout title="Videos — Portfolio">
+  <section class="mb-8">
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900">Videos</h1>
+    <p class="mt-2 text-gray-500">Tutorials, talks, and walkthroughs.</p>
+  </section>
+
+  <div class="grid gap-6 sm:grid-cols-1 lg:grid-cols-2">
+    {videos.map((video) => (
+      <div class="rounded-bento border border-neutral-border bg-neutral-card p-6 shadow-bento backdrop-blur-glass transition-all duration-300 hover:shadow-bento-hover">
+        <VideoEmbed youtubeId={video.data.youtube_id} title={video.data.title} />
+        <div class="mt-4">
+          <h2 class="text-lg font-bold text-gray-900">{video.data.title}</h2>
+          <p class="mt-1 text-sm text-gray-500">{video.data.description}</p>
+          <div class="mt-3 flex items-center gap-3 text-xs text-gray-400">
+            <time>
+              {video.data.date.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </time>
+            {video.data.duration && (
+              <>
+                <span class="text-gray-300">|</span>
+                <span>{video.data.duration}</span>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {videos.length === 0 && (
+    <div class="rounded-bento border border-neutral-border bg-neutral-card p-12 text-center shadow-bento backdrop-blur-glass">
+      <p class="text-gray-400">No videos yet. Check back soon.</p>
+    </div>
+  )}
+</BaseLayout>

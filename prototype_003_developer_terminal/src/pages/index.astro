@@ -1,0 +1,143 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import TerminalPrompt from "../component/terminal_prompt.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article")).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+const videos = (await getCollection("video")).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<BaseLayout title="Home">
+  <!-- Hero Section -->
+  <section class="mb-10">
+    <TerminalPrompt command="whoami" />
+    <div class="mt-3 pl-0 sm:pl-4">
+      <h1 class="text-2xl sm:text-3xl text-terminal-green glow-text font-bold">
+        developer<span class="animate-blink">_</span>
+      </h1>
+      <p class="mt-3 text-terminal-white text-sm leading-relaxed max-w-2xl">
+        Full-stack developer, systems thinker, and terminal enthusiast.
+        I build things for the web and occasionally break them in interesting ways.
+      </p>
+    </div>
+
+    <div class="mt-6 border border-terminal-border rounded-sm bg-terminal-bg-light p-4">
+      <div class="text-terminal-gray text-xs mb-2">// system status</div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+        <div>
+          <span class="text-terminal-gray">status:</span>
+          <span class="text-terminal-green"> online</span>
+        </div>
+        <div>
+          <span class="text-terminal-gray">location:</span>
+          <span class="text-terminal-amber"> earth/internet</span>
+        </div>
+        <div>
+          <span class="text-terminal-gray">focus:</span>
+          <span class="text-terminal-blue"> web + systems</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Articles -->
+  <section class="mb-10">
+    <TerminalPrompt command="ls -la ./article/ | head -5" />
+    <div class="mt-3 border border-terminal-border rounded-sm overflow-hidden">
+      <div class="bg-terminal-bg-light px-4 py-2 border-b border-terminal-border text-xs text-terminal-gray">
+        total {articles.length} entries
+      </div>
+      {articles.length > 0 ? (
+        <ul class="divide-y divide-terminal-border">
+          {articles.slice(0, 5).map((article) => (
+            <li class="px-4 py-3 hover:bg-terminal-bg-light transition-colors">
+              <a href={`/article/${article.slug}/`} class="block group">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 text-sm">
+                      <span class="text-terminal-green">-rw-r--r--</span>
+                      <span class="text-terminal-gray">{article.data.date}</span>
+                      <span class="text-terminal-blue group-hover:text-terminal-green truncate">
+                        {article.data.title}
+                      </span>
+                    </div>
+                    <p class="mt-1 text-terminal-gray text-xs truncate pl-4">
+                      {article.data.description}
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div class="px-4 py-3 text-terminal-gray text-sm">
+          No entries found. Directory is empty.
+        </div>
+      )}
+    </div>
+    <div class="mt-2">
+      <a href="/article/" class="text-terminal-blue hover:text-terminal-green text-sm transition-colors">
+        <span class="text-terminal-gray">{">"}</span> cd article/
+      </a>
+    </div>
+  </section>
+
+  <!-- Recent Videos -->
+  <section class="mb-10">
+    <TerminalPrompt command="find ./video/ -type f -name '*.mp4'" />
+    <div class="mt-3 border border-terminal-border rounded-sm overflow-hidden">
+      <div class="bg-terminal-bg-light px-4 py-2 border-b border-terminal-border text-xs text-terminal-gray">
+        total {videos.length} entries
+      </div>
+      {videos.length > 0 ? (
+        <ul class="divide-y divide-terminal-border">
+          {videos.slice(0, 3).map((video) => (
+            <li class="px-4 py-3 hover:bg-terminal-bg-light transition-colors">
+              <div class="flex items-center gap-2 text-sm">
+                <span class="text-terminal-amber">[vid]</span>
+                <span class="text-terminal-gray">{video.data.date}</span>
+                <span class="text-terminal-blue">{video.data.title}</span>
+              </div>
+              <p class="mt-1 text-terminal-gray text-xs pl-4">
+                {video.data.description}
+              </p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div class="px-4 py-3 text-terminal-gray text-sm">
+          No video files found.
+        </div>
+      )}
+    </div>
+    <div class="mt-2">
+      <a href="/video/" class="text-terminal-blue hover:text-terminal-green text-sm transition-colors">
+        <span class="text-terminal-gray">{">"}</span> cd video/
+      </a>
+    </div>
+  </section>
+
+  <!-- Quick Links -->
+  <section class="mb-10">
+    <TerminalPrompt command="cat ./link/bookmarks.txt" />
+    <div class="mt-3 text-sm text-terminal-gray">
+      See saved bookmarks:
+      <a href="/link/" class="text-terminal-blue hover:text-terminal-green transition-colors">
+        <span class="text-terminal-gray">{">"}</span> open link/
+      </a>
+    </div>
+  </section>
+
+  <!-- Interactive prompt -->
+  <section>
+    <TerminalPrompt user="visitor" path="~/portfolio">
+      <span class="animate-blink text-terminal-green">|</span>
+    </TerminalPrompt>
+  </section>
+</BaseLayout>

@@ -1,0 +1,198 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import BentoBox from "../component/bento_box.astro";
+import VideoEmbed from "../component/video_embed.astro";
+import SocialGrid from "../component/social_grid.astro";
+import StatBox from "../component/stat_box.astro";
+import { getCollection } from "astro:content";
+
+const articles = await getCollection("article");
+const videos = await getCollection("video");
+const latestArticle = articles.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+)[0];
+const latestVideo = videos[0];
+---
+
+<BaseLayout title="Portfolio — Dashboard">
+  <section class="mb-10">
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+      Dashboard
+    </h1>
+    <p class="mt-2 text-gray-500">
+      Everything at a glance.
+    </p>
+  </section>
+
+  <div class="bento-grid">
+    <!-- About Me — xl (2x2) -->
+    <BentoBox size="xl" gridArea="about" class="flex flex-col justify-between">
+      <div>
+        <div class="mb-4 flex items-center gap-4">
+          <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-accent text-2xl font-bold text-white">
+            JD
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-gray-900">Jane Doe</h2>
+            <p class="text-sm text-gray-500">Full-Stack Developer & Designer</p>
+          </div>
+        </div>
+        <p class="leading-relaxed text-gray-600">
+          I build thoughtful digital experiences at the intersection of design and engineering.
+          Currently exploring creative coding, generative art, and developer tooling. Previously
+          shipped products at startups and agencies across three continents.
+        </p>
+      </div>
+      <div class="mt-6 flex gap-3">
+        <span class="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">TypeScript</span>
+        <span class="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">React</span>
+        <span class="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">Astro</span>
+        <span class="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">Figma</span>
+      </div>
+    </BentoBox>
+
+    <!-- Latest Article — md (2x1) -->
+    <BentoBox size="md" gridArea="article" href={`/article`}>
+      <div class="flex h-full flex-col justify-between">
+        <div>
+          <span class="mb-2 inline-block rounded-md bg-accent/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-accent">
+            Latest Article
+          </span>
+          <h3 class="mt-2 text-lg font-bold text-gray-900">
+            {latestArticle?.data.title ?? "No articles yet"}
+          </h3>
+          <p class="mt-1 text-sm text-gray-500">
+            {latestArticle?.data.description ?? ""}
+          </p>
+        </div>
+        <div class="mt-4 flex items-center gap-2 text-xs text-gray-400">
+          <span>{latestArticle?.data.date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+          {latestArticle?.data.tags && (
+            <span class="text-gray-300">|</span>
+            <span>{latestArticle.data.tags.join(", ")}</span>
+          )}
+        </div>
+      </div>
+    </BentoBox>
+
+    <!-- Video Embed — md (2x1) -->
+    <BentoBox size="md" gridArea="video">
+      <span class="mb-3 inline-block rounded-md bg-accent/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-accent">
+        Latest Video
+      </span>
+      <VideoEmbed
+        youtubeId={latestVideo?.data.youtube_id ?? "dQw4w9WgXcQ"}
+        title={latestVideo?.data.title ?? "Sample Video"}
+      />
+    </BentoBox>
+
+    <!-- Social Links — sm (1x1) but we give it lg for the grid -->
+    <BentoBox size="lg" gridArea="social">
+      <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
+        Connect
+      </h3>
+      <SocialGrid />
+    </BentoBox>
+
+    <!-- Stats — md (2x1) -->
+    <BentoBox size="md" gridArea="stats">
+      <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
+        Stats
+      </h3>
+      <div class="grid grid-cols-3 gap-6">
+        <StatBox label="Projects" value="24" change="3 this month" positive={true} />
+        <StatBox label="Articles" value="18" change="2 new" positive={true} />
+        <StatBox label="Commits" value="1.2k" change="142 this week" positive={true} />
+      </div>
+    </BentoBox>
+
+    <!-- Current Project — sm (1x1) -->
+    <BentoBox size="sm" gridArea="project" href="#">
+      <div class="flex h-full flex-col justify-between">
+        <div>
+          <span class="mb-2 inline-block rounded-md bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-emerald-600">
+            In Progress
+          </span>
+          <h3 class="mt-2 font-bold text-gray-900">Bento Portfolio</h3>
+          <p class="mt-1 text-sm text-gray-500">
+            Building a dashboard-style portfolio with Astro.
+          </p>
+        </div>
+        <div class="mt-4">
+          <div class="h-1.5 w-full rounded-full bg-gray-200">
+            <div class="h-1.5 rounded-full bg-accent" style="width: 65%;"></div>
+          </div>
+          <span class="mt-1 text-xs text-gray-400">65% complete</span>
+        </div>
+      </div>
+    </BentoBox>
+
+    <!-- Now Playing / Status — sm (1x1) -->
+    <BentoBox size="sm" gridArea="status">
+      <div class="flex h-full flex-col justify-between">
+        <div>
+          <span class="mb-2 inline-block rounded-md bg-purple-100 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-purple-600">
+            Status
+          </span>
+          <p class="mt-3 text-sm text-gray-600">
+            Currently in Tokyo, Japan
+          </p>
+          <p class="mt-1 text-xs text-gray-400">
+            Open to freelance projects
+          </p>
+        </div>
+        <div class="mt-4 flex items-center gap-2">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+          </span>
+          <span class="text-xs font-medium text-emerald-600">Available</span>
+        </div>
+      </div>
+    </BentoBox>
+  </div>
+</BaseLayout>
+
+<style>
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 1rem;
+    grid-template-areas:
+      "about   about   article article"
+      "about   about   article article"
+      "video   video   social  social"
+      "video   video   social  social"
+      "stats   stats   project status"
+      "stats   stats   project status";
+  }
+
+  @media (max-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-areas:
+        "about   about"
+        "about   about"
+        "article article"
+        "video   video"
+        "social  social"
+        "stats   stats"
+        "project status";
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "about"
+        "article"
+        "video"
+        "social"
+        "stats"
+        "project"
+        "status";
+    }
+  }
+</style>

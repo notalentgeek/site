@@ -1,0 +1,41 @@
+---
+interface Props {
+  size?: "sm" | "md" | "lg" | "xl";
+  gridArea?: string;
+  href?: string;
+  class?: string;
+}
+
+const { size = "sm", gridArea, href, class: className = "" } = Astro.props;
+
+const sizeClasses: Record<string, string> = {
+  sm: "col-span-1 row-span-1",
+  md: "col-span-2 row-span-1",
+  lg: "col-span-1 row-span-2",
+  xl: "col-span-2 row-span-2",
+};
+
+const baseClasses = [
+  "group relative overflow-hidden rounded-bento",
+  "bg-neutral-card backdrop-blur-glass",
+  "border border-neutral-border",
+  "shadow-bento",
+  "transition-all duration-300 ease-out",
+  "hover:shadow-bento-hover hover:bg-neutral-card-hover",
+  "hover:-translate-y-0.5",
+  "p-6",
+  sizeClasses[size],
+  className,
+].join(" ");
+
+const style = gridArea ? `grid-area: ${gridArea};` : "";
+const Tag = href ? "a" : "div";
+---
+
+<Tag
+  class={baseClasses}
+  style={style}
+  {...(href ? { href } : {})}
+>
+  <slot />
+</Tag>
