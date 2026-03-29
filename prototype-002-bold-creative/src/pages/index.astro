@@ -1,0 +1,238 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import ContentCard from "../component/content_card.astro";
+
+const featuredArticles = [
+  {
+    title: "Hello World: Building a Bold Creative Portfolio",
+    description:
+      "A deep dive into crafting a visually striking portfolio that stands out from the crowd.",
+    href: "/article/",
+    tags: ["design", "portfolio", "web"],
+    date: "Mar 29, 2026",
+  },
+  {
+    title: "The Art of Visual Hierarchy",
+    description:
+      "How strategic use of scale, color, and space can guide the viewer through your work.",
+    href: "/article/",
+    tags: ["design", "typography"],
+    date: "Mar 25, 2026",
+  },
+  {
+    title: "Performance Meets Aesthetics",
+    description:
+      "Exploring the balance between visual richness and web performance in modern portfolios.",
+    href: "/article/",
+    tags: ["performance", "web"],
+    date: "Mar 20, 2026",
+  },
+];
+
+const featuredVideos = [
+  {
+    title: "Creative Coding Showcase",
+    description:
+      "A walkthrough of generative art techniques using code as a creative medium.",
+    href: "/video/",
+    tags: ["creative-coding", "tutorial"],
+    date: "Mar 29, 2026",
+  },
+  {
+    title: "Design System Deep Dive",
+    description:
+      "Building a cohesive design system from scratch with tokens, components, and documentation.",
+    href: "/video/",
+    tags: ["design-system", "ui"],
+    date: "Mar 22, 2026",
+  },
+];
+
+const socialLinks = [
+  { name: "GitHub", url: "https://github.com", icon: "GH" },
+  { name: "Twitter / X", url: "https://x.com", icon: "X" },
+  { name: "LinkedIn", url: "https://linkedin.com", icon: "LI" },
+  { name: "YouTube", url: "https://youtube.com", icon: "YT" },
+  { name: "Dribbble", url: "https://dribbble.com", icon: "DR" },
+  { name: "Email", url: "mailto:hello@example.com", icon: "@" },
+];
+---
+
+<BaseLayout title="Portfolio | Bold Creative">
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Animated gradient background -->
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-accent-purple/20 via-surface to-accent-cyan/20 animate-gradient-shift"
+      style="background-size: 400% 400%;"
+    >
+    </div>
+
+    <!-- Radial glow effects -->
+    <div
+      class="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-purple/10 rounded-full blur-[120px] animate-pulse-glow"
+    >
+    </div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-cyan/10 rounded-full blur-[120px] animate-pulse-glow"
+      style="animation-delay: 1.5s;"
+    >
+    </div>
+
+    <!-- Grid overlay -->
+    <div
+      class="absolute inset-0 opacity-[0.03]"
+      style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 60px 60px;"
+    >
+    </div>
+
+    <!-- Hero content -->
+    <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+      <div class="animate-fade-in-up">
+        <p
+          class="text-accent-cyan text-sm font-semibold tracking-[0.3em] uppercase mb-6"
+        >
+          Creative Developer & Designer
+        </p>
+        <h1
+          class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.85] mb-8"
+        >
+          <span class="block text-white">CRAFTING</span>
+          <span
+            class="block bg-gradient-to-r from-accent-purple via-accent-cyan to-accent-purple bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-shift"
+          >
+            DIGITAL
+          </span>
+          <span class="block text-white">EXPERIENCES</span>
+        </h1>
+        <p
+          class="text-white/40 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-12"
+        >
+          Building at the intersection of design and technology.
+          Every pixel intentional. Every interaction meaningful.
+        </p>
+        <div class="flex items-center justify-center gap-4">
+          <a
+            href="/article/"
+            class="px-8 py-4 bg-accent-purple text-white font-semibold text-sm tracking-wider uppercase rounded-full hover:bg-accent-purple-light hover:shadow-lg hover:shadow-accent-purple/30 transition-all duration-300"
+          >
+            View Work
+          </a>
+          <a
+            href="/link/"
+            class="px-8 py-4 border border-white/20 text-white/70 font-semibold text-sm tracking-wider uppercase rounded-full hover:border-accent-cyan hover:text-accent-cyan transition-all duration-300"
+          >
+            Connect
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+      <span class="text-white/20 text-xs tracking-[0.3em] uppercase">Scroll</span>
+      <div class="w-px h-12 bg-gradient-to-b from-white/20 to-transparent"></div>
+    </div>
+  </section>
+
+  <!-- Featured Articles -->
+  <section class="max-w-7xl mx-auto px-6 py-24">
+    <div class="flex items-end justify-between mb-12">
+      <div>
+        <p class="text-accent-purple text-xs font-semibold tracking-[0.3em] uppercase mb-3">
+          Featured
+        </p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tighter uppercase">
+          Articles
+        </h2>
+      </div>
+      <a
+        href="/article/"
+        class="text-white/40 hover:text-accent-cyan text-sm font-medium tracking-wider uppercase transition-colors duration-300 hidden md:block"
+      >
+        View All &rarr;
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        featuredArticles.map((article, i) => (
+          <ContentCard
+            title={article.title}
+            description={article.description}
+            href={article.href}
+            tags={article.tags}
+            date={article.date}
+            variant={i === 0 ? "featured" : "default"}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Featured Videos -->
+  <section class="max-w-7xl mx-auto px-6 py-24">
+    <div class="flex items-end justify-between mb-12">
+      <div>
+        <p class="text-accent-cyan text-xs font-semibold tracking-[0.3em] uppercase mb-3">
+          Featured
+        </p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tighter uppercase">
+          Videos
+        </h2>
+      </div>
+      <a
+        href="/video/"
+        class="text-white/40 hover:text-accent-cyan text-sm font-medium tracking-wider uppercase transition-colors duration-300 hidden md:block"
+      >
+        View All &rarr;
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {
+        featuredVideos.map((video) => (
+          <ContentCard
+            title={video.title}
+            description={video.description}
+            href={video.href}
+            tags={video.tags}
+            date={video.date}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Social Links Section -->
+  <section class="max-w-7xl mx-auto px-6 py-24">
+    <div class="text-center mb-16">
+      <p class="text-accent-purple text-xs font-semibold tracking-[0.3em] uppercase mb-3">
+        Get in Touch
+      </p>
+      <h2 class="text-4xl md:text-5xl font-black tracking-tighter uppercase">
+        Let's Connect
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      {
+        socialLinks.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex flex-col items-center justify-center gap-3 p-6 rounded-2xl bg-surface-light hover:bg-surface-medium transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-accent-purple/10 hover:ring-1 hover:ring-accent-purple/30"
+          >
+            <span class="text-2xl font-black text-white/30 group-hover:text-accent-cyan transition-colors duration-300">
+              {link.icon}
+            </span>
+            <span class="text-xs font-medium text-white/40 group-hover:text-white/70 tracking-wider uppercase transition-colors duration-300">
+              {link.name}
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
