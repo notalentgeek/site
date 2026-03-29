@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Demo 007 — Lee Editorial: prose-first personal site" />
+    <title>Demo 007 — Lee Editorial</title>
+    <style>
+      /* Theme: Light */
+      html {
+        background-color: #ffffff;
+        color: #1a1a1a;
+      }
+      /* Theme: Dark */
+      html.dark {
+        background-color: #111111;
+        color: #e5e5e5;
+      }
+
+      /* Serif body */
+      body {
+        font-family: Georgia, "Times New Roman", serif;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      /* Centered prose column */
+      main {
+        max-width: 580px;
+        margin: 0 auto;
+        padding: 4rem 1.5rem;
+      }
+
+      /* Back link */
+      .back-link {
+        display: inline-block;
+        margin-bottom: 2.5rem;
+        font-size: 0.875rem;
+        color: #737373;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+      .back-link:hover {
+        color: #1a1a1a;
+      }
+      html.dark .back-link {
+        color: #a3a3a3;
+      }
+      html.dark .back-link:hover {
+        color: #e5e5e5;
+      }
+
+      /* Headings */
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin: 0 0 2rem 0;
+      }
+
+      /* Paragraphs */
+      p {
+        margin: 0 0 1.5rem 0;
+      }
+      p.spaced {
+        margin-bottom: 2.5rem;
+      }
+
+      /* Links */
+      a.prose-link {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: #737373;
+        text-underline-offset: 3px;
+        transition: text-decoration-color 0.2s ease;
+      }
+      a.prose-link:hover {
+        text-decoration-color: #525252;
+      }
+      html.dark a.prose-link:hover {
+        text-decoration-color: #a3a3a3;
+      }
+
+      /* Featured writing list */
+      .writing-intro {
+        margin-bottom: 1rem;
+      }
+      .writing-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 2.5rem 0;
+      }
+      .writing-list li {
+        margin-bottom: 0.5rem;
+      }
+
+      /* Dark mode toggle */
+      .theme-toggle {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #737373;
+        border-radius: 9999px;
+        transition: color 0.2s ease;
+        padding: 0;
+      }
+      .theme-toggle:hover {
+        color: #1a1a1a;
+      }
+      html.dark .theme-toggle {
+        color: #a3a3a3;
+      }
+      html.dark .theme-toggle:hover {
+        color: #e5e5e5;
+      }
+      .theme-toggle svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+      .theme-toggle .icon-sun { display: none; }
+      .theme-toggle .icon-moon { display: block; }
+      html.dark .theme-toggle .icon-sun { display: block; }
+      html.dark .theme-toggle .icon-moon { display: none; }
+    </style>
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        if (
+          stored === "dark" ||
+          (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <main>
+      <a href="/site/" class="back-link">&larr; Back to index</a>
+
+      <!-- Name -->
+      <h1>Alex Chen</h1>
+
+      <!-- Intro paragraphs — conversational, like a personal letter -->
+      <p>
+        I'm a developer and writer based in Seattle. I work at
+        <a href="https://example.com" class="prose-link" target="_blank" rel="noopener noreferrer">Acme Corp</a>,
+        where I build tools for the web. Before that I was at a small agency
+        where I learned that the best design is the kind you don't notice.
+      </p>
+
+      <p>
+        I write about web development, software craft, and the occasional
+        tangent about typography. You can watch my videos on
+        <a href="https://youtube.com" class="prose-link" target="_blank" rel="noopener noreferrer">YouTube</a>,
+        read my code on
+        <a href="https://github.com" class="prose-link" target="_blank" rel="noopener noreferrer">GitHub</a>,
+        or connect with me on
+        <a href="https://linkedin.com" class="prose-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
+      </p>
+
+      <p class="spaced">
+        I believe the web should be fast, accessible, and a little bit fun.
+        This site is where I put that into practice — no frameworks fighting
+        each other, no cookie banners, no analytics scripts. Just text.
+      </p>
+
+      <!-- Featured writing -->
+      <p class="writing-intro">Here's some of my writing:</p>
+
+      <ul class="writing-list">
+        <li>
+          <a href="#" class="prose-link">Building a Second Brain with Plain Text</a>
+        </li>
+        <li>
+          <a href="#" class="prose-link">Why I Switched to Server-Side Rendering</a>
+        </li>
+        <li>
+          <a href="#" class="prose-link">Typography on the Web: A Practical Guide</a>
+        </li>
+        <li>
+          <a href="#" class="prose-link">The Case for Boring Technology</a>
+        </li>
+        <li>
+          <a href="#" class="prose-link">Lessons from Five Years of Open Source</a>
+        </li>
+        <li>
+          <a href="#" class="prose-link">All articles &rarr;</a>
+        </li>
+      </ul>
+
+      <!-- Closing paragraph — page just ends after this -->
+      <p>
+        Want to chat? Email me at
+        <a href="mailto:alex@example.com" class="prose-link">alex@example.com</a>
+        or find me on
+        <a href="https://twitter.com" class="prose-link" target="_blank" rel="noopener noreferrer">Twitter</a>.
+      </p>
+    </main>
+
+    <!-- Dark mode toggle -->
+    <button
+      id="theme-toggle"
+      class="theme-toggle"
+      aria-label="Toggle dark mode"
+    >
+      <svg
+        class="icon-sun"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+        />
+      </svg>
+      <svg
+        class="icon-moon"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+        />
+      </svg>
+    </button>
+
+    <script is:inline>
+      document.getElementById("theme-toggle").addEventListener("click", function () {
+        var html = document.documentElement;
+        var isDark = html.classList.toggle("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Demo 008 — Hybrid Minimal: Paco structure meets Lee typography" />
+    <title>Demo 008 — Hybrid Minimal</title>
+    <style>
+      /* Theme: Light */
+      html {
+        background-color: #fafafa;
+        color: #1a1a1a;
+      }
+      /* Theme: Dark */
+      html.dark {
+        background-color: #141414;
+        color: #e5e5e5;
+      }
+
+      /* Serif body, sans-serif headings */
+      body {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin: 0;
+        min-height: 100vh;
+        position: relative;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        margin: 0;
+      }
+
+      /* Centered content column */
+      main {
+        max-width: 550px;
+        margin: 0 auto;
+        padding: 4rem 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Back link */
+      .back-link {
+        display: inline-block;
+        margin-bottom: 2.5rem;
+        font-size: 0.875rem;
+        color: #6b6b6b;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+      .back-link:hover {
+        color: #1a1a1a;
+      }
+      html.dark .back-link {
+        color: #999999;
+      }
+      html.dark .back-link:hover {
+        color: #e5e5e5;
+      }
+
+      /* Links */
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: #999;
+        text-underline-offset: 3px;
+        transition: text-decoration-color 0.2s ease;
+      }
+      a:hover {
+        text-decoration-color: currentColor;
+      }
+
+      /* Header */
+      .site-header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+      }
+      .site-header .tagline {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        font-size: 0.875rem;
+        color: #6b6b6b;
+        margin-top: 0.25rem;
+      }
+      html.dark .site-header .tagline {
+        color: #999999;
+      }
+
+      /* Sections */
+      section {
+        margin-bottom: 3.5rem;
+      }
+      section h2 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+      section .section-intro {
+        font-size: 0.875rem;
+        color: #6b6b6b;
+        margin-bottom: 1.5rem;
+        line-height: 1.75;
+      }
+      html.dark section .section-intro {
+        color: #999999;
+      }
+
+      /* Intro prose */
+      .intro-prose {
+        line-height: 1.75;
+      }
+
+      /* Building list */
+      .building-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .building-list li {
+        margin-bottom: 0.75rem;
+        display: flex;
+        flex-direction: column;
+      }
+      .building-list li a {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+      .building-list li .desc {
+        font-size: 0.875rem;
+        color: #6b6b6b;
+      }
+      html.dark .building-list li .desc {
+        color: #999999;
+      }
+
+      /* Year heading */
+      .year-heading {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #6b6b6b;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.75rem;
+      }
+      html.dark .year-heading {
+        color: #999999;
+      }
+
+      /* Article / video list rows */
+      .entry-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+      }
+      .entry-list li {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      .entry-list li a {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        font-size: 0.875rem;
+        font-weight: 500;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .entry-list li time {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        font-size: 0.75rem;
+        color: #6b6b6b;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      html.dark .entry-list li time {
+        color: #999999;
+      }
+
+      /* "All X" link */
+      .see-all {
+        font-size: 0.875rem;
+        color: #6b6b6b;
+        transition: color 0.2s ease;
+      }
+      .see-all:hover {
+        color: #1a1a1a;
+      }
+      html.dark .see-all {
+        color: #999999;
+      }
+      html.dark .see-all:hover {
+        color: #e5e5e5;
+      }
+
+      /* Connect prose */
+      .connect-prose {
+        line-height: 1.75;
+      }
+
+      /* Dark mode toggle */
+      .theme-toggle {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 50;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #e0e0e0;
+        border: none;
+        cursor: pointer;
+        color: #6b6b6b;
+        border-radius: 9999px;
+        transition: color 0.2s ease;
+        padding: 0;
+        font-size: 0.875rem;
+        line-height: 1;
+      }
+      .theme-toggle:hover {
+        color: #1a1a1a;
+      }
+      html.dark .theme-toggle {
+        background-color: #2a2a2a;
+        color: #999999;
+      }
+      html.dark .theme-toggle:hover {
+        color: #e5e5e5;
+      }
+      .theme-toggle .icon-sun { display: none; }
+      .theme-toggle .icon-moon { display: inline; }
+      html.dark .theme-toggle .icon-sun { display: inline; }
+      html.dark .theme-toggle .icon-moon { display: none; }
+    </style>
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        if (stored === "light") {
+          document.documentElement.classList.remove("dark");
+        } else if (stored === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            document.documentElement.classList.add("dark");
+          }
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Dark mode toggle -->
+    <button
+      id="theme-toggle"
+      class="theme-toggle"
+      aria-label="Toggle dark mode"
+    >
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+
+    <main>
+      <a href="/site/" class="back-link">&larr; Back to index</a>
+
+      <!-- 1. Name + tagline -->
+      <header class="site-header" style="margin-bottom: 2.5rem;">
+        <h1>Your Name</h1>
+        <p class="tagline">Designer, developer, maker of things.</p>
+      </header>
+
+      <!-- 2. Intro: conversational serif prose with inline social links -->
+      <section>
+        <p class="intro-prose">
+          I build tools and write about technology, design, and the things I learn
+          along the way. Currently working on open source projects and exploring the
+          intersection of code and craft. You can find me on
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>,
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>, and sometimes
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
+        </p>
+      </section>
+
+      <!-- 3. Building -->
+      <section>
+        <h2>Building</h2>
+        <p class="section-intro">A few things I'm working on right now.</p>
+        <ul class="building-list">
+          <li>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer">Project Alpha</a>
+            <span class="desc">A CLI tool for managing development environments</span>
+          </li>
+          <li>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer">Project Beta</a>
+            <span class="desc">An open source design system for small teams</span>
+          </li>
+          <li>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer">Project Gamma</a>
+            <span class="desc">Exploring generative art with code</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Writing (year-grouped with dates) -->
+      <section>
+        <h2>Writing</h2>
+        <p class="section-intro">Here are some recent pieces.</p>
+
+        <h3 class="year-heading">2026</h3>
+        <ul class="entry-list">
+          <li>
+            <a href="#">The Future of Static Site Generators</a>
+            <time>Mar 15</time>
+          </li>
+          <li>
+            <a href="#">Design Systems for Solo Developers</a>
+            <time>Feb 28</time>
+          </li>
+          <li>
+            <a href="#">Why Simplicity Wins</a>
+            <time>Jan 10</time>
+          </li>
+        </ul>
+
+        <h3 class="year-heading">2025</h3>
+        <ul class="entry-list">
+          <li>
+            <a href="#">Typography on the Web: A Practical Guide</a>
+            <time>Nov 22</time>
+          </li>
+          <li>
+            <a href="#">Building a Second Brain with Plain Text</a>
+            <time>Sep 5</time>
+          </li>
+          <li>
+            <a href="#">The Case for Boring Technology</a>
+            <time>Jun 18</time>
+          </li>
+        </ul>
+
+        <a href="#" class="see-all">All writing &rarr;</a>
+      </section>
+
+      <!-- 5. Video -->
+      <section>
+        <h2>Video</h2>
+        <p class="section-intro">I also make videos.</p>
+        <ul class="entry-list">
+          <li>
+            <a href="#">How I Set Up My Development Environment</a>
+            <time>Mar 1</time>
+          </li>
+          <li>
+            <a href="#">Live Coding: Building a CLI from Scratch</a>
+            <time>Jan 20</time>
+          </li>
+          <li>
+            <a href="#">Why Every Developer Should Write</a>
+            <time>Dec 5</time>
+          </li>
+        </ul>
+        <a href="#" class="see-all">All videos &rarr;</a>
+      </section>
+
+      <!-- 6. Connect -->
+      <section>
+        <h2>Connect</h2>
+        <p class="connect-prose">
+          The best way to reach me is by <a href="mailto:hello@example.com">email</a>.
+          I'm also on <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> where I share most of
+          my work, <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a> for shorter thoughts,
+          and <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a> if that's more your style.
+          You can find a full list of links <a href="#">here</a>.
+        </p>
+      </section>
+    </main>
+
+    <script is:inline>
+      document.getElementById("theme-toggle").addEventListener("click", function () {
+        var html = document.documentElement;
+        if (html.classList.contains("dark")) {
+          html.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        } else {
+          html.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        }
+      });
+    </script>
+  </body>
+</html>
