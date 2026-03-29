@@ -1,0 +1,22 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Dependencies (framework-agnostic)
+node_modules/
+vendor/
+
+# Conversation logs (auto-generated, keep folder structure)
+_conversation/*
+!_conversation/.gitkeep
