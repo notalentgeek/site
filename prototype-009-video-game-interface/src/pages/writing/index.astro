@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import QuestItem from "../../component/quest_item.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+
+// Group articles by year
+const articlesByYear: Record<string, typeof articles> = {};
+for (const article of articles) {
+  const year = new Date(article.data.date).getFullYear().toString();
+  if (!articlesByYear[year]) articlesByYear[year] = [];
+  articlesByYear[year].push(article);
+}
+const sortedYears = Object.keys(articlesByYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<BaseLayout title="Quest Log">
+  <!-- Back nav -->
+  <a
+    href="/"
+    class="inline-block text-xs text-hud-muted hover:text-hud-green transition-colors mb-10 font-display uppercase"
+  >
+    &lt; Return to Base
+  </a>
+
+  <h1 class="hud-heading text-sm text-hud-green mb-3">Quest Log</h1>
+  <p class="text-sm text-hud-muted leading-relaxed mb-10">
+    A record of all quests undertaken — active and completed.
+    Each entry documents a challenge faced and the rewards earned.
+  </p>
+
+  {sortedYears.map((year) => (
+    <section class="mb-10">
+      <h2 class="font-display text-[0.55rem] text-hud-muted uppercase tracking-widest mb-4">
+        Chapter {year}
+      </h2>
+      <div class="space-y-2">
+        {articlesByYear[year].map((article) => (
+          <QuestItem
+            title={article.data.title}
+            description={article.data.description || "No description available."}
+            href={`/writing/${article.slug}/`}
+            completed={false}
+          />
+        ))}
+      </div>
+    </section>
+  ))}
+
+  {articles.length === 0 && (
+    <div class="hud-panel p-8 text-center">
+      <p class="font-display text-[0.55rem] text-hud-muted uppercase">
+        No quests in the log yet.
+      </p>
+      <p class="text-xs text-hud-muted mt-2">Check back after your first adventure.</p>
+    </div>
+  )}
+</BaseLayout>

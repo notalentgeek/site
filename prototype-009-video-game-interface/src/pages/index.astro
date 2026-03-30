@@ -1,0 +1,129 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import StatBar from "../component/stat_bar.astro";
+import QuestItem from "../component/quest_item.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+const videos = (await getCollection("video")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+---
+
+<BaseLayout title="Player Portfolio">
+  <!-- Character Status -->
+  <header class="hud-panel p-6 mb-8">
+    <div class="flex items-start gap-4 mb-4">
+      <div class="w-16 h-16 border border-hud-green/30 bg-hud-dark flex items-center justify-center text-2xl flex-shrink-0">
+        &#9812;
+      </div>
+      <div>
+        <h1 class="hud-heading text-sm text-hud-green mb-1">Your Name</h1>
+        <p class="text-xs text-hud-muted font-mono">Class: Full-Stack Developer</p>
+        <p class="text-xs text-hud-muted font-mono">Level: 42</p>
+      </div>
+    </div>
+    <p class="text-sm text-hud-text leading-relaxed">
+      A wandering developer exploring the vast realm of web technologies.
+      Specializes in crafting interactive experiences and slaying legacy codebases.
+      Currently on a quest to build the ultimate portfolio.
+    </p>
+  </header>
+
+  <!-- Stats -->
+  <section class="hud-panel p-6 mb-8">
+    <h2 class="hud-heading text-xs text-hud-green mb-5">Stats</h2>
+    <StatBar label="HTML/CSS" value={95} color="#00ff88" />
+    <StatBar label="JavaScript" value={88} color="#00ff88" />
+    <StatBar label="TypeScript" value={80} color="#00bbff" />
+    <StatBar label="Python" value={75} color="#00bbff" />
+    <StatBar label="React" value={82} color="#ff3366" />
+    <StatBar label="Node.js" value={78} color="#ff3366" />
+  </section>
+
+  <!-- Quest Log (articles) -->
+  <section class="mb-8">
+    <h2 class="hud-heading text-xs text-hud-green mb-4">Quest Log</h2>
+    <div class="space-y-2">
+      {articles.map((article) => (
+        <QuestItem
+          title={article.data.title}
+          description={article.data.description || "No description available."}
+          href={`/writing/${article.slug}/`}
+          completed={false}
+        />
+      ))}
+    </div>
+    {articles.length > 0 && (
+      <a href="/writing/" class="inline-block text-xs text-hud-muted hover:text-hud-green mt-4 transition-colors">
+        View full quest log &rarr;
+      </a>
+    )}
+    {articles.length === 0 && (
+      <p class="text-hud-muted text-xs text-center py-8">No active quests.</p>
+    )}
+  </section>
+
+  <!-- Inventory (tools/tech) -->
+  <section class="hud-panel p-6 mb-8">
+    <h2 class="hud-heading text-xs text-hud-green mb-5">Inventory</h2>
+    <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+      {[
+        { name: "Astro", icon: "🚀" },
+        { name: "Tailwind", icon: "🎨" },
+        { name: "TypeScript", icon: "📘" },
+        { name: "React", icon: "⚛️" },
+        { name: "Node.js", icon: "🟢" },
+        { name: "Python", icon: "🐍" },
+        { name: "Git", icon: "📦" },
+        { name: "Linux", icon: "🐧" },
+      ].map((item) => (
+        <div class="flex flex-col items-center gap-1 p-2 border border-hud-green/10 bg-hud-dark/50 hover:border-hud-green/30 transition-colors">
+          <span class="text-lg">{item.icon}</span>
+          <span class="text-[0.55rem] text-hud-muted font-display uppercase">{item.name}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Party (social links) -->
+  <section class="mb-8">
+    <h2 class="hud-heading text-xs text-hud-green mb-4">Party</h2>
+    <div class="space-y-2">
+      {[
+        { name: "GitHub", role: "Code Repository", url: "https://github.com" },
+        { name: "Twitter / X", role: "Town Crier", url: "https://twitter.com" },
+        { name: "LinkedIn", role: "Guild Board", url: "https://linkedin.com" },
+        { name: "YouTube", role: "Replay Archive", url: "https://youtube.com" },
+      ].map((member) => (
+        <div class="flex items-center gap-3 p-3 border border-hud-green/10 bg-hud-panel/60 hover:border-hud-green/30 transition-colors">
+          <span class="text-hud-green font-display text-[0.5rem]">&gt;</span>
+          <div>
+            <a href={member.url} class="text-sm font-semibold" target="_blank" rel="noopener noreferrer">
+              {member.name}
+            </a>
+            <p class="text-xs text-hud-muted">{member.role}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    <a href="/link/" class="inline-block text-xs text-hud-muted hover:text-hud-green mt-4 transition-colors">
+      View all party members &rarr;
+    </a>
+  </section>
+
+  <!-- Save Point (footer) -->
+  <footer class="border-t border-hud-green/10 pt-6 mt-12 text-center">
+    <p class="font-display text-[0.5rem] text-hud-muted uppercase tracking-widest mb-2">
+      Save Point
+    </p>
+    <p class="text-xs text-hud-muted">
+      Progress saved. Last checkpoint: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}.
+    </p>
+    <p class="text-xs text-hud-muted mt-1">
+      <a href="mailto:hello@example.com">Send a message</a> to the guild master.
+    </p>
+  </footer>
+</BaseLayout>

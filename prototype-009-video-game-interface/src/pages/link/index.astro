@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+
+const partyMembers = [
+  {
+    category: "Guild Hall",
+    members: [
+      { name: "GitHub", role: "Code Repository — where the source lives", url: "https://github.com" },
+      { name: "GitLab", role: "Backup Vault — secondary forge", url: "https://gitlab.com" },
+    ],
+  },
+  {
+    category: "Town Square",
+    members: [
+      { name: "Twitter / X", role: "Town Crier — short broadcasts", url: "https://twitter.com" },
+      { name: "LinkedIn", role: "Guild Board — professional quests", url: "https://linkedin.com" },
+      { name: "Instagram", role: "Art Gallery — visual chronicles", url: "https://instagram.com" },
+    ],
+  },
+  {
+    category: "Arena",
+    members: [
+      { name: "YouTube", role: "Replay Archive — recorded encounters", url: "https://youtube.com" },
+      { name: "Dev.to", role: "Lore Library — technical scrolls", url: "https://dev.to" },
+      { name: "Medium", role: "Scholar's Desk — extended writings", url: "https://medium.com" },
+    ],
+  },
+  {
+    category: "Mailroom",
+    members: [
+      { name: "Email", role: "Direct message to the guild master", url: "mailto:hello@example.com" },
+      { name: "RSS Feed", role: "Subscribe to the quest board", url: "/rss.xml" },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Party Members">
+  <!-- Back nav -->
+  <a
+    href="/"
+    class="inline-block text-xs text-hud-muted hover:text-hud-green transition-colors mb-10 font-display uppercase"
+  >
+    &lt; Return to Base
+  </a>
+
+  <h1 class="hud-heading text-sm text-hud-green mb-3">Party Members</h1>
+  <p class="text-sm text-hud-muted leading-relaxed mb-10">
+    All allied contacts and communication channels. Select a party member to connect.
+  </p>
+
+  {partyMembers.map((group) => (
+    <section class="mb-10">
+      <h2 class="font-display text-[0.55rem] text-hud-muted uppercase tracking-widest mb-4">
+        {group.category}
+      </h2>
+      <div class="space-y-2">
+        {group.members.map((member) => (
+          <div class="flex items-center gap-3 p-3 border border-hud-green/10 bg-hud-panel/60 hover:border-hud-green/30 transition-colors">
+            <span class="text-hud-green font-display text-[0.5rem] flex-shrink-0">&gt;</span>
+            <div>
+              <a
+                href={member.url}
+                class="text-sm font-semibold"
+                target={member.url.startsWith("http") ? "_blank" : undefined}
+                rel={member.url.startsWith("http") ? "noopener noreferrer" : undefined}
+              >
+                {member.name}
+              </a>
+              <p class="text-xs text-hud-muted">{member.role}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  ))}
+</BaseLayout>

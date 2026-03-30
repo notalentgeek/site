@@ -1,0 +1,52 @@
+---
+interface Props {
+  label: string;
+  value: number;
+  color?: string;
+}
+const { label, value, color = "#00ff88" } = Astro.props;
+---
+<div class="stat-row">
+  <span class="stat-label">{label}</span>
+  <div class="stat-track">
+    <div class="stat-fill" style={`--target-width: ${value}%; --bar-color: ${color};`}></div>
+  </div>
+  <span class="stat-value">{value}%</span>
+</div>
+<style>
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .stat-label {
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    color: #e0e0e0;
+    min-width: 80px;
+  }
+  .stat-track {
+    flex: 1;
+    height: 10px;
+    background-color: #1a1a2e;
+    border: 1px solid rgba(0, 255, 136, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-fill {
+    height: 100%;
+    width: var(--target-width);
+    background-color: var(--bar-color);
+    box-shadow: 0 0 8px var(--bar-color);
+    transition: width 0.6s ease;
+  }
+  .stat-value {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.7rem;
+    color: #666666;
+    min-width: 36px;
+    text-align: right;
+  }
+</style>

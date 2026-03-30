@@ -1,0 +1,67 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href?: string;
+  completed?: boolean;
+}
+const { title, description, href = "#", completed = false } = Astro.props;
+---
+<div class={`quest-item ${completed ? 'completed' : 'active'}`}>
+  <span class="quest-indicator">{completed ? '[✓]' : '[!]'}</span>
+  <div class="quest-content">
+    <a href={href} class="quest-title">{title}</a>
+    <p class="quest-desc">{description}</p>
+  </div>
+</div>
+<style>
+  .quest-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(0, 255, 136, 0.1);
+    background-color: rgba(17, 17, 34, 0.6);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .quest-item:hover {
+    border-color: rgba(0, 255, 136, 0.3);
+    background-color: rgba(17, 17, 34, 0.9);
+  }
+  .quest-item.completed {
+    opacity: 0.55;
+  }
+  .quest-item.completed .quest-indicator {
+    color: #666666;
+  }
+  .quest-indicator {
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.6rem;
+    color: #00ff88;
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+    text-shadow: 0 0 6px rgba(0, 255, 136, 0.4);
+  }
+  .quest-item.active .quest-indicator {
+    animation: blink 1.5s step-end infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0.3; }
+  }
+  .quest-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .quest-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .quest-desc {
+    font-size: 0.75rem;
+    color: #666666;
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>

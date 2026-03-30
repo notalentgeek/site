@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import VideoEmbed from "../../component/video_embed.astro";
+import { getCollection } from "astro:content";
+
+const videos = (await getCollection("video")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+---
+
+<BaseLayout title="Replay Archive">
+  <!-- Back nav -->
+  <a
+    href="/"
+    class="inline-block text-xs text-hud-muted hover:text-hud-green transition-colors mb-10 font-display uppercase"
+  >
+    &lt; Return to Base
+  </a>
+
+  <h1 class="hud-heading text-sm text-hud-green mb-3">Replay Archive</h1>
+  <p class="text-sm text-hud-muted leading-relaxed mb-10">
+    Recorded encounters and boss fights. Watch the replays here.
+  </p>
+
+  <div class="space-y-10">
+    {videos.map((video) => (
+      <article class="hud-panel p-4">
+        <VideoEmbed
+          url={video.data.embed_url}
+          title={video.data.title}
+        />
+        <div class="mt-4">
+          <time class="text-[0.55rem] text-hud-muted font-display uppercase">
+            {new Date(video.data.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </time>
+          <h2 class="text-sm font-semibold text-hud-green mt-1">
+            {video.data.title}
+          </h2>
+          {video.data.description && (
+            <p class="text-xs text-hud-muted mt-2 leading-relaxed">
+              {video.data.description}
+            </p>
+          )}
+          {video.data.tags && (
+            <div class="flex flex-wrap gap-2 mt-3">
+              {video.data.tags.map((tag: string) => (
+                <span class="text-[0.5rem] font-display uppercase text-hud-blue border border-hud-blue/20 px-2 py-0.5">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+
+  {videos.length === 0 && (
+    <div class="hud-panel p-8 text-center">
+      <p class="font-display text-[0.55rem] text-hud-muted uppercase">
+        No replays recorded yet.
+      </p>
+      <p class="text-xs text-hud-muted mt-2">Check back after the next boss fight.</p>
+    </div>
+  )}
+</BaseLayout>

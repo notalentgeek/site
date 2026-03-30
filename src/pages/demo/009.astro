@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Demo 009 — Video Game Interface: RPG-styled personal portfolio" />
+    <title>Demo 009 — Video Game Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <style>
+      /* ── Reset & Base ─────────────────────────────── */
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        background-color: #0a0a1a;
+        color: #e0e0e0;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.875rem;
+        line-height: 1.7;
+        min-height: 100vh;
+        position: relative;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-image:
+          linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+
+      /* ── CRT Scanline Overlay ─────────────────────── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0,0,0,0.025) 0px,
+          rgba(0,0,0,0.025) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+      }
+
+      /* ── Typography ───────────────────────────────── */
+      h1, h2, h3 {
+        font-family: "Press Start 2P", monospace;
+        color: #00ff88;
+        text-shadow: 0 0 5px #00ff88, 0 0 10px rgba(0,255,136,0.4);
+        letter-spacing: 0.05em;
+      }
+
+      h2 {
+        font-size: 0.8rem;
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(0,255,136,0.15);
+      }
+
+      h3 {
+        font-size: 0.65rem;
+        color: #00bbff;
+        text-shadow: 0 0 5px #00bbff, 0 0 10px rgba(0,187,255,0.3);
+      }
+
+      a {
+        color: #00bbff;
+        text-decoration: none;
+        transition: color 0.2s, text-shadow 0.2s;
+      }
+      a:hover {
+        color: #00ff88;
+        text-shadow: 0 0 5px rgba(0,255,136,0.5);
+      }
+
+      /* ── Layout ───────────────────────────────────── */
+      .wrapper {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 3rem;
+      }
+
+      .back-link {
+        display: inline-block;
+        font-family: "Press Start 2P", monospace;
+        font-size: 0.55rem;
+        color: #666;
+        margin-bottom: 2rem;
+        padding: 0.4rem 0;
+        transition: color 0.2s;
+      }
+      .back-link:hover {
+        color: #00ff88;
+        text-shadow: 0 0 5px rgba(0,255,136,0.4);
+      }
+
+      /* ── Panel (HUD Box) ──────────────────────────── */
+      .panel {
+        position: relative;
+        background: rgba(10,10,26,0.85);
+        border: 1px solid rgba(0,255,136,0.3);
+        padding: 1.75rem 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      /* HUD corner brackets */
+      .panel::before,
+      .panel::after {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        pointer-events: none;
+      }
+      .panel::before {
+        top: -1px;
+        left: -1px;
+        border-top: 2px solid #00ff88;
+        border-left: 2px solid #00ff88;
+      }
+      .panel::after {
+        top: -1px;
+        right: -1px;
+        border-top: 2px solid #00ff88;
+        border-right: 2px solid #00ff88;
+      }
+
+      /* Bottom corners via inner span */
+      .panel-inner {
+        position: relative;
+      }
+      .panel > .corner-bl,
+      .panel > .corner-br {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        pointer-events: none;
+      }
+      .panel > .corner-bl {
+        bottom: -1px;
+        left: -1px;
+        border-bottom: 2px solid #00ff88;
+        border-left: 2px solid #00ff88;
+      }
+      .panel > .corner-br {
+        bottom: -1px;
+        right: -1px;
+        border-bottom: 2px solid #00ff88;
+        border-right: 2px solid #00ff88;
+      }
+
+      /* ── Section 1: Player Status ─────────────────── */
+      .player-name {
+        font-family: "Press Start 2P", monospace;
+        font-size: 1rem;
+        color: #00ff88;
+        text-shadow: 0 0 8px #00ff88, 0 0 20px rgba(0,255,136,0.35);
+        margin-bottom: 1rem;
+        line-height: 1.6;
+      }
+
+      .stat-line {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.35rem;
+        font-size: 0.8rem;
+      }
+      .stat-label {
+        color: #666;
+        min-width: 60px;
+        flex-shrink: 0;
+      }
+      .stat-value {
+        color: #00bbff;
+      }
+      .stat-value.lvl {
+        color: #ff3366;
+        text-shadow: 0 0 5px rgba(255,51,102,0.4);
+        font-weight: bold;
+      }
+
+      .bio {
+        margin-top: 1rem;
+        color: #aaa;
+        line-height: 1.8;
+        border-left: 2px solid rgba(0,255,136,0.15);
+        padding-left: 0.75rem;
+      }
+
+      /* ── Section 2: Stats (Skill Bars) ────────────── */
+      .stat-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.6rem;
+        gap: 0.75rem;
+      }
+      .stat-row-label {
+        font-size: 0.75rem;
+        color: #aaa;
+        min-width: 90px;
+        flex-shrink: 0;
+      }
+      .stat-bar {
+        flex: 1;
+        height: 14px;
+        background: rgba(0,255,136,0.07);
+        border: 1px solid rgba(0,255,136,0.15);
+        position: relative;
+        overflow: hidden;
+      }
+      .stat-bar-fill {
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, #00ff88, #00cc6a);
+        box-shadow: 0 0 8px rgba(0,255,136,0.5), inset 0 0 4px rgba(255,255,255,0.15);
+        transition: width 1.5s ease-out;
+      }
+      .stat-bar-fill.high {
+        background: linear-gradient(90deg, #00ff88, #00cc6a);
+      }
+      .stat-bar-fill.mid {
+        background: linear-gradient(90deg, #00bbff, #0088cc);
+        box-shadow: 0 0 8px rgba(0,187,255,0.5), inset 0 0 4px rgba(255,255,255,0.15);
+      }
+      .stat-bar-fill.low {
+        background: linear-gradient(90deg, #ff3366, #cc2255);
+        box-shadow: 0 0 8px rgba(255,51,102,0.5), inset 0 0 4px rgba(255,255,255,0.15);
+      }
+      .stat-bar-fill.animate {
+        width: var(--target-width);
+      }
+      .stat-row-pct {
+        font-size: 0.7rem;
+        color: #666;
+        min-width: 32px;
+        text-align: right;
+        font-family: "Press Start 2P", monospace;
+        font-size: 0.5rem;
+      }
+
+      /* ── Section 3: Quest Log ─────────────────────── */
+      .quest-category {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+        margin-top: 1rem;
+        font-size: 0.75rem;
+      }
+      .quest-category:first-child {
+        margin-top: 0;
+      }
+      .quest-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .quest-dot.active {
+        background: #00ff88;
+        box-shadow: 0 0 6px #00ff88;
+      }
+      .quest-dot.completed {
+        background: #666;
+      }
+      .quest-category-label {
+        font-family: "Press Start 2P", monospace;
+        font-size: 0.55rem;
+        color: #aaa;
+        letter-spacing: 0.1em;
+      }
+
+      .quest-item {
+        padding: 0.5rem 0 0.5rem 1.25rem;
+        border-left: 1px solid rgba(0,255,136,0.1);
+        margin-left: 3px;
+      }
+      .quest-indicator {
+        font-family: "Press Start 2P", monospace;
+        font-size: 0.55rem;
+        margin-right: 0.4rem;
+      }
+      .quest-indicator.active-mark {
+        color: #ff3366;
+        animation: blink 1.2s step-end infinite;
+      }
+      .quest-indicator.done-mark {
+        color: #00ff88;
+      }
+      .quest-title {
+        font-size: 0.85rem;
+        color: #e0e0e0;
+      }
+      .quest-title a {
+        color: #e0e0e0;
+      }
+      .quest-title a:hover {
+        color: #00ff88;
+      }
+      .quest-desc {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 0.15rem;
+        padding-left: 1.6rem;
+      }
+
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+
+      /* ── Section 4: Inventory ─────────────────────── */
+      .inventory-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+        gap: 8px;
+      }
+      .inv-cell {
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,255,136,0.03);
+        border: 1px solid rgba(0,255,136,0.15);
+        cursor: default;
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        position: relative;
+      }
+      .inv-cell:hover {
+        border-color: rgba(0,255,136,0.6);
+        box-shadow: 0 0 10px rgba(0,255,136,0.15), inset 0 0 10px rgba(0,255,136,0.05);
+        background: rgba(0,255,136,0.06);
+      }
+      .inv-abbr {
+        font-family: "Press Start 2P", monospace;
+        font-size: 0.6rem;
+        color: #00ff88;
+        text-shadow: 0 0 4px rgba(0,255,136,0.3);
+      }
+      .inv-name {
+        font-size: 0.5rem;
+        color: #666;
+        margin-top: 4px;
+        text-align: center;
+        line-height: 1.3;
+      }
+
+      /* ── Section 5: Achievements ──────────────────── */
+      .achievement {
+        display: flex;
+        gap: 0.75rem;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid rgba(0,255,136,0.06);
+        align-items: flex-start;
+      }
+      .achievement:last-child {
+        border-bottom: none;
+      }
+      .ach-icon {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+        line-height: 1;
+        margin-top: 0.1rem;
+      }
+      .ach-content {}
+      .ach-title {
+        font-size: 0.8rem;
+        color: #00ff88;
+        margin-bottom: 0.15rem;
+      }
+      .ach-desc {
+        font-size: 0.75rem;
+        color: #888;
+      }
+      .achievement.locked .ach-title {
+        color: #444;
+      }
+      .achievement.locked .ach-desc {
+        color: #333;
+        font-style: italic;
+      }
+
+      /* ── Section 6: Party (Social Links) ──────────── */
+      .party-slot {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        padding: 0.45rem 0;
+        font-size: 0.85rem;
+      }
+      .party-key {
+        font-family: "Press Start 2P", monospace;
+        font-size: 0.5rem;
+        color: #00ff88;
+        text-shadow: 0 0 4px rgba(0,255,136,0.3);
+        flex-shrink: 0;
+      }
+      .party-name {
+        color: #e0e0e0;
+      }
+      .party-name a {
+        color: #00bbff;
+      }
+      .party-sep {
+        color: #333;
+      }
+      .party-desc {
+        color: #666;
+        font-size: 0.75rem;
+      }
+
+      /* ── Section 7: Footer (Save Point) ───────────── */
+      .save-point {
+        text-align: center;
+        padding: 1.5rem 0 0.5rem;
+        color: #444;
+        font-size: 0.75rem;
+      }
+      .save-border {
+        color: #333;
+        letter-spacing: 0.15em;
+        font-size: 0.7rem;
+        margin-bottom: 0.75rem;
+      }
+      .save-dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background: #00ff88;
+        border-radius: 50%;
+        box-shadow: 0 0 6px #00ff88;
+        animation: pulse-dot 2s ease-in-out infinite;
+        vertical-align: middle;
+        margin: 0 0.35rem;
+      }
+      @keyframes pulse-dot {
+        0%, 100% { opacity: 1; box-shadow: 0 0 6px #00ff88; }
+        50% { opacity: 0.4; box-shadow: 0 0 2px #00ff88; }
+      }
+      .save-label {
+        font-family: "Press Start 2P", monospace;
+        font-size: 0.5rem;
+        color: #666;
+        letter-spacing: 0.1em;
+      }
+      .save-copy {
+        margin-top: 0.35rem;
+        color: #333;
+        font-size: 0.7rem;
+      }
+
+      /* ── Responsive ───────────────────────────────── */
+      @media (max-width: 480px) {
+        .wrapper {
+          padding: 1.25rem 0.75rem 2rem;
+        }
+        .panel {
+          padding: 1.25rem 1rem;
+        }
+        .stat-row-label {
+          min-width: 70px;
+          font-size: 0.65rem;
+        }
+        .inventory-grid {
+          grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <a href="/site/" class="back-link">&larr; Back to index</a>
+
+      <!-- ═══ PLAYER STATUS ═══ -->
+      <section class="panel">
+        <span class="corner-bl"></span>
+        <span class="corner-br"></span>
+        <h2>PLAYER STATUS</h2>
+        <div class="player-name">Your Name</div>
+        <div class="stat-line">
+          <span class="stat-label">CLASS</span>
+          <span class="stat-value">Full-Stack Developer</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-label">LVL</span>
+          <span class="stat-value lvl">28</span>
+        </div>
+        <p class="bio">
+          A developer who builds tools and explores the intersection of code
+          and creativity. Specializing in turning complex systems into elegant
+          interfaces. Currently grinding XP in distributed systems and creative
+          coding side quests.
+        </p>
+      </section>
+
+      <!-- ═══ STATS ═══ -->
+      <section class="panel stats-panel">
+        <span class="corner-bl"></span>
+        <span class="corner-br"></span>
+        <h2>STATS</h2>
+
+        <div class="stat-row">
+          <span class="stat-row-label">JavaScript</span>
+          <div class="stat-bar">
+            <div class="stat-bar-fill high" style="--target-width: 85%"></div>
+          </div>
+          <span class="stat-row-pct">85</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-row-label">Python</span>
+          <div class="stat-bar">
+            <div class="stat-bar-fill mid" style="--target-width: 70%"></div>
+          </div>
+          <span class="stat-row-pct">70</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-row-label">React</span>
+          <div class="stat-bar">
+            <div class="stat-bar-fill mid" style="--target-width: 60%"></div>
+          </div>
+          <span class="stat-row-pct">60</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-row-label">CSS / HTML</span>
+          <div class="stat-bar">
+            <div class="stat-bar-fill high" style="--target-width: 90%"></div>
+          </div>
+          <span class="stat-row-pct">90</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-row-label">Node.js</span>
+          <div class="stat-bar">
+            <div class="stat-bar-fill high" style="--target-width: 80%"></div>
+          </div>
+          <span class="stat-row-pct">80</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-row-label">Git</span>
+          <div class="stat-bar">
+            <div class="stat-bar-fill mid" style="--target-width: 75%"></div>
+          </div>
+          <span class="stat-row-pct">75</span>
+        </div>
+      </section>
+
+      <!-- ═══ QUEST LOG ═══ -->
+      <section class="panel">
+        <span class="corner-bl"></span>
+        <span class="corner-br"></span>
+        <h2>QUEST LOG</h2>
+
+        <div class="quest-category">
+          <span class="quest-dot active"></span>
+          <span class="quest-category-label">ACTIVE QUESTS</span>
+        </div>
+
+        <div class="quest-item">
+          <span class="quest-indicator active-mark">[!]</span>
+          <span class="quest-title"><a href="#">Project Alpha</a></span>
+          <div class="quest-desc">Build a CLI tool for developer environments</div>
+        </div>
+
+        <div class="quest-item">
+          <span class="quest-indicator active-mark">[!]</span>
+          <span class="quest-title"><a href="#">Project Beta</a></span>
+          <div class="quest-desc">Open source design system for rapid prototyping</div>
+        </div>
+
+        <div class="quest-category">
+          <span class="quest-dot completed"></span>
+          <span class="quest-category-label">COMPLETED QUESTS</span>
+        </div>
+
+        <div class="quest-item">
+          <span class="quest-indicator done-mark">[&#10003;]</span>
+          <span class="quest-title"><a href="#">Project Gamma</a></span>
+          <div class="quest-desc">Generative art experiments with code and canvas</div>
+        </div>
+
+        <div class="quest-item">
+          <span class="quest-indicator done-mark">[&#10003;]</span>
+          <span class="quest-title"><a href="#">Project Delta</a></span>
+          <div class="quest-desc">Portfolio website redesign from scratch</div>
+        </div>
+      </section>
+
+      <!-- ═══ INVENTORY ═══ -->
+      <section class="panel">
+        <span class="corner-bl"></span>
+        <span class="corner-br"></span>
+        <h2>INVENTORY</h2>
+        <div class="inventory-grid">
+          <div class="inv-cell" title="JavaScript">
+            <span class="inv-abbr">JS</span>
+            <span class="inv-name">JavaScript</span>
+          </div>
+          <div class="inv-cell" title="Python">
+            <span class="inv-abbr">PY</span>
+            <span class="inv-name">Python</span>
+          </div>
+          <div class="inv-cell" title="TypeScript">
+            <span class="inv-abbr">TS</span>
+            <span class="inv-name">TypeScript</span>
+          </div>
+          <div class="inv-cell" title="Rust">
+            <span class="inv-abbr">RS</span>
+            <span class="inv-name">Rust</span>
+          </div>
+          <div class="inv-cell" title="Git">
+            <span class="inv-abbr">GIT</span>
+            <span class="inv-name">Git</span>
+          </div>
+          <div class="inv-cell" title="Amazon Web Services">
+            <span class="inv-abbr">AWS</span>
+            <span class="inv-name">AWS</span>
+          </div>
+          <div class="inv-cell" title="Databases">
+            <span class="inv-abbr">DB</span>
+            <span class="inv-name">Database</span>
+          </div>
+          <div class="inv-cell" title="Linux">
+            <span class="inv-abbr">LNX</span>
+            <span class="inv-name">Linux</span>
+          </div>
+          <div class="inv-cell" title="Docker">
+            <span class="inv-abbr">DKR</span>
+            <span class="inv-name">Docker</span>
+          </div>
+          <div class="inv-cell" title="Figma">
+            <span class="inv-abbr">FIG</span>
+            <span class="inv-name">Figma</span>
+          </div>
+          <div class="inv-cell" title="GraphQL">
+            <span class="inv-abbr">GQL</span>
+            <span class="inv-name">GraphQL</span>
+          </div>
+          <div class="inv-cell" title="Astro">
+            <span class="inv-abbr">AST</span>
+            <span class="inv-name">Astro</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ ACHIEVEMENTS ═══ -->
+      <section class="panel">
+        <span class="corner-bl"></span>
+        <span class="corner-br"></span>
+        <h2>ACHIEVEMENTS</h2>
+
+        <div class="achievement">
+          <span class="ach-icon">&#127942;</span>
+          <div class="ach-content">
+            <div class="ach-title">First Deploy</div>
+            <div class="ach-desc">Shipped first production application to real users</div>
+          </div>
+        </div>
+
+        <div class="achievement">
+          <span class="ach-icon">&#127942;</span>
+          <div class="ach-content">
+            <div class="ach-title">Open Source Contributor</div>
+            <div class="ach-desc">100+ contributions on GitHub across multiple projects</div>
+          </div>
+        </div>
+
+        <div class="achievement">
+          <span class="ach-icon">&#127942;</span>
+          <div class="ach-content">
+            <div class="ach-title">Speaker</div>
+            <div class="ach-desc">Presented at 3 developer conferences</div>
+          </div>
+        </div>
+
+        <div class="achievement">
+          <span class="ach-icon">&#127942;</span>
+          <div class="ach-content">
+            <div class="ach-title">Bug Slayer</div>
+            <div class="ach-desc">Resolved a production incident under 15 minutes</div>
+          </div>
+        </div>
+
+        <div class="achievement locked">
+          <span class="ach-icon">&#128274;</span>
+          <div class="ach-content">
+            <div class="ach-title">???</div>
+            <div class="ach-desc">Keep exploring...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ PARTY ═══ -->
+      <section class="panel">
+        <span class="corner-bl"></span>
+        <span class="corner-br"></span>
+        <h2>PARTY</h2>
+
+        <div class="party-slot">
+          <span class="party-key">[1]</span>
+          <span class="party-name"><a href="https://github.com">GitHub</a></span>
+          <span class="party-sep">&mdash;</span>
+          <span class="party-desc">code &amp; repos</span>
+        </div>
+
+        <div class="party-slot">
+          <span class="party-key">[2]</span>
+          <span class="party-name"><a href="https://twitter.com">Twitter</a></span>
+          <span class="party-sep">&mdash;</span>
+          <span class="party-desc">thoughts &amp; threads</span>
+        </div>
+
+        <div class="party-slot">
+          <span class="party-key">[3]</span>
+          <span class="party-name"><a href="https://linkedin.com">LinkedIn</a></span>
+          <span class="party-sep">&mdash;</span>
+          <span class="party-desc">professional</span>
+        </div>
+
+        <div class="party-slot">
+          <span class="party-key">[4]</span>
+          <span class="party-name"><a href="mailto:hello@example.com">Email</a></span>
+          <span class="party-sep">&mdash;</span>
+          <span class="party-desc">direct message</span>
+        </div>
+      </section>
+
+      <!-- ═══ SAVE POINT ═══ -->
+      <footer class="save-point">
+        <div class="save-border">&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;</div>
+        <div class="save-label">
+          <span class="save-dot"></span>
+          SAVE POINT
+          <span class="save-dot"></span>
+        </div>
+        <div class="save-copy">Progress saved. &copy; 2026</div>
+      </footer>
+    </div>
+
+    <script is:inline>
+      // Animate stat bars when they scroll into view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      document.querySelectorAll('.stat-bar-fill').forEach(bar => {
+        observer.observe(bar);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Video Game Interface Portfolio" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Always-dark RPG HUD theme */
+      html {
+        background-color: #0a0a1a;
+        color: #e0e0e0;
+      }
+
+      body {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+
+      /* CRT scanline overlay */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.08) 2px,
+          rgba(0, 0, 0, 0.08) 4px
+        );
+      }
+
+      /* Green glow link styling */
+      a {
+        color: #00ff88;
+        text-decoration: none;
+        text-shadow: 0 0 6px rgba(0, 255, 136, 0.4);
+        transition: text-shadow 0.2s ease, color 0.2s ease;
+      }
+      a:hover {
+        color: #33ffaa;
+        text-shadow: 0 0 12px rgba(0, 255, 136, 0.7);
+      }
+
+      /* HUD panel class */
+      .hud-panel {
+        background-color: #111122;
+        border: 1px solid rgba(0, 255, 136, 0.2);
+        box-shadow: 0 0 8px rgba(0, 255, 136, 0.05),
+          inset 0 0 8px rgba(0, 0, 0, 0.3);
+      }
+
+      /* HUD heading style */
+      .hud-heading {
+        font-family: "Press Start 2P", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+    </style>
+  </head>
+  <body class="antialiased min-h-screen relative">
+    <!-- Main content: centered column -->
+    <main class="max-w-content mx-auto px-6 py-16 w-full">
+      <slot />
+    </main>
+  </body>
+</html>
