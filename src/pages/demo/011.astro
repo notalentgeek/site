@@ -1,0 +1,1048 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Demo 011 — Persona 5 Royal: rebellious punk pop-art portfolio" />
+    <title>Demo 011 — Persona 5 Royal</title>
+    <style>
+      /* ── Custom Properties ───────────────────────────── */
+      :root {
+        --p5-red: #FF0000;
+        --p5-red-dark: #CC0000;
+        --p5-black: #0D0D0D;
+        --p5-white: #FFFFFF;
+        --p5-yellow: #F2E852;
+        --p5-gray: #2a2a2a;
+        --p5-muted: #888888;
+      }
+
+      /* ── Reset ───────────────────────────────────────── */
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border-radius: 0 !important;
+      }
+
+      html {
+        background-color: var(--p5-black);
+        color: var(--p5-white);
+        scroll-behavior: smooth;
+        font-family: Arial, Helvetica, sans-serif;
+        overflow-x: hidden;
+      }
+
+      body {
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      /* ── Back Link ───────────────────────────────────── */
+      .back-link {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 9999;
+        background: var(--p5-red);
+        color: var(--p5-white);
+        padding: 8px 18px;
+        font-weight: 900;
+        font-style: italic;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+        transition: background 0.2s, transform 0.2s;
+      }
+      .back-link:hover {
+        background: var(--p5-yellow);
+        color: var(--p5-black);
+        transform: scale(1.05);
+      }
+
+      /* ── Typography ──────────────────────────────────── */
+      .heading {
+        font-weight: 900;
+        font-style: italic;
+        transform: skewX(-12deg);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        line-height: 1.1;
+      }
+
+      .heading-red {
+        color: var(--p5-red);
+      }
+
+      .heading-white {
+        color: var(--p5-white);
+      }
+
+      .text-outline {
+        text-shadow:
+          3px 3px 0 var(--p5-black),
+          -1px -1px 0 var(--p5-black),
+          1px -1px 0 var(--p5-black),
+          -1px 1px 0 var(--p5-black),
+          2px 0 0 var(--p5-black),
+          -2px 0 0 var(--p5-black),
+          0 2px 0 var(--p5-black),
+          0 -2px 0 var(--p5-black);
+      }
+
+      .ransom-letter span {
+        display: inline-block;
+        transform: rotate(var(--rot, 0deg)) scale(var(--scale, 1));
+        transition: transform 0.3s;
+      }
+
+      /* ── Angular Panel ───────────────────────────────── */
+      .angular-panel {
+        clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+      }
+
+      /* ── Halftone Overlay ────────────────────────────── */
+      .halftone {
+        position: relative;
+      }
+      .halftone::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle, rgba(255, 0, 0, 0.15) 1px, transparent 1px);
+        background-size: 6px 6px;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* ── Skew Containers ─────────────────────────────── */
+      .skew-bg {
+        transform: skewX(-4deg);
+      }
+      .skew-bg > * {
+        transform: skewX(4deg);
+      }
+
+      /* ── Section Base ────────────────────────────────── */
+      .section {
+        width: 100%;
+        padding: 80px 24px;
+        position: relative;
+      }
+      .section-inner {
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+
+      .section-black {
+        background: var(--p5-black);
+      }
+      .section-red {
+        background: var(--p5-red);
+      }
+
+      /* ── Slide-In Animations ─────────────────────────── */
+      .slide-in {
+        opacity: 0;
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+      .slide-left {
+        transform: translateX(-60px) rotate(-3deg);
+      }
+      .slide-right {
+        transform: translateX(60px) rotate(3deg);
+      }
+      .slide-in.visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* ══════════════════════════════════════════════════
+         1. HERO / HIDEOUT
+         ══════════════════════════════════════════════════ */
+      .hero {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-left {
+        background: var(--p5-black);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        position: relative;
+      }
+      .hero-right {
+        background: var(--p5-red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        position: relative;
+      }
+
+      .hero-name {
+        font-size: clamp(3rem, 8vw, 7rem);
+        font-weight: 900;
+        font-style: italic;
+        color: var(--p5-white);
+        transform: skewX(-12deg);
+        text-shadow:
+          4px 4px 0 var(--p5-red),
+          -2px -2px 0 var(--p5-red),
+          2px -2px 0 var(--p5-red),
+          -2px 2px 0 var(--p5-red);
+        line-height: 0.95;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 2;
+      }
+      .hero-name span {
+        display: block;
+      }
+      .hero-name .scramble-char {
+        display: inline-block;
+        min-width: 0.6em;
+      }
+
+      .hero-tagline {
+        font-size: clamp(1rem, 2.5vw, 1.5rem);
+        font-weight: 900;
+        font-style: italic;
+        color: var(--p5-white);
+        transform: skewX(-8deg);
+        text-shadow:
+          3px 3px 0 var(--p5-black),
+          -1px -1px 0 var(--p5-black),
+          1px -1px 0 var(--p5-black),
+          -1px 1px 0 var(--p5-black),
+          2px 0 0 var(--p5-black),
+          -2px 0 0 var(--p5-black),
+          0 2px 0 var(--p5-black),
+          0 -2px 0 var(--p5-black);
+        line-height: 1.4;
+        max-width: 380px;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Diagonal hero bottom */
+      .hero::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: var(--p5-black);
+        clip-path: polygon(0 100%, 100% 0, 100% 100%);
+        z-index: 3;
+      }
+
+      /* Halftone on hero right */
+      .hero-right::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle, rgba(0, 0, 0, 0.12) 1px, transparent 1px);
+        background-size: 8px 8px;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Animated stripe on left */
+      .hero-left::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -40px;
+        width: 80px;
+        height: 100%;
+        background: var(--p5-red);
+        transform: skewX(-8deg);
+        z-index: 0;
+      }
+
+      /* ── Bio Section ─────────────────────────────────── */
+      .bio-section {
+        background: var(--p5-black);
+        padding: 100px 24px 80px;
+      }
+      .bio-text {
+        max-width: 700px;
+        margin: 0 auto;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--p5-muted);
+      }
+      .bio-text strong {
+        color: var(--p5-red);
+        font-weight: 900;
+        font-style: italic;
+      }
+
+      /* ══════════════════════════════════════════════════
+         2. CONFIDANTS (Social Links)
+         ══════════════════════════════════════════════════ */
+      .confidants {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+      .confidants-heading {
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        margin-bottom: 60px;
+      }
+      .confidants-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+        position: relative;
+      }
+      .confidant-card {
+        background: var(--p5-gray);
+        border-left: 4px solid var(--p5-red);
+        padding: 28px 24px;
+        clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+        transition: background 0.3s, color 0.3s, transform 0.2s;
+        cursor: pointer;
+        position: relative;
+      }
+      .confidant-card:hover {
+        background: var(--p5-red);
+        transform: scale(1.03) skewX(-2deg);
+      }
+      .confidant-card:hover .confidant-desc {
+        color: var(--p5-white);
+      }
+      .confidant-platform {
+        font-size: 1.3rem;
+        font-weight: 900;
+        font-style: italic;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .confidant-rank {
+        font-size: 0.85rem;
+        color: var(--p5-yellow);
+        font-weight: 700;
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+      }
+      .confidant-desc {
+        font-size: 0.9rem;
+        color: var(--p5-muted);
+        line-height: 1.5;
+        transition: color 0.3s;
+      }
+
+      /* Speech bubble */
+      .speech-bubble {
+        position: relative;
+        background: var(--p5-yellow);
+        color: var(--p5-black);
+        padding: 16px 20px;
+        font-weight: 900;
+        font-style: italic;
+        font-size: 0.95rem;
+        clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+        margin-top: 24px;
+        max-width: 320px;
+        transform: skewX(-4deg);
+      }
+      .speech-bubble::after {
+        content: '';
+        position: absolute;
+        top: -16px;
+        left: 40px;
+        width: 0;
+        height: 0;
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-bottom: 16px solid var(--p5-yellow);
+      }
+
+      /* ══════════════════════════════════════════════════
+         3. PALACES (Projects)
+         ══════════════════════════════════════════════════ */
+      .palaces {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+      .palaces-heading {
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        color: var(--p5-white);
+        margin-bottom: 60px;
+      }
+      .palace-card {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        background: var(--p5-black);
+        margin-bottom: 24px;
+        clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s;
+      }
+      .palace-card:hover {
+        transform: translateX(8px) skewX(-2deg);
+      }
+      .palace-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3.5rem;
+        font-weight: 900;
+        font-style: italic;
+        color: var(--p5-red);
+        background: var(--p5-black);
+        border-right: 3px solid var(--p5-red);
+        padding: 24px;
+      }
+      .palace-info {
+        padding: 28px 24px;
+      }
+      .palace-name {
+        font-size: 1.4rem;
+        font-weight: 900;
+        font-style: italic;
+        text-transform: uppercase;
+        color: var(--p5-white);
+        margin-bottom: 8px;
+      }
+      .palace-desc {
+        font-size: 0.95rem;
+        color: var(--p5-muted);
+        line-height: 1.6;
+      }
+      .palace-accent {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--p5-yellow);
+      }
+
+      /* ══════════════════════════════════════════════════
+         4. SCHEDULE (Writing/Articles)
+         ══════════════════════════════════════════════════ */
+      .schedule {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+      .schedule-heading {
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        margin-bottom: 60px;
+      }
+      .schedule-container {
+        transform: skewX(-4deg);
+        background: var(--p5-gray);
+        padding: 40px 32px;
+        clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      }
+      .schedule-container > * {
+        transform: skewX(4deg);
+      }
+      .schedule-year {
+        font-size: 1.6rem;
+        font-weight: 900;
+        font-style: italic;
+        color: var(--p5-yellow);
+        margin-bottom: 16px;
+        margin-top: 32px;
+        text-transform: uppercase;
+      }
+      .schedule-year:first-child {
+        margin-top: 0;
+      }
+      .schedule-row {
+        display: grid;
+        grid-template-columns: 130px 1fr;
+        gap: 16px;
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(255, 0, 0, 0.3);
+        align-items: baseline;
+      }
+      .schedule-date {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--p5-red);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .schedule-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--p5-white);
+      }
+
+      /* ══════════════════════════════════════════════════
+         5. METAVERSE (Skills & Tools)
+         ══════════════════════════════════════════════════ */
+      .metaverse {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+      .metaverse-heading {
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        color: var(--p5-white);
+        margin-bottom: 60px;
+      }
+      .skills-container {
+        transform: skewX(-4deg);
+      }
+      .skills-container > * {
+        transform: skewX(4deg);
+      }
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+      .skill-box {
+        background: var(--p5-black);
+        padding: 18px 12px;
+        text-align: center;
+        font-weight: 900;
+        font-style: italic;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        color: var(--p5-white);
+        clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+        border: 2px solid transparent;
+        transition: border-color 0.3s, transform 0.2s, background 0.3s;
+        cursor: default;
+      }
+      .skill-box:hover {
+        border-color: var(--p5-yellow);
+        transform: scale(1.08);
+        background: var(--p5-gray);
+      }
+
+      /* ══════════════════════════════════════════════════
+         6. CALLING CARD (Contact CTA)
+         ══════════════════════════════════════════════════ */
+      .calling-card-section {
+        padding-top: 100px;
+        padding-bottom: 100px;
+        display: flex;
+        justify-content: center;
+      }
+      .calling-card {
+        background: #f5f0e0;
+        color: var(--p5-black);
+        max-width: 560px;
+        width: 100%;
+        padding: 48px 40px;
+        position: relative;
+        border: 3px solid var(--p5-yellow);
+        /* Jagged torn edge effect */
+        clip-path: polygon(
+          2% 0%, 5% 2%, 8% 0%, 12% 1%, 16% 0%, 20% 2%, 24% 0%, 28% 1%,
+          32% 0%, 36% 2%, 40% 0%, 44% 1%, 48% 0%, 52% 2%, 56% 0%, 60% 1%,
+          64% 0%, 68% 2%, 72% 0%, 76% 1%, 80% 0%, 84% 2%, 88% 0%, 92% 1%,
+          96% 0%, 100% 2%,
+          100% 6%, 98% 10%, 100% 14%, 99% 18%, 100% 22%, 98% 26%, 100% 30%,
+          99% 34%, 100% 38%, 98% 42%, 100% 46%, 99% 50%, 100% 54%, 98% 58%,
+          100% 62%, 99% 66%, 100% 70%, 98% 74%, 100% 78%, 99% 82%, 100% 86%,
+          98% 90%, 100% 94%, 99% 98%, 98% 100%,
+          96% 100%, 92% 98%, 88% 100%, 84% 99%, 80% 100%, 76% 98%, 72% 100%,
+          68% 99%, 64% 100%, 60% 98%, 56% 100%, 52% 99%, 48% 100%, 44% 98%,
+          40% 100%, 36% 99%, 32% 100%, 28% 98%, 24% 100%, 20% 99%, 16% 100%,
+          12% 98%, 8% 100%, 4% 99%, 2% 100%,
+          0% 98%, 2% 94%, 0% 90%, 1% 86%, 0% 82%, 2% 78%, 0% 74%,
+          1% 70%, 0% 66%, 2% 62%, 0% 58%, 1% 54%, 0% 50%, 2% 46%,
+          0% 42%, 1% 38%, 0% 34%, 2% 30%, 0% 26%, 1% 22%, 0% 18%,
+          2% 14%, 0% 10%, 1% 6%, 0% 2%
+        );
+        box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+      }
+      .calling-card-label {
+        font-size: 1.8rem;
+        font-weight: 900;
+        font-style: italic;
+        text-transform: uppercase;
+        color: var(--p5-red);
+        margin-bottom: 24px;
+        transform: skewX(-8deg);
+        letter-spacing: 3px;
+      }
+      .calling-card-text {
+        font-size: 1rem;
+        line-height: 1.8;
+        color: #333;
+        margin-bottom: 24px;
+        font-family: 'Georgia', serif;
+      }
+      .calling-card-from {
+        font-size: 0.95rem;
+        font-weight: 900;
+        font-style: italic;
+        color: var(--p5-black);
+        margin-bottom: 32px;
+        transform: skewX(-4deg);
+      }
+      /* Wax seal accent */
+      .wax-seal {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        width: 56px;
+        height: 56px;
+        background: var(--p5-red-dark);
+        clip-path: polygon(
+          50% 0%, 63% 10%, 80% 5%, 78% 22%, 95% 35%, 82% 45%,
+          90% 63%, 75% 60%, 68% 78%, 55% 68%, 42% 82%, 38% 65%,
+          22% 72%, 28% 55%, 10% 48%, 25% 38%, 15% 22%, 32% 25%,
+          38% 8%, 48% 18%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .wax-seal::after {
+        content: 'PT';
+        font-weight: 900;
+        font-style: italic;
+        font-size: 0.8rem;
+        color: var(--p5-white);
+      }
+      .cta-button {
+        display: inline-block;
+        background: var(--p5-red);
+        color: var(--p5-white);
+        font-weight: 900;
+        font-style: italic;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 16px 36px;
+        clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+        cursor: pointer;
+        border: none;
+        font-family: Arial, Helvetica, sans-serif;
+        transition: transform 0.2s, background 0.2s;
+      }
+      .cta-button:hover {
+        transform: scale(1.08);
+        background: var(--p5-red-dark);
+      }
+
+      /* ══════════════════════════════════════════════════
+         7. FOOTER
+         ══════════════════════════════════════════════════ */
+      .footer {
+        background: var(--p5-black);
+        border-top: 2px solid var(--p5-gray);
+        padding: 32px 24px;
+        text-align: center;
+      }
+      .footer-tagline {
+        font-size: 1rem;
+        font-style: italic;
+        color: var(--p5-muted);
+        margin-bottom: 8px;
+      }
+      .footer-copy {
+        font-size: 0.75rem;
+        color: #555;
+      }
+
+      /* ── Responsive ──────────────────────────────────── */
+      @media (max-width: 768px) {
+        .hero {
+          grid-template-columns: 1fr;
+          min-height: auto;
+        }
+        .hero-left,
+        .hero-right {
+          padding: 60px 24px;
+          min-height: 50vh;
+        }
+        .hero-left::after {
+          display: none;
+        }
+        .hero-name {
+          font-size: clamp(2.5rem, 12vw, 4rem);
+        }
+        .confidants-grid {
+          grid-template-columns: 1fr;
+        }
+        .palace-card {
+          grid-template-columns: 80px 1fr;
+        }
+        .palace-number {
+          font-size: 2.2rem;
+          padding: 16px;
+        }
+        .schedule-container {
+          padding: 24px 16px;
+          transform: none;
+        }
+        .schedule-container > * {
+          transform: none;
+        }
+        .schedule-row {
+          grid-template-columns: 100px 1fr;
+          gap: 8px;
+        }
+        .skills-container {
+          transform: none;
+        }
+        .skills-container > * {
+          transform: none;
+        }
+        .skills-grid {
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          gap: 10px;
+        }
+        .calling-card {
+          padding: 36px 24px;
+          margin: 0 12px;
+        }
+        .calling-card-section {
+          padding-top: 60px;
+          padding-bottom: 60px;
+        }
+        .section {
+          padding: 60px 16px;
+        }
+      }
+
+      /* ── Diagonal Section Dividers ───────────────────── */
+      .divider-down {
+        position: relative;
+      }
+      .divider-down::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: inherit;
+        clip-path: polygon(0 0, 100% 60%, 100% 100%, 0 100%);
+        z-index: 3;
+      }
+      .divider-up {
+        position: relative;
+      }
+      .divider-up::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: inherit;
+        clip-path: polygon(0 0, 0 40%, 100% 0);
+        z-index: 3;
+      }
+
+      /* ── Random Red Accents ──────────────────────────── */
+      .red-stripe {
+        position: absolute;
+        background: var(--p5-red);
+        transform: skewX(-15deg);
+        opacity: 0.12;
+        pointer-events: none;
+        z-index: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/site/" class="back-link">&larr; Back to index</a>
+
+    <!-- ════════════════════════════════════════════════
+         1. HERO / HIDEOUT
+         ════════════════════════════════════════════════ -->
+    <section class="hero halftone">
+      <div class="hero-left">
+        <div class="hero-name" id="hero-name">
+          <span>YOUR</span>
+          <span>NAME</span>
+        </div>
+        <!-- Decorative red stripes -->
+        <div class="red-stripe" style="width: 200px; height: 600px; top: -50px; left: 20%;"></div>
+        <div class="red-stripe" style="width: 120px; height: 400px; bottom: 10%; left: 60%;"></div>
+      </div>
+      <div class="hero-right">
+        <p class="hero-tagline">Designer. Developer. Phantom Thief of the Digital World.</p>
+      </div>
+    </section>
+
+    <!-- Bio -->
+    <section class="bio-section section">
+      <div class="section-inner slide-in slide-left">
+        <p class="bio-text">
+          I'm a <strong>developer</strong> and <strong>designer</strong> who believes
+          the world needs more <strong>bold interfaces</strong> and fewer boring ones.
+          I build tools, break systems, and steal hearts through code. Every project
+          is a palace to infiltrate, every bug is a shadow to defeat, and every
+          deploy is a calling card sent to the world. <strong>No more playing it safe.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         2. CONFIDANTS (Social Links)
+         ════════════════════════════════════════════════ -->
+    <section class="section section-black confidants">
+      <div class="section-inner">
+        <h2 class="heading heading-white confidants-heading slide-in slide-right">
+          <span class="ransom-letter">
+            <span style="--rot: -3deg; --scale: 1.1;">C</span><span style="--rot: 2deg;">O</span><span style="--rot: -1deg; --scale: 0.95;">N</span><span style="--rot: 3deg; --scale: 1.05;">F</span><span style="--rot: -2deg;">I</span><span style="--rot: 1deg; --scale: 1.1;">D</span><span style="--rot: -3deg;">A</span><span style="--rot: 2deg; --scale: 0.9;">N</span><span style="--rot: -1deg;">T</span><span style="--rot: 3deg; --scale: 1.05;">S</span>
+          </span>
+        </h2>
+        <div class="confidants-grid">
+          <div class="confidant-card slide-in slide-left">
+            <div class="confidant-platform">GitHub</div>
+            <div class="confidant-rank">Rank 10 &#9733;</div>
+            <div class="confidant-desc">The Hermit Arcana. Open source repos, late-night commits, and code that fights back.</div>
+          </div>
+          <div class="confidant-card slide-in slide-right">
+            <div class="confidant-platform">Twitter</div>
+            <div class="confidant-rank">Rank 10 &#9733;</div>
+            <div class="confidant-desc">The Fool Arcana. Hot takes, threads, and occasional wisdom about the craft.</div>
+          </div>
+          <div class="confidant-card slide-in slide-left">
+            <div class="confidant-platform">LinkedIn</div>
+            <div class="confidant-rank">Rank 10 &#9733;</div>
+            <div class="confidant-desc">The Emperor Arcana. Professional connections and career milestones in the real world.</div>
+          </div>
+          <div class="confidant-card slide-in slide-right">
+            <div class="confidant-platform">Email</div>
+            <div class="confidant-rank">Rank 10 &#9733;</div>
+            <div class="confidant-desc">The Lovers Arcana. Direct line of communication. No spam, just signal.</div>
+          </div>
+          <div class="confidant-card slide-in slide-left">
+            <div class="confidant-platform">YouTube</div>
+            <div class="confidant-rank">Rank 10 &#9733;</div>
+            <div class="confidant-desc">The Star Arcana. Tutorials, devlogs, and behind-the-scenes of every heist.</div>
+          </div>
+        </div>
+        <div class="speech-bubble slide-in slide-right">
+          "For real?! You've maxed out all your Confidant ranks? That's impressive, Joker!"
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         3. PALACES (Projects)
+         ════════════════════════════════════════════════ -->
+    <section class="section section-red palaces halftone">
+      <div class="section-inner">
+        <h2 class="heading text-outline palaces-heading slide-in slide-left">
+          <span class="ransom-letter">
+            <span style="--rot: 2deg; --scale: 1.1;">P</span><span style="--rot: -3deg;">A</span><span style="--rot: 1deg; --scale: 0.95;">L</span><span style="--rot: -2deg; --scale: 1.05;">A</span><span style="--rot: 3deg;">C</span><span style="--rot: -1deg; --scale: 1.1;">E</span><span style="--rot: 2deg;">S</span>
+          </span>
+        </h2>
+        <div class="palace-card slide-in slide-right">
+          <div class="palace-number">01</div>
+          <div class="palace-info">
+            <div class="palace-name">Palace of Code</div>
+            <div class="palace-desc">A CLI tool for managing development environments. Automating the mundane so you can focus on the rebellion.</div>
+          </div>
+          <div class="palace-accent"></div>
+        </div>
+        <div class="palace-card slide-in slide-left">
+          <div class="palace-number">02</div>
+          <div class="palace-info">
+            <div class="palace-name">Palace of Design</div>
+            <div class="palace-desc">An open source design system for small teams. Because even phantom thieves need consistent UI.</div>
+          </div>
+          <div class="palace-accent"></div>
+        </div>
+        <div class="palace-card slide-in slide-right">
+          <div class="palace-number">03</div>
+          <div class="palace-info">
+            <div class="palace-name">Palace of Art</div>
+            <div class="palace-desc">Exploring generative art with code. Procedural beauty, algorithmic chaos, digital graffiti on the metaverse walls.</div>
+          </div>
+          <div class="palace-accent"></div>
+        </div>
+        <div class="palace-card slide-in slide-left">
+          <div class="palace-number">04</div>
+          <div class="palace-info">
+            <div class="palace-name">Palace of Sound</div>
+            <div class="palace-desc">A web audio synthesizer and beat sequencer. Music is the ultimate act of rebellion.</div>
+          </div>
+          <div class="palace-accent"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         4. SCHEDULE (Writing/Articles)
+         ════════════════════════════════════════════════ -->
+    <section class="section section-black schedule">
+      <div class="section-inner">
+        <h2 class="heading heading-red schedule-heading slide-in slide-right">
+          <span class="ransom-letter">
+            <span style="--rot: -2deg; --scale: 1.05;">S</span><span style="--rot: 3deg;">C</span><span style="--rot: -1deg; --scale: 0.95;">H</span><span style="--rot: 2deg; --scale: 1.1;">E</span><span style="--rot: -3deg;">D</span><span style="--rot: 1deg;">U</span><span style="--rot: -2deg; --scale: 1.05;">L</span><span style="--rot: 3deg;">E</span>
+          </span>
+        </h2>
+        <div class="schedule-container slide-in slide-left">
+          <div class="schedule-year">2026</div>
+          <div class="schedule-row">
+            <div class="schedule-date">Mar 15</div>
+            <div class="schedule-title">Why Every Developer Needs a Calling Card</div>
+          </div>
+          <div class="schedule-row">
+            <div class="schedule-date">Feb 02</div>
+            <div class="schedule-title">Building a Design System From Scratch in 2026</div>
+          </div>
+          <div class="schedule-row">
+            <div class="schedule-date">Jan 10</div>
+            <div class="schedule-title">The Art of the Side Project: Ship or Die Trying</div>
+          </div>
+          <div class="schedule-year">2025</div>
+          <div class="schedule-row">
+            <div class="schedule-date">Nov 28</div>
+            <div class="schedule-title">Generative Art and the Algorithm of Beauty</div>
+          </div>
+          <div class="schedule-row">
+            <div class="schedule-date">Sep 05</div>
+            <div class="schedule-title">Terminal UIs Are the Future of Developer Tools</div>
+          </div>
+          <div class="schedule-row">
+            <div class="schedule-date">Jun 12</div>
+            <div class="schedule-title">How I Stole 200ms From My Build Pipeline</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         5. METAVERSE (Skills & Tools)
+         ════════════════════════════════════════════════ -->
+    <section class="section section-red metaverse halftone">
+      <div class="section-inner">
+        <h2 class="heading text-outline metaverse-heading slide-in slide-right">
+          <span class="ransom-letter">
+            <span style="--rot: 3deg; --scale: 1.1;">M</span><span style="--rot: -2deg;">E</span><span style="--rot: 1deg; --scale: 0.95;">T</span><span style="--rot: -3deg; --scale: 1.05;">A</span><span style="--rot: 2deg;">V</span><span style="--rot: -1deg; --scale: 1.1;">E</span><span style="--rot: 3deg;">R</span><span style="--rot: -2deg; --scale: 0.95;">S</span><span style="--rot: 1deg;">E</span>
+          </span>
+        </h2>
+        <div class="skills-container slide-in slide-left">
+          <div class="skills-grid">
+            <div class="skill-box">JavaScript</div>
+            <div class="skill-box">TypeScript</div>
+            <div class="skill-box">Python</div>
+            <div class="skill-box">React</div>
+            <div class="skill-box">Astro</div>
+            <div class="skill-box">Node.js</div>
+            <div class="skill-box">CSS</div>
+            <div class="skill-box">Git</div>
+            <div class="skill-box">Docker</div>
+            <div class="skill-box">Linux</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         6. CALLING CARD (Contact CTA)
+         ════════════════════════════════════════════════ -->
+    <section class="section section-black calling-card-section">
+      <div class="calling-card slide-in slide-right">
+        <div class="wax-seal"></div>
+        <div class="calling-card-label">Calling Card</div>
+        <p class="calling-card-text">
+          Dear visitor,<br /><br />
+          We have decided to make you aware of our existence.
+          We know who you are. We know you scrolled this far.
+          If you wish to make contact and discuss a heist&mdash;or
+          perhaps a collaboration&mdash;send a message.<br /><br />
+          We will take your heart.
+        </p>
+        <div class="calling-card-from">&mdash; From, The Phantom Thieves</div>
+        <a href="mailto:hello@example.com" class="cta-button">Send a Message</a>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════
+         7. FOOTER
+         ════════════════════════════════════════════════ -->
+    <footer class="footer">
+      <div class="footer-tagline">Take Your Time.</div>
+      <div class="footer-copy">&copy; 2026 Your Name. All rights reserved. The Phantom Thieves of Hearts.</div>
+    </footer>
+
+    <!-- ════════════════════════════════════════════════
+         JavaScript
+         ════════════════════════════════════════════════ -->
+    <script is:inline>
+      // ── Scroll Animations ─────────────────────────────
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.slide-in').forEach(el => observer.observe(el));
+
+      // ── Text Scramble Effect on Hero Name ─────────────
+      (function scrambleHero() {
+        const nameEl = document.getElementById('hero-name');
+        if (!nameEl) return;
+        const spans = nameEl.querySelectorAll('span');
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*<>?/|\\';
+        const originalTexts = [];
+
+        spans.forEach(span => {
+          originalTexts.push(span.textContent);
+        });
+
+        function scrambleLine(span, target, callback) {
+          let iteration = 0;
+          const maxIterations = target.length * 4;
+          const interval = setInterval(() => {
+            let result = '';
+            for (let i = 0; i < target.length; i++) {
+              if (i < Math.floor(iteration / 4)) {
+                result += target[i];
+              } else {
+                result += chars[Math.floor(Math.random() * chars.length)];
+              }
+            }
+            span.textContent = result;
+            iteration++;
+            if (iteration > maxIterations) {
+              clearInterval(interval);
+              span.textContent = target;
+              if (callback) callback();
+            }
+          }, 35);
+        }
+
+        // Stagger each line
+        let delay = 300;
+        spans.forEach((span, index) => {
+          const target = originalTexts[index];
+          span.textContent = '';
+          setTimeout(() => {
+            scrambleLine(span, target);
+          }, delay + index * 500);
+        });
+      })();
+    </script>
+  </body>
+</html>
