@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Demo 010 — Persona 3 Reload: aquatic contemplative blue UI aesthetic" />
+    <title>Demo 010 — Persona 3 Reload</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --p3-blue: #1269cc;
+        --p3-soft: #6d9ac7;
+        --p3-cyan: #51eefc;
+        --p3-dark: #0d1117;
+        --p3-dark-alt: #141b24;
+        --p3-white: #ffffff;
+        --p3-muted: #5a7a9a;
+        --p3-glass: rgba(18, 105, 204, 0.08);
+        --p3-glass-border: rgba(81, 238, 252, 0.15);
+        --p3-glass-bg: rgba(13, 17, 23, 0.75);
+        --transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 5rem;
+      }
+
+      body {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 400;
+        font-size: 0.9375rem;
+        line-height: 1.7;
+        color: var(--p3-white);
+        background: var(--p3-dark);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* Water shimmer background */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          #0d1117 0%,
+          #1269cc 25%,
+          #0d1117 50%,
+          #6d9ac7 75%,
+          #0d1117 100%
+        );
+        background-size: 400% 400%;
+        animation: waterShimmer 15s ease infinite;
+        z-index: -1;
+        opacity: 0.4;
+      }
+
+      @keyframes waterShimmer {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      /* Moon phase */
+      .moon-phase {
+        position: fixed;
+        top: 1.5rem;
+        right: 1.5rem;
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      /* Geometric circles */
+      .geo-circles {
+        position: fixed;
+        bottom: 2rem;
+        left: 2rem;
+        width: 80px;
+        height: 80px;
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      .geo-circles::before,
+      .geo-circles::after {
+        content: '';
+        position: absolute;
+        border: 1px solid rgba(81, 238, 252, 0.15);
+        border-radius: 50%;
+      }
+
+      .geo-circles::before {
+        width: 80px;
+        height: 80px;
+        top: 0;
+        left: 0;
+        animation: rotateA 20s linear infinite;
+      }
+
+      .geo-circles::after {
+        width: 50px;
+        height: 50px;
+        top: 15px;
+        left: 15px;
+        animation: rotateB 15s linear infinite reverse;
+      }
+
+      @keyframes rotateA {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
+      @keyframes rotateB {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
+      /* Triangle accents */
+      .triangle-accent {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 10px solid rgba(81, 238, 252, 0.12);
+        pointer-events: none;
+      }
+
+      .triangle-accent--left {
+        top: -5px;
+        left: 1rem;
+      }
+
+      .triangle-accent--right {
+        bottom: -5px;
+        right: 1rem;
+        transform: rotate(180deg);
+      }
+
+      /* Back link */
+      .back-link {
+        display: inline-block;
+        color: var(--p3-muted);
+        text-decoration: none;
+        font-size: 0.8125rem;
+        font-weight: 300;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 1.5rem 0;
+        transition: color var(--transition);
+      }
+
+      .back-link:hover {
+        color: var(--p3-cyan);
+      }
+
+      /* Nav */
+      .p3-nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.75rem 1rem;
+        background: var(--p3-glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--p3-glass-border);
+      }
+
+      .p3-nav a {
+        color: var(--p3-muted);
+        text-decoration: none;
+        font-size: 0.6875rem;
+        font-weight: 300;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        padding: 0.5rem 0.75rem;
+        position: relative;
+        transition: color var(--transition);
+        white-space: nowrap;
+      }
+
+      .p3-nav a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) scaleX(0);
+        width: 80%;
+        height: 1px;
+        background: var(--p3-cyan);
+        transition: transform var(--transition);
+      }
+
+      .p3-nav a:hover,
+      .p3-nav a.active {
+        color: var(--p3-cyan);
+      }
+
+      .p3-nav a:hover::after,
+      .p3-nav a.active::after {
+        transform: translateX(-50%) scaleX(1);
+      }
+
+      /* Main container */
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 1.5rem 4rem;
+      }
+
+      /* Headings */
+      h1, h2, h3 {
+        font-weight: 300;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      /* Section heading */
+      .section-heading {
+        font-size: 0.75rem;
+        color: var(--p3-cyan);
+        margin-bottom: 2rem;
+        text-shadow: 0 0 20px rgba(81, 238, 252, 0.3);
+        position: relative;
+        display: inline-block;
+      }
+
+      .section-heading::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, var(--p3-cyan), transparent);
+        opacity: 0.4;
+      }
+
+      /* Glass panel */
+      .glass-panel {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: var(--p3-glass-bg);
+        border: 1px solid var(--p3-glass-border);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2.5rem;
+        position: relative;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity var(--transition), transform var(--transition);
+      }
+
+      .glass-panel.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Status section */
+      .status-name {
+        font-size: 1.5rem;
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        color: var(--p3-white);
+        margin-bottom: 0.25rem;
+      }
+
+      .status-role {
+        font-size: 0.8125rem;
+        color: var(--p3-soft);
+        font-weight: 300;
+        letter-spacing: 0.08em;
+        margin-bottom: 1.25rem;
+      }
+
+      .status-bio {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.875rem;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+      }
+
+      .status-stats {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .stat {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .stat-label {
+        font-size: 0.625rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--p3-muted);
+        font-weight: 300;
+      }
+
+      .stat-bar {
+        width: 80px;
+        height: 3px;
+        background: rgba(81, 238, 252, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .stat-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--p3-blue), var(--p3-cyan));
+        border-radius: 2px;
+        transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* S-Links cards grid */
+      .slinks-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      @media (max-width: 480px) {
+        .slinks-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Arcana card */
+      .arcana-card {
+        perspective: 800px;
+        height: 160px;
+        cursor: pointer;
+      }
+
+      .arcana-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-style: preserve-3d;
+      }
+
+      .arcana-card.flipped .arcana-card-inner {
+        transform: rotateY(180deg);
+      }
+
+      @media (hover: hover) {
+        .arcana-card:hover .arcana-card-inner {
+          transform: rotateY(180deg);
+        }
+      }
+
+      .arcana-front,
+      .arcana-back {
+        position: absolute;
+        inset: 0;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        border-radius: 10px;
+        border: 1px solid var(--p3-glass-border);
+        background: var(--p3-glass-bg);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1.25rem;
+        text-align: center;
+      }
+
+      .arcana-back {
+        transform: rotateY(180deg);
+      }
+
+      .arcana-number {
+        font-size: 1.5rem;
+        font-weight: 300;
+        color: var(--p3-cyan);
+        letter-spacing: 0.1em;
+        margin-bottom: 0.5rem;
+        opacity: 0.7;
+      }
+
+      .arcana-name {
+        font-size: 0.6875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--p3-white);
+        font-weight: 300;
+      }
+
+      .arcana-desc {
+        font-size: 0.8125rem;
+        color: rgba(255, 255, 255, 0.65);
+        line-height: 1.6;
+      }
+
+      .arcana-link {
+        color: var(--p3-cyan);
+        text-decoration: none;
+        font-size: 0.6875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-top: 0.75rem;
+        transition: opacity var(--transition);
+      }
+
+      .arcana-link:hover {
+        opacity: 0.7;
+      }
+
+      /* Tartarus floors */
+      .tartarus-intro {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.8125rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.7;
+      }
+
+      .floors {
+        position: relative;
+        padding-left: 2.5rem;
+      }
+
+      .floors::before {
+        content: '';
+        position: absolute;
+        left: 11px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: linear-gradient(to bottom, var(--p3-cyan), transparent);
+        opacity: 0.2;
+      }
+
+      .floor {
+        position: relative;
+        margin-bottom: 1.75rem;
+      }
+
+      .floor:last-child {
+        margin-bottom: 0;
+      }
+
+      .floor-indicator {
+        position: absolute;
+        left: -2.5rem;
+        top: 0.15rem;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1px solid rgba(81, 238, 252, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.5rem;
+        color: var(--p3-cyan);
+        letter-spacing: 0.05em;
+        font-weight: 500;
+        background: var(--p3-dark);
+      }
+
+      .floor-name {
+        font-size: 0.875rem;
+        font-weight: 400;
+        color: var(--p3-white);
+        margin-bottom: 0.25rem;
+      }
+
+      .floor-name a {
+        color: inherit;
+        text-decoration: none;
+        transition: color var(--transition);
+      }
+
+      .floor-name a:hover {
+        color: var(--p3-cyan);
+      }
+
+      .floor-desc {
+        font-size: 0.8125rem;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1.6;
+      }
+
+      /* Calendar section */
+      .calendar-year {
+        font-size: 0.625rem;
+        color: var(--p3-cyan);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-weight: 300;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(81, 238, 252, 0.08);
+      }
+
+      .calendar-year:not(:first-child) {
+        margin-top: 1.5rem;
+      }
+
+      .calendar-entry {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 0.5rem 0;
+        transition: background var(--transition);
+        border-radius: 4px;
+        gap: 1rem;
+      }
+
+      .calendar-entry:hover {
+        background: rgba(81, 238, 252, 0.03);
+      }
+
+      .calendar-title {
+        font-size: 0.875rem;
+        color: var(--p3-white);
+        font-weight: 400;
+      }
+
+      .calendar-title a {
+        color: inherit;
+        text-decoration: none;
+        transition: color var(--transition);
+      }
+
+      .calendar-title a:hover {
+        color: var(--p3-cyan);
+      }
+
+      .calendar-date {
+        font-size: 0.75rem;
+        color: var(--p3-muted);
+        font-weight: 300;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      /* Velvet Room tags */
+      .velvet-intro {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.8125rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.7;
+        font-style: italic;
+      }
+
+      .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .skill-tag {
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: var(--p3-soft);
+        padding: 0.4rem 0.9rem;
+        border: 1px solid var(--p3-glass-border);
+        border-radius: 20px;
+        background: var(--p3-glass);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        transition: border-color var(--transition), color var(--transition),
+          box-shadow var(--transition);
+        letter-spacing: 0.04em;
+      }
+
+      .skill-tag:hover {
+        border-color: rgba(81, 238, 252, 0.4);
+        color: var(--p3-cyan);
+        box-shadow: 0 0 12px rgba(81, 238, 252, 0.1);
+      }
+
+      /* Footer */
+      .site-footer {
+        text-align: center;
+        padding: 3rem 0 2rem;
+        color: var(--p3-muted);
+        font-size: 0.75rem;
+        font-weight: 300;
+        letter-spacing: 0.06em;
+        opacity: 0.6;
+      }
+
+      .site-footer p {
+        line-height: 1.8;
+      }
+
+      /* Responsive nav */
+      @media (max-width: 520px) {
+        .p3-nav {
+          gap: 0;
+          padding: 0.5rem 0.25rem;
+        }
+        .p3-nav a {
+          font-size: 0.5625rem;
+          padding: 0.5rem 0.4rem;
+          letter-spacing: 0.08em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Decorative: moon phase -->
+    <div class="moon-phase" aria-hidden="true">
+      <svg width="40" height="40" viewBox="0 0 40 40">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="#51eefc" stroke-width="1" opacity="0.4" />
+        <path d="M20 2 A18 18 0 0 1 20 38 A12 12 0 0 0 20 2" fill="#51eefc" opacity="0.3" />
+      </svg>
+    </div>
+
+    <!-- Decorative: geometric circles -->
+    <div class="geo-circles" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav class="p3-nav">
+      <a href="#status">Status</a>
+      <a href="#s-links">S-Links</a>
+      <a href="#tartarus">Tartarus</a>
+      <a href="#calendar">Calendar</a>
+      <a href="#velvet-room">Velvet Room</a>
+    </nav>
+
+    <div class="container">
+      <a href="/site/" class="back-link">&larr; Back to index</a>
+
+      <!-- Status (About/Bio) -->
+      <section id="status">
+        <div class="glass-panel">
+          <div class="triangle-accent triangle-accent--left" aria-hidden="true"></div>
+          <div class="triangle-accent triangle-accent--right" aria-hidden="true"></div>
+          <h2 class="section-heading">Status</h2>
+          <div class="status-name">Your Name</div>
+          <div class="status-role">Developer &middot; Designer &middot; Writer</div>
+          <p class="status-bio">
+            I build tools and write about the things that surface from the deep
+            &mdash; technology, design, and the quiet patterns behind creative
+            work.
+          </p>
+          <div class="status-stats">
+            <div class="stat">
+              <span class="stat-label">Academics</span>
+              <div class="stat-bar">
+                <div class="stat-fill" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Charm</span>
+              <div class="stat-bar">
+                <div class="stat-fill" style="width: 70%"></div>
+              </div>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Courage</span>
+              <div class="stat-bar">
+                <div class="stat-fill" style="width: 60%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- S-Links (Social Links) -->
+      <section id="s-links">
+        <div class="glass-panel">
+          <div class="triangle-accent triangle-accent--left" aria-hidden="true"></div>
+          <div class="triangle-accent triangle-accent--right" aria-hidden="true"></div>
+          <h2 class="section-heading">Social Links</h2>
+          <div class="slinks-grid">
+            <div class="arcana-card">
+              <div class="arcana-card-inner">
+                <div class="arcana-front">
+                  <div class="arcana-number">I</div>
+                  <div class="arcana-name">GitHub</div>
+                </div>
+                <div class="arcana-back">
+                  <p class="arcana-desc">Open-source projects, experiments, and the code behind the work.</p>
+                  <a href="#" class="arcana-link">Visit &rarr;</a>
+                </div>
+              </div>
+            </div>
+            <div class="arcana-card">
+              <div class="arcana-card-inner">
+                <div class="arcana-front">
+                  <div class="arcana-number">II</div>
+                  <div class="arcana-name">Twitter</div>
+                </div>
+                <div class="arcana-back">
+                  <p class="arcana-desc">Thoughts on tech, design, and whatever surfaces in the moment.</p>
+                  <a href="#" class="arcana-link">Visit &rarr;</a>
+                </div>
+              </div>
+            </div>
+            <div class="arcana-card">
+              <div class="arcana-card-inner">
+                <div class="arcana-front">
+                  <div class="arcana-number">III</div>
+                  <div class="arcana-name">LinkedIn</div>
+                </div>
+                <div class="arcana-back">
+                  <p class="arcana-desc">Professional history and the more formal side of things.</p>
+                  <a href="#" class="arcana-link">Visit &rarr;</a>
+                </div>
+              </div>
+            </div>
+            <div class="arcana-card">
+              <div class="arcana-card-inner">
+                <div class="arcana-front">
+                  <div class="arcana-number">IV</div>
+                  <div class="arcana-name">Email</div>
+                </div>
+                <div class="arcana-back">
+                  <p class="arcana-desc">The most direct way to reach me. Always open to conversation.</p>
+                  <a href="#" class="arcana-link">Write &rarr;</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tartarus (Projects) -->
+      <section id="tartarus">
+        <div class="glass-panel">
+          <div class="triangle-accent triangle-accent--left" aria-hidden="true"></div>
+          <div class="triangle-accent triangle-accent--right" aria-hidden="true"></div>
+          <h2 class="section-heading">Tartarus</h2>
+          <p class="tartarus-intro">
+            Each floor represents a challenge conquered. Ascend through the work.
+          </p>
+          <div class="floors">
+            <div class="floor">
+              <div class="floor-indicator">F1</div>
+              <div class="floor-name"><a href="#">Portfolio Engine</a></div>
+              <div class="floor-desc">A static site generator built for speed and simplicity. Astro-powered, zero-JS by default.</div>
+            </div>
+            <div class="floor">
+              <div class="floor-indicator">F2</div>
+              <div class="floor-name"><a href="#">CLI Toolkit</a></div>
+              <div class="floor-desc">Collection of command-line utilities for automating daily workflows and file management.</div>
+            </div>
+            <div class="floor">
+              <div class="floor-indicator">F3</div>
+              <div class="floor-name"><a href="#">Design System</a></div>
+              <div class="floor-desc">Shared component library and token system used across personal and client projects.</div>
+            </div>
+            <div class="floor">
+              <div class="floor-indicator">F4</div>
+              <div class="floor-name"><a href="#">Note Archive</a></div>
+              <div class="floor-desc">A structured knowledge base for capturing and connecting ideas across disciplines.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Calendar (Writing/Timeline) -->
+      <section id="calendar">
+        <div class="glass-panel">
+          <div class="triangle-accent triangle-accent--left" aria-hidden="true"></div>
+          <div class="triangle-accent triangle-accent--right" aria-hidden="true"></div>
+          <h2 class="section-heading">Calendar</h2>
+
+          <div class="calendar-year">2026</div>
+          <div class="calendar-entry">
+            <span class="calendar-title"><a href="#">On building in public</a></span>
+            <span class="calendar-date">Mar 15</span>
+          </div>
+          <div class="calendar-entry">
+            <span class="calendar-title"><a href="#">Design tokens and the spaces between</a></span>
+            <span class="calendar-date">Feb 02</span>
+          </div>
+          <div class="calendar-entry">
+            <span class="calendar-title"><a href="#">Why I moved to Astro</a></span>
+            <span class="calendar-date">Jan 18</span>
+          </div>
+
+          <div class="calendar-year">2025</div>
+          <div class="calendar-entry">
+            <span class="calendar-title"><a href="#">Quiet tools for deep work</a></span>
+            <span class="calendar-date">Nov 04</span>
+          </div>
+          <div class="calendar-entry">
+            <span class="calendar-title"><a href="#">The typography of contemplation</a></span>
+            <span class="calendar-date">Sep 22</span>
+          </div>
+          <div class="calendar-entry">
+            <span class="calendar-title"><a href="#">Naming things carefully</a></span>
+            <span class="calendar-date">Jul 10</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Velvet Room (Skills & Tools) -->
+      <section id="velvet-room">
+        <div class="glass-panel">
+          <div class="triangle-accent triangle-accent--left" aria-hidden="true"></div>
+          <div class="triangle-accent triangle-accent--right" aria-hidden="true"></div>
+          <h2 class="section-heading">Velvet Room</h2>
+          <p class="velvet-intro">
+            Welcome. The tools and abilities you have acquired on your journey.
+          </p>
+          <div class="skill-tags">
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">Astro</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">CSS</span>
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">PostgreSQL</span>
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">Linux</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="site-footer">
+        <p>The moment man devoured the fruit of knowledge,</p>
+        <p>he sealed his fate.</p>
+      </footer>
+    </div>
+
+    <script is:inline>
+      // Scroll-reveal with IntersectionObserver
+      (function () {
+        var panels = document.querySelectorAll('.glass-panel');
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('revealed');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+          );
+          panels.forEach(function (panel) {
+            observer.observe(panel);
+          });
+        } else {
+          // Fallback: reveal all immediately
+          panels.forEach(function (panel) {
+            panel.classList.add('revealed');
+          });
+        }
+      })();
+
+      // Smooth scroll for nav links
+      document.querySelectorAll('.p3-nav a').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          var href = this.getAttribute('href');
+          if (href && href.startsWith('#')) {
+            e.preventDefault();
+            var target = document.querySelector(href);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        });
+      });
+
+      // Active nav link on scroll
+      (function () {
+        var sections = document.querySelectorAll('section[id]');
+        var navLinks = document.querySelectorAll('.p3-nav a');
+
+        function updateActive() {
+          var scrollY = window.scrollY + 100;
+          sections.forEach(function (section) {
+            var top = section.offsetTop;
+            var height = section.offsetHeight;
+            var id = section.getAttribute('id');
+            if (scrollY >= top && scrollY < top + height) {
+              navLinks.forEach(function (link) {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + id) {
+                  link.classList.add('active');
+                }
+              });
+            }
+          });
+        }
+
+        window.addEventListener('scroll', updateActive, { passive: true });
+        updateActive();
+      })();
+
+      // Card flip toggle on click (for mobile)
+      document.querySelectorAll('.arcana-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+          card.classList.toggle('flipped');
+        });
+      });
+    </script>
+  </body>
+</html>
