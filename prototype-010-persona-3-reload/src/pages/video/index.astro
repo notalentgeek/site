@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import VideoEmbed from "../../component/video_embed.astro";
+import { getCollection } from "astro:content";
+
+const videos = (await getCollection("video")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+---
+
+<BaseLayout title="Video">
+  <a
+    href="/"
+    class="inline-block text-xs text-p3-muted hover:text-p3-cyan tracking-widest uppercase mb-10"
+  >
+    &larr; Terminal
+  </a>
+
+  <h1 class="text-2xl tracking-wider text-p3-cyan mb-2">
+    Video
+  </h1>
+  <p class="text-sm text-p3-muted leading-relaxed mb-10">
+    Guided explorations through the floors of Tartarus. Tutorials, talks, and visual
+    walkthroughs.
+  </p>
+
+  <div class="space-y-14">
+    {videos.map((video) => (
+      <article class="glass-panel">
+        <VideoEmbed
+          url={video.data.embed_url}
+          title={video.data.title}
+        />
+        <div class="mt-4">
+          <time class="text-xs text-p3-muted">
+            {new Date(video.data.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </time>
+          <h2 class="text-sm font-medium text-p3-soft mt-1">
+            {video.data.title}
+          </h2>
+          {video.data.description && (
+            <p class="text-xs text-p3-muted mt-2 leading-relaxed">
+              {video.data.description}
+            </p>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+
+  {videos.length === 0 && (
+    <div class="glass-panel text-center py-16">
+      <p class="text-p3-muted">
+        No videos yet. The archive is silent.
+      </p>
+    </div>
+  )}
+</BaseLayout>

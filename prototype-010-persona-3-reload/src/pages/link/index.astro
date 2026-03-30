@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import ArcanaCard from "../../component/arcana_card.astro";
+
+const socialLinks = [
+  { name: "GitHub", arcana: "The Magician", rank: "I", description: "Code repositories and open source work", href: "https://github.com" },
+  { name: "Twitter / X", arcana: "The Star", rank: "XVII", description: "Short thoughts and threads", href: "https://twitter.com" },
+  { name: "LinkedIn", arcana: "The Emperor", rank: "IV", description: "Professional network and career", href: "https://linkedin.com" },
+  { name: "YouTube", arcana: "The Moon", rank: "XVIII", description: "Video content and tutorials", href: "https://youtube.com" },
+  { name: "Instagram", arcana: "The Sun", rank: "XIX", description: "Photography and visual stories", href: "https://instagram.com" },
+  { name: "Medium", arcana: "The Hermit", rank: "IX", description: "Extended essays and deep dives", href: "https://medium.com" },
+  { name: "Dev.to", arcana: "The Tower", rank: "XVI", description: "Technical articles and guides", href: "https://dev.to" },
+  { name: "Email", arcana: "Judgement", rank: "XX", description: "Get in touch directly", href: "mailto:hello@example.com" },
+];
+---
+
+<BaseLayout title="S-Links">
+  <a
+    href="/"
+    class="inline-block text-xs text-p3-muted hover:text-p3-cyan tracking-widest uppercase mb-10"
+  >
+    &larr; Terminal
+  </a>
+
+  <h1 class="text-2xl tracking-wider text-p3-cyan mb-2">
+    S-Links
+  </h1>
+  <p class="text-sm text-p3-muted leading-relaxed mb-10">
+    Social connections across the web. Each link is a bond forged through shared
+    interests and collaboration.
+  </p>
+
+  <div class="flex flex-wrap gap-4 justify-center">
+    {socialLinks.map((link) => (
+      <ArcanaCard
+        name={link.name}
+        arcana={link.arcana}
+        rank={link.rank}
+        description={link.description}
+        href={link.href}
+      />
+    ))}
+  </div>
+</BaseLayout>

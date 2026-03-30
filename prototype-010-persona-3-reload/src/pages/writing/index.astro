@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+
+// Group articles by year
+const articlesByYear: Record<string, typeof articles> = {};
+for (const article of articles) {
+  const year = new Date(article.data.date).getFullYear().toString();
+  if (!articlesByYear[year]) articlesByYear[year] = [];
+  articlesByYear[year].push(article);
+}
+const sortedYears = Object.keys(articlesByYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<BaseLayout title="Calendar">
+  <a
+    href="/"
+    class="inline-block text-xs text-p3-muted hover:text-p3-cyan tracking-widest uppercase mb-10"
+  >
+    &larr; Terminal
+  </a>
+
+  <h1 class="text-2xl tracking-wider text-p3-cyan mb-2">
+    Calendar
+  </h1>
+  <p class="text-sm text-p3-muted leading-relaxed mb-10">
+    Long-form reflections from the Dark Hour. Thoughts on technology, design, and the
+    spaces between.
+  </p>
+
+  {sortedYears.map((year) => (
+    <section class="mb-10">
+      <h2 class="text-xs font-medium text-p3-muted uppercase tracking-widest mb-4">
+        {year}
+      </h2>
+      <ul class="space-y-4">
+        {articlesByYear[year].map((article) => (
+          <li class="glass-panel">
+            <div class="flex items-baseline justify-between gap-4">
+              <a
+                href={`/writing/${article.slug}/`}
+                class="text-sm font-medium text-p3-soft hover:text-p3-cyan truncate"
+              >
+                {article.data.title}
+              </a>
+              <time class="text-xs text-p3-muted whitespace-nowrap">
+                {new Date(article.data.date).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </time>
+            </div>
+            {article.data.description && (
+              <p class="text-xs text-p3-muted mt-2 leading-relaxed">
+                {article.data.description}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  {articles.length === 0 && (
+    <div class="glass-panel text-center py-16">
+      <p class="text-p3-muted">
+        No entries yet. The calendar is empty.
+      </p>
+    </div>
+  )}
+</BaseLayout>

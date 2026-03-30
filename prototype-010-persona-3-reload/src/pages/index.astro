@@ -1,0 +1,171 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import ArcanaCard from "../component/arcana_card.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article")).sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+
+// Group articles by year
+const articlesByYear: Record<string, typeof articles> = {};
+for (const article of articles) {
+  const year = new Date(article.data.date).getFullYear().toString();
+  if (!articlesByYear[year]) articlesByYear[year] = [];
+  articlesByYear[year].push(article);
+}
+const sortedYears = Object.keys(articlesByYear).sort((a, b) => Number(b) - Number(a));
+
+const socialLinks = [
+  { name: "GitHub", arcana: "The Magician", rank: "I", description: "Code repositories and open source work", href: "https://github.com" },
+  { name: "Twitter / X", arcana: "The Star", rank: "XVII", description: "Short thoughts and threads", href: "https://twitter.com" },
+  { name: "LinkedIn", arcana: "The Emperor", rank: "IV", description: "Professional network and career", href: "https://linkedin.com" },
+  { name: "YouTube", arcana: "The Moon", rank: "XVIII", description: "Video content and tutorials", href: "https://youtube.com" },
+];
+
+const projects = [
+  { name: "Project Thebel", floor: "1F", description: "A CLI tool for managing development environments" },
+  { name: "Project Arqa", floor: "65F", description: "An open source design system for small teams" },
+  { name: "Project Harabah", floor: "130F", description: "Exploring generative art with code" },
+];
+
+const skills = ["Astro", "TypeScript", "Tailwind", "React", "Node.js", "Python", "Figma", "Git"];
+---
+
+<BaseLayout title="Your Name">
+  <!-- Status: About / Bio -->
+  <header class="mb-14">
+    <h1 class="text-2xl font-sans tracking-wider text-p3-cyan mb-2">
+      Your Name
+    </h1>
+    <p class="text-sm text-p3-muted tracking-wide">
+      Developer. Designer. Observer of the Dark Hour.
+    </p>
+  </header>
+
+  <section class="mb-14">
+    <div class="glass-panel">
+      <p class="leading-relaxed text-p3-soft text-sm">
+        I build tools and write about technology in the quiet hours between midnight
+        and dawn. There is something clarifying about working when the world is still
+        — the code flows differently, the ideas surface on their own. Currently exploring
+        the intersection of design systems and generative interfaces.
+      </p>
+    </div>
+  </section>
+
+  <!-- S-Links: Social links as arcana cards -->
+  <section class="mb-14">
+    <h2 class="text-lg tracking-wider text-p3-cyan mb-1">
+      S-Links
+    </h2>
+    <p class="text-xs text-p3-muted uppercase tracking-widest mb-6">
+      Social connections
+    </p>
+    <div class="flex flex-wrap gap-4 justify-center">
+      {socialLinks.map((link) => (
+        <ArcanaCard
+          name={link.name}
+          arcana={link.arcana}
+          rank={link.rank}
+          description={link.description}
+          href={link.href}
+        />
+      ))}
+    </div>
+    <a href="/link/" class="text-xs text-p3-muted hover:text-p3-cyan mt-6 inline-block tracking-wide">
+      All S-Links &rarr;
+    </a>
+  </section>
+
+  <!-- Tartarus: Projects as tower floors -->
+  <section class="mb-14">
+    <h2 class="text-lg tracking-wider text-p3-cyan mb-1">
+      Tartarus
+    </h2>
+    <p class="text-xs text-p3-muted uppercase tracking-widest mb-6">
+      Projects
+    </p>
+    <ul class="space-y-3">
+      {projects.map((project) => (
+        <li class="glass-panel flex items-start gap-4">
+          <span class="text-xs font-mono text-p3-cyan tracking-wider mt-0.5 shrink-0">
+            {project.floor}
+          </span>
+          <div>
+            <span class="text-sm font-medium text-p3-white">
+              {project.name}
+            </span>
+            <p class="text-xs text-p3-muted mt-1">
+              {project.description}
+            </p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Calendar: Articles by year -->
+  <section class="mb-14">
+    <h2 class="text-lg tracking-wider text-p3-cyan mb-1">
+      Calendar
+    </h2>
+    <p class="text-xs text-p3-muted uppercase tracking-widest mb-6">
+      Writing
+    </p>
+    {sortedYears.map((year) => (
+      <div class="mb-6">
+        <h3 class="text-xs font-medium text-p3-muted uppercase tracking-widest mb-3">
+          {year}
+        </h3>
+        <ul class="space-y-2">
+          {articlesByYear[year].map((article) => (
+            <li class="flex items-baseline justify-between gap-4">
+              <a
+                href={`/writing/${article.slug}/`}
+                class="text-sm font-medium text-p3-soft hover:text-p3-cyan truncate"
+              >
+                {article.data.title}
+              </a>
+              <time class="text-xs text-p3-muted whitespace-nowrap">
+                {new Date(article.data.date).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </time>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+    <a href="/writing/" class="text-xs text-p3-muted hover:text-p3-cyan tracking-wide">
+      All entries &rarr;
+    </a>
+  </section>
+
+  <!-- Velvet Room: Skills as glowing tags -->
+  <section class="mb-14">
+    <h2 class="text-lg tracking-wider text-p3-cyan mb-1">
+      Velvet Room
+    </h2>
+    <p class="text-xs text-p3-muted uppercase tracking-widest mb-6">
+      Skills &amp; tools
+    </p>
+    <div class="flex flex-wrap gap-2">
+      {skills.map((skill) => (
+        <span class="inline-block px-3 py-1 text-xs text-p3-cyan border border-p3-cyan/20
+                     rounded-full bg-p3-cyan/5 hover:bg-p3-cyan/10 hover:border-p3-cyan/40
+                     transition-all duration-500">
+          {skill}
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="pt-8 border-t border-p3-cyan/10">
+    <p class="text-xs text-p3-muted text-center tracking-wide">
+      &copy; 2026 &middot; The Dark Hour
+    </p>
+  </footer>
+</BaseLayout>
