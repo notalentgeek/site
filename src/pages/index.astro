@@ -84,6 +84,14 @@ const prototypes = [
     vibe: "Persona 3 Reload — deep blue underwater stillness",
     palette: ["#0d1117", "#1269cc", "#51eefc"],
   },
+  {
+    id: "011",
+    name: "Persona 5 Royal",
+    folder: "prototype-011-persona-5-royal",
+    description: "Rebellious punk pop-art UI inspired by Persona 5 Royal. Extreme diagonal skews, angular clip-paths, halftone dots, ransom-note typography, split red/black layouts. Calling card contact CTA.",
+    vibe: "Persona 5 Royal — rip the mask off, reveal the truth",
+    palette: ["#0D0D0D", "#FF0000", "#F2E852"],
+  },
 ];
 ---
 
@@ -93,7 +101,7 @@ const prototypes = [
       Portfolio Prototypes
     </h1>
     <p class="text-muted-light dark:text-muted-dark mt-2 leading-relaxed">
-      Ten design directions for a personal portfolio. Each prototype is a
+      Eleven design directions for a personal portfolio. Each prototype is a
       self-contained Astro project exploring a different aesthetic and content
       strategy. Built with Astro + Tailwind CSS.
     </p>
@@ -172,7 +180,73 @@ const prototypes = [
       Clean backgrounds left intentionally empty for a future HTML5 3D canvas layer.
     </p>
     <ul class="space-y-8">
-      {prototypes.slice(5).map((p) => (
+      {prototypes.slice(5, 8).map((p) => (
+        <li class="group">
+          <div class="flex items-start gap-3 mb-2">
+            <span class="font-sans text-xs text-muted-light dark:text-muted-dark font-mono mt-0.5">
+              {p.id}
+            </span>
+            <div class="flex-1">
+              <h3 class="font-sans text-base font-semibold text-ink-light dark:text-ink-dark">
+                <a
+                  href={`/site/demo/${p.id}/`}
+                  class="no-underline hover:underline"
+                  style="text-decoration: none;"
+                >
+                  {p.name}
+                </a>
+              </h3>
+              <p class="text-sm text-muted-light dark:text-muted-dark leading-relaxed mt-1">
+                {p.description}
+              </p>
+              <p class="text-xs text-muted-light dark:text-muted-dark mt-2 italic">
+                Vibe: {p.vibe}
+              </p>
+              <div class="flex items-center gap-2 mt-2">
+                <div class="flex items-center gap-1.5">
+                  {p.palette.map((color) => (
+                    <span
+                      class="w-4 h-4 rounded-full border border-rule-light dark:border-rule-dark"
+                      style={`background-color: ${color};`}
+                      title={color}
+                    />
+                  ))}
+                </div>
+                <span class="text-muted-light dark:text-muted-dark">·</span>
+                <a
+                  href={`/site/demo/${p.id}/`}
+                  class="text-xs text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark transition-colors"
+                >
+                  View demo &rarr;
+                </a>
+                <span class="text-muted-light dark:text-muted-dark">·</span>
+                <a
+                  href={`${REPO_URL}/${p.folder}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-xs text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark transition-colors"
+                >
+                  Source
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mb-14">
+    <h2 class="font-sans text-xs font-semibold text-muted-light dark:text-muted-dark uppercase tracking-widest mb-6">
+      Game UI Explorations
+    </h2>
+    <p class="text-sm text-muted-light dark:text-muted-dark leading-relaxed mb-6">
+      Exploring video game interface aesthetics as portfolio design language.
+      Each blurs the line between portfolio and personal website, mapping
+      personal content to game UI paradigms.
+    </p>
+    <ul class="space-y-8">
+      {prototypes.slice(8).map((p) => (
         <li class="group">
           <div class="flex items-start gap-3 mb-2">
             <span class="font-sans text-xs text-muted-light dark:text-muted-dark font-mono mt-0.5">
