@@ -1,0 +1,194 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = "Phantom Thieves Portfolio", description = "A Persona 5 Royal inspired portfolio" } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+</head>
+<body>
+  <nav class="nav">
+    <a href="/" class="nav-logo">PT</a>
+    <div class="nav-links">
+      <a href="/writing/">Schedule</a>
+      <a href="/video/">Metaverse</a>
+      <a href="/link/">Confidants</a>
+    </div>
+  </nav>
+  <main>
+    <slot />
+  </main>
+</body>
+</html>
+
+<style is:global>
+  /* === GLOBAL RESET === */
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 0 !important;
+  }
+
+  /* === BASE === */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: #0D0D0D;
+    color: #FFFFFF;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* === HALFTONE DOT OVERLAY === */
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+
+  /* === LINKS === */
+  a {
+    color: #FF0000;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    color: #F2E852;
+  }
+
+  /* === NAVIGATION === */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: #0D0D0D;
+    border-bottom: 3px solid #FF0000;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: #FF0000;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .nav-links a {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #FFFFFF;
+  }
+
+  .nav-links a:hover {
+    color: #FF0000;
+  }
+
+  /* === SKEWED HEADINGS === */
+  .skew-heading {
+    display: inline-block;
+    transform: skewX(-8deg);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* === ANGULAR CLIP-PATH UTILITY === */
+  .clip-angular {
+    clip-path: polygon(
+      0 0,
+      calc(100% - 16px) 0,
+      100% 16px,
+      100% 100%,
+      16px 100%,
+      0 calc(100% - 16px)
+    );
+  }
+
+  /* === THICK TEXT OUTLINE === */
+  .text-outline {
+    -webkit-text-stroke: 2px #FF0000;
+    paint-order: stroke fill;
+  }
+
+  /* === SECTION SPACING === */
+  section {
+    padding: 4rem 2rem;
+  }
+
+  @media (min-width: 768px) {
+    section {
+      padding: 6rem 4rem;
+    }
+  }
+
+  /* === PROSE CONTENT === */
+  .prose h2 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #FF0000;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose p {
+    margin-bottom: 1rem;
+    color: #FFFFFF;
+    line-height: 1.8;
+  }
+
+  .prose strong {
+    color: #F2E852;
+  }
+
+  .prose em {
+    color: #888888;
+  }
+
+  .prose hr {
+    border: none;
+    border-top: 2px solid #FF0000;
+    margin: 2rem 0;
+  }
+
+  .prose ul, .prose ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose li {
+    margin-bottom: 0.5rem;
+  }
+</style>

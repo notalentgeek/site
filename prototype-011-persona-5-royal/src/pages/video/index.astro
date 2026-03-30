@@ -1,0 +1,139 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import VideoEmbed from "../../component/video_embed.astro";
+import { getCollection } from "astro:content";
+
+const videos = (await getCollection("video"))
+  .filter((v) => !v.data.draft)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+<BaseLayout title="Metaverse — Phantom Thieves Portfolio">
+
+  <section class="page-header">
+    <h1 class="page-title skew-heading">Metaverse</h1>
+    <p class="page-desc">Recordings from the cognitive world. Watch the Phantom Thieves in action.</p>
+  </section>
+
+  <section class="video-archive">
+    {videos.map((video) => (
+      <article class="video-entry">
+        <div class="video-player">
+          <VideoEmbed url={video.data.embed_url} title={video.data.title} />
+        </div>
+        <div class="video-info">
+          <span class="video-platform">{video.data.platform}</span>
+          <h2 class="video-title">{video.data.title}</h2>
+          <span class="video-date">{video.data.date}</span>
+          {video.data.description && (
+            <p class="video-desc">{video.data.description}</p>
+          )}
+          {video.data.tags && (
+            <div class="video-tags">
+              {video.data.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </article>
+    ))}
+  </section>
+
+</BaseLayout>
+
+<style>
+  .page-header {
+    background: #FF0000;
+    padding: 4rem 2rem;
+  }
+
+  .page-title {
+    font-size: 3rem;
+    color: #0D0D0D;
+    margin-bottom: 1rem;
+  }
+
+  .page-desc {
+    font-size: 1rem;
+    color: #0D0D0D;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .video-archive {
+    background: #0D0D0D;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .video-entry {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-bottom: 4rem;
+    border-bottom: 3px solid #2a2a2a;
+  }
+
+  @media (min-width: 768px) {
+    .video-entry {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .video-player {
+    width: 100%;
+  }
+
+  .video-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .video-platform {
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #F2E852;
+  }
+
+  .video-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    text-transform: uppercase;
+  }
+
+  .video-date {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #888888;
+    letter-spacing: 0.05em;
+  }
+
+  .video-desc {
+    font-size: 0.9rem;
+    color: #888888;
+    line-height: 1.6;
+  }
+
+  .video-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.75rem;
+    background: #2a2a2a;
+    color: #F2E852;
+  }
+</style>

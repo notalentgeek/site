@@ -1,0 +1,400 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import CallingCard from "../component/calling_card.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("article"))
+  .filter((a) => !a.data.draft)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const articlesByYear: Record<string, typeof articles> = {};
+for (const article of articles) {
+  const year = new Date(article.data.date).getFullYear().toString();
+  if (!articlesByYear[year]) articlesByYear[year] = [];
+  articlesByYear[year].push(article);
+}
+
+const socialLinks = [
+  { name: "GitHub", url: "https://github.com", rank: "Rank 10" },
+  { name: "LinkedIn", url: "https://linkedin.com", rank: "Rank 8" },
+  { name: "YouTube", url: "https://youtube.com", rank: "Rank 6" },
+  { name: "Twitter / X", url: "https://twitter.com", rank: "Rank 5" },
+];
+
+const projects = [
+  { name: "Kamoshida's Palace", desc: "E-commerce redesign — stealing the treasure of good UX", status: "CLEARED" },
+  { name: "Madarame's Palace", desc: "Open source design system — authentic art for everyone", status: "CLEARED" },
+  { name: "Kaneshiro's Palace", desc: "Fintech dashboard — liberating data from greed", status: "IN PROGRESS" },
+];
+
+const skills = [
+  "TypeScript", "React", "Astro", "Node.js",
+  "Tailwind CSS", "Figma", "Git", "Docker",
+  "PostgreSQL", "Python", "Linux", "Blender",
+];
+---
+<BaseLayout title="Phantom Thieves Portfolio">
+
+  <!-- HERO — split black/red -->
+  <section class="hero">
+    <div class="hero-bg-split"></div>
+    <div class="hero-content">
+      <p class="hero-codename">CODE NAME:</p>
+      <h1 class="hero-name skew-heading">JOKER</h1>
+      <p class="hero-subtitle">Developer &bull; Designer &bull; Phantom Thief</p>
+      <p class="hero-tagline">"I am thou, thou art I."</p>
+    </div>
+  </section>
+
+  <!-- CONFIDANTS — social links as rank cards -->
+  <section class="confidants" id="confidants">
+    <h2 class="section-title skew-heading">Confidants</h2>
+    <div class="confidant-grid">
+      {socialLinks.map((link) => (
+        <a href={link.url} target="_blank" rel="noopener noreferrer" class="confidant-card clip-angular">
+          <span class="confidant-rank">{link.rank}</span>
+          <span class="confidant-name">{link.name}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- PALACES — projects as palace cards -->
+  <section class="palaces" id="palaces">
+    <h2 class="section-title skew-heading">Palaces</h2>
+    <div class="palace-grid">
+      {projects.map((project) => (
+        <div class="palace-card">
+          <div class="palace-status">{project.status}</div>
+          <h3 class="palace-name">{project.name}</h3>
+          <p class="palace-desc">{project.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- SCHEDULE — year-grouped articles -->
+  <section class="schedule" id="schedule">
+    <h2 class="section-title skew-heading">Schedule</h2>
+    {Object.keys(articlesByYear).sort((a, b) => Number(b) - Number(a)).map((year) => (
+      <div class="schedule-year">
+        <h3 class="year-label">{year}</h3>
+        <ul class="schedule-list">
+          {articlesByYear[year].map((article) => (
+            <li class="schedule-item">
+              <span class="schedule-date">{article.data.date}</span>
+              <span class="schedule-link">{article.data.title}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <!-- METAVERSE — skills in angular boxes -->
+  <section class="metaverse" id="metaverse">
+    <h2 class="section-title skew-heading">Metaverse</h2>
+    <div class="skill-grid">
+      {skills.map((skill) => (
+        <div class="skill-box clip-angular">
+          {skill}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CALLING CARD — contact CTA -->
+  <section class="calling-card-section" id="contact">
+    <CallingCard />
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="footer-text">Take Your Time.</p>
+  </footer>
+
+</BaseLayout>
+
+<style>
+  /* === HERO === */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .hero-bg-split {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: #FF0000;
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .hero-codename {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #888888;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-name {
+    font-size: clamp(4rem, 12vw, 10rem);
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1;
+    margin-bottom: 1rem;
+    -webkit-text-stroke: 3px #FF0000;
+    paint-order: stroke fill;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #FFFFFF;
+    margin-bottom: 1rem;
+  }
+
+  .hero-tagline {
+    font-size: 1rem;
+    font-style: italic;
+    color: #F2E852;
+  }
+
+  /* === SECTION TITLES === */
+  .section-title {
+    font-size: 2.5rem;
+    color: #FFFFFF;
+    margin-bottom: 3rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 4px solid #FF0000;
+    display: inline-block;
+  }
+
+  /* === CONFIDANTS === */
+  .confidants {
+    background: #0D0D0D;
+  }
+
+  .confidant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .confidant-card {
+    display: flex;
+    flex-direction: column;
+    background: #2a2a2a;
+    padding: 2rem;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .confidant-card:hover {
+    transform: skewX(-2deg);
+    background: #FF0000;
+  }
+
+  .confidant-card:hover .confidant-rank,
+  .confidant-card:hover .confidant-name {
+    color: #FFFFFF;
+  }
+
+  .confidant-rank {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #F2E852;
+    margin-bottom: 0.5rem;
+  }
+
+  .confidant-name {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    text-transform: uppercase;
+  }
+
+  /* === PALACES === */
+  .palaces {
+    background: #FF0000;
+  }
+
+  .palaces .section-title {
+    color: #0D0D0D;
+    border-bottom-color: #0D0D0D;
+  }
+
+  .palace-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .palace-card {
+    background: #0D0D0D;
+    padding: 2rem;
+    border: 3px solid #F2E852;
+    clip-path: polygon(
+      0 0,
+      calc(100% - 20px) 0,
+      100% 20px,
+      100% 100%,
+      20px 100%,
+      0 calc(100% - 20px)
+    );
+    transition: transform 0.2s;
+  }
+
+  .palace-card:hover {
+    transform: skewX(-2deg) scale(1.02);
+  }
+
+  .palace-status {
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: #F2E852;
+    margin-bottom: 0.75rem;
+  }
+
+  .palace-name {
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #FF0000;
+    margin-bottom: 0.5rem;
+  }
+
+  .palace-desc {
+    color: #888888;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  /* === SCHEDULE === */
+  .schedule {
+    background: #0D0D0D;
+  }
+
+  .schedule-year {
+    margin-bottom: 2rem;
+  }
+
+  .year-label {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #FF0000;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .schedule-list {
+    list-style: none;
+  }
+
+  .schedule-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #2a2a2a;
+    align-items: baseline;
+  }
+
+  .schedule-date {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #888888;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .schedule-link {
+    font-weight: 700;
+    color: #FFFFFF;
+    font-size: 1rem;
+  }
+
+  /* === METAVERSE === */
+  .metaverse {
+    background: #FF0000;
+  }
+
+  .metaverse .section-title {
+    color: #0D0D0D;
+    border-bottom-color: #0D0D0D;
+  }
+
+  .skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-box {
+    background: #0D0D0D;
+    color: #FFFFFF;
+    padding: 1.25rem;
+    font-weight: 900;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .skill-box:hover {
+    transform: skewX(-4deg);
+    background: #F2E852;
+    color: #0D0D0D;
+  }
+
+  /* === CALLING CARD SECTION === */
+  .calling-card-section {
+    background: #0D0D0D;
+    display: flex;
+    justify-content: center;
+    padding: 6rem 2rem;
+  }
+
+  .calling-card-section > :global(.calling-card) {
+    max-width: 600px;
+    width: 100%;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 3px solid #FF0000;
+    background: #0D0D0D;
+  }
+
+  .footer-text {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #888888;
+  }
+</style>

@@ -1,0 +1,162 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+
+const confidants = [
+  { name: "GitHub", url: "https://github.com", rank: 10, arcana: "The Magician", desc: "Code repositories and open source contributions." },
+  { name: "LinkedIn", url: "https://linkedin.com", rank: 8, arcana: "The Emperor", desc: "Professional network and career milestones." },
+  { name: "YouTube", url: "https://youtube.com", rank: 6, arcana: "The Star", desc: "Video content, tutorials, and live streams." },
+  { name: "Twitter / X", url: "https://twitter.com", rank: 5, arcana: "The Fool", desc: "Thoughts, threads, and real-time updates." },
+  { name: "Email", url: "mailto:hello@example.com", rank: 10, arcana: "The World", desc: "Direct line of communication. The ultimate confidant." },
+];
+---
+<BaseLayout title="Confidants — Phantom Thieves Portfolio">
+
+  <section class="page-header">
+    <h1 class="page-title skew-heading">Confidants</h1>
+    <p class="page-desc">Your social links. Strengthen your bonds to unlock new abilities.</p>
+  </section>
+
+  <section class="confidant-list">
+    {confidants.map((c) => (
+      <a href={c.url} target="_blank" rel="noopener noreferrer" class="confidant-row">
+        <div class="confidant-arcana">{c.arcana}</div>
+        <div class="confidant-details">
+          <div class="confidant-header">
+            <h2 class="confidant-name">{c.name}</h2>
+            <div class="confidant-rank-display">
+              <span class="rank-label">RANK</span>
+              <span class="rank-number">{c.rank}</span>
+            </div>
+          </div>
+          <p class="confidant-desc">{c.desc}</p>
+          <div class="rank-bar">
+            <div class="rank-fill" style={`width: ${c.rank * 10}%`}></div>
+          </div>
+        </div>
+      </a>
+    ))}
+  </section>
+
+</BaseLayout>
+
+<style>
+  .page-header {
+    background: #FF0000;
+    padding: 4rem 2rem;
+  }
+
+  .page-title {
+    font-size: 3rem;
+    color: #0D0D0D;
+    margin-bottom: 1rem;
+  }
+
+  .page-desc {
+    font-size: 1rem;
+    color: #0D0D0D;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .confidant-list {
+    background: #0D0D0D;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .confidant-row {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    background: #2a2a2a;
+    text-decoration: none;
+    clip-path: polygon(
+      0 0,
+      calc(100% - 24px) 0,
+      100% 24px,
+      100% 100%,
+      24px 100%,
+      0 calc(100% - 24px)
+    );
+    transition: transform 0.2s, background 0.2s;
+    align-items: center;
+  }
+
+  .confidant-row:hover {
+    transform: skewX(-2deg);
+    background: #3a3a3a;
+  }
+
+  .confidant-arcana {
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #F2E852;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    white-space: nowrap;
+  }
+
+  .confidant-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .confidant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .confidant-name {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    text-transform: uppercase;
+  }
+
+  .confidant-rank-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rank-label {
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: #888888;
+    text-transform: uppercase;
+  }
+
+  .rank-number {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #FF0000;
+  }
+
+  .confidant-desc {
+    font-size: 0.9rem;
+    color: #888888;
+    line-height: 1.5;
+  }
+
+  .rank-bar {
+    height: 4px;
+    background: #0D0D0D;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .rank-fill {
+    height: 100%;
+    background: #FF0000;
+    transition: width 0.4s ease;
+  }
+</style>
