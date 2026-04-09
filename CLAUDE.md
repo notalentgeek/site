@@ -33,6 +33,14 @@ Read in this order:
 
 Personal portfolio website. The tech stack is not yet decided — WordPress, Laravel, and other frameworks are being evaluated. Do not assume or hard-code any specific framework in documentation or project structure.
 
+## Design Direction
+
+**Principle:** "Pragmatic and mindful"
+
+Inspired by Indonesian-Japanese style of layouting and physical media (books, pamphlets). The primary reference is https://ogud.co.jp/urbanex/next21/ — a Japanese architectural site with editorial vertical scrolling, bold bilingual typography, generous whitespace, and print-influenced section structure. Design decisions should favor intentional spatial organization, restrained color palettes, and content-led visual hierarchy over decorative elements.
+
+See `note/2026-04-09-design-inspiration.md` for the full inspiration reference list.
+
 ## Conventions
 
 - Follow all root CLAUDE.md naming and structural conventions
