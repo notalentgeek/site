@@ -1,0 +1,171 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import ProjectCard from "../component/project_card.astro";
+import SectionHeader from "../component/section_header.astro";
+import FeaturedSplit from "../component/featured_split.astro";
+
+const projects = [
+  {
+    title: "Setouchi Maritime Museum",
+    category: "Cultural",
+    location: "Naoshima, Japan",
+    year: "2025",
+    gradient: "from-sky-200 via-sky-400 to-blue-500",
+  },
+  {
+    title: "House of Folded Earth",
+    category: "Residential",
+    location: "Karuizawa, Japan",
+    year: "2024",
+    gradient: "from-amber-300 via-amber-600 to-amber-900",
+  },
+  {
+    title: "Onsen Retreat Hakone",
+    category: "Hospitality",
+    location: "Hakone, Japan",
+    year: "2024",
+    gradient: "from-stone-200 via-stone-400 to-stone-600",
+  },
+  {
+    title: "Shibuya Creative Tower",
+    category: "Commercial",
+    location: "Tokyo, Japan",
+    year: "2023",
+    gradient: "from-slate-300 via-slate-500 to-slate-700",
+  },
+];
+
+const recentWork = [
+  {
+    title: "Light Corridors",
+    category: "Installation",
+    location: "Milan, Italy",
+    year: "2023",
+    gradient: "from-slate-600 via-slate-800 to-slate-950",
+  },
+  {
+    title: "Warehouse 17 Conversion",
+    category: "Adaptive Reuse",
+    location: "Osaka, Japan",
+    year: "2022",
+    gradient: "from-yellow-100 via-yellow-400 to-amber-600",
+  },
+  {
+    title: "Courtyard House No. 3",
+    category: "Residential",
+    location: "Kyoto, Japan",
+    year: "2022",
+    gradient: "from-stone-300 via-stone-400 to-stone-600",
+  },
+];
+---
+
+<BaseLayout title="Home" currentPath="/">
+  <!-- Hero -->
+  <section class="relative w-full h-screen flex flex-col justify-end overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-stone-300 via-stone-500 to-stone-700"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+    <div class="relative z-10 p-12 max-w-[1400px] text-white">
+      <p class="text-[0.65rem] tracking-[0.2em] uppercase mb-6 opacity-70">
+        Architecture &middot; Residential
+      </p>
+      <h1 class="font-serif text-hero font-light leading-[1.1] mb-6 max-w-[800px]">
+        Atelier Sora Architects
+      </h1>
+      <p class="text-sm font-light opacity-70 max-w-[500px] leading-relaxed">
+        A Tokyo-based architecture studio exploring the dialogue between
+        material honesty, spatial restraint, and the landscapes we inhabit.
+      </p>
+      <div class="flex gap-8 mt-8 text-[0.7rem] tracking-[0.08em] uppercase opacity-50">
+        <span>Est. 2018</span>
+        <span>Tokyo, Japan</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Selected Projects -->
+  <div class="max-w-[1400px] mx-auto px-8 py-24">
+    <SectionHeader
+      label="Selected Works"
+      title="Projects"
+      linkText="View all"
+      linkHref="/article/"
+    />
+    <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-8">
+      {projects.map((p, i) => (
+        <div class:list={[i % 2 !== 0 && "md:mt-16"]}>
+          <ProjectCard
+            title={p.title}
+            category={p.category}
+            location={p.location}
+            year={p.year}
+            gradient={p.gradient}
+            href="/article/"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Featured -->
+  <FeaturedSplit
+    title="The Boundary Pavilion"
+    category="Featured Project"
+    description="A meditation space at the edge of a cedar forest in Yoshino. The structure dissolves the boundary between interior and landscape through floor-to-ceiling timber screens that filter light and rain in equal measure."
+    gradient="from-amber-200 via-amber-500 to-amber-800"
+    href="/article/"
+  />
+
+  <!-- Pullquote -->
+  <div class="py-24 text-center max-w-[900px] mx-auto px-8">
+    <blockquote class="font-serif text-2xl md:text-3xl font-light italic leading-relaxed mb-6">
+      &ldquo;Architecture should speak of its time and place,
+      but yearn for timelessness.&rdquo;
+    </blockquote>
+    <cite class="not-italic text-[0.7rem] tracking-[0.15em] uppercase text-ink-muted">
+      Frank Gehry
+    </cite>
+  </div>
+
+  <!-- Recent Work -->
+  <div class="max-w-[1400px] mx-auto px-8 py-24">
+    <SectionHeader
+      label="Archive"
+      title="Recent Work"
+      linkText="All projects"
+      linkHref="/article/"
+    />
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {recentWork.map((p) => (
+        <ProjectCard
+          title={p.title}
+          category={p.category}
+          location={p.location}
+          year={p.year}
+          gradient={p.gradient}
+          href="/article/"
+          aspectRatio="3/4"
+        />
+      ))}
+    </div>
+  </div>
+
+  <!-- Newsletter -->
+  <div class="py-20 bg-surface-off text-center">
+    <h3 class="font-serif text-2xl font-light mb-3">Stay in touch</h3>
+    <p class="text-sm text-ink-muted mb-8">Quarterly dispatches on new projects, exhibitions, and studio life.</p>
+    <div class="flex max-w-[420px] mx-auto">
+      <input
+        type="email"
+        placeholder="your@email.com"
+        class="flex-1 px-4 py-3 border border-rule border-r-0 text-sm bg-surface outline-none font-sans"
+      />
+      <button
+        type="button"
+        class="px-6 py-3 bg-ink text-white border border-ink text-[0.65rem] tracking-[0.15em] uppercase font-sans cursor-pointer hover:bg-accent hover:border-accent transition-colors"
+      >
+        Subscribe
+      </button>
+    </div>
+  </div>
+</BaseLayout>

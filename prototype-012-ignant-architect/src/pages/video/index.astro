@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import VideoEmbed from "../../component/video_embed.astro";
+import { getCollection } from "astro:content";
+
+const videos = await getCollection("video");
+const sorted = videos.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout title="Videos" currentPath="/video/">
+  <div class="max-w-[900px] mx-auto px-8 pt-32 pb-24">
+    <p class="text-[0.65rem] tracking-[0.2em] uppercase text-ink-muted mb-2">Archive</p>
+    <h1 class="font-serif text-4xl font-light mb-12">Videos</h1>
+
+    <div class="space-y-16">
+      {sorted.map((video) => (
+        <article>
+          <VideoEmbed url={video.data.videoUrl} title={video.data.title} />
+          <div class="mt-4">
+            <div class="flex items-center gap-4 mb-2">
+              <p class="text-[0.6rem] tracking-[0.2em] uppercase text-ink-muted">
+                {video.data.category}
+              </p>
+              {video.data.duration && (
+                <span class="text-[0.6rem] text-ink-muted">{video.data.duration}</span>
+              )}
+            </div>
+            <h2 class="font-serif text-2xl font-normal leading-tight mb-2">
+              {video.data.title}
+            </h2>
+            <p class="text-sm text-ink-muted leading-relaxed">
+              {video.data.description}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

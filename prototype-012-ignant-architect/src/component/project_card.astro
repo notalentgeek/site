@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+  category: string;
+  location: string;
+  year: string;
+  gradient: string;
+  href?: string;
+  aspectRatio?: string;
+}
+
+const {
+  title,
+  category,
+  location,
+  year,
+  gradient,
+  href = "#",
+  aspectRatio = "4/5",
+} = Astro.props;
+---
+
+<article class="group cursor-pointer">
+  <a href={href} class="no-underline text-inherit block">
+    <div
+      class={`w-full overflow-hidden bg-gradient-to-br ${gradient}`}
+      style={`aspect-ratio: ${aspectRatio};`}
+    >
+      <div class="w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"></div>
+    </div>
+    <div class="py-5">
+      <p class="text-[0.6rem] tracking-[0.2em] uppercase text-ink-muted mb-2">
+        {category}
+      </p>
+      <h3 class="font-serif text-2xl font-normal leading-tight mb-2 transition-colors group-hover:text-accent">
+        {title}
+      </h3>
+      <p class="text-[0.7rem] text-ink-muted tracking-wide">
+        {location} &middot; {year}
+      </p>
+    </div>
+  </a>
+</article>

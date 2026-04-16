@@ -1,0 +1,865 @@
+---
+// Demo 012 — Ignant Architect
+// Standalone demo page — no shared layouts or components
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo 012 — Ignant Architect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── Reset ── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      /* ── Theme tokens ── */
+      :root {
+        --bg: #ffffff;
+        --bg-off: #f7f7f5;
+        --text: #1a1a1a;
+        --muted: #999999;
+        --border: #e5e5e5;
+        --accent: #c8a96e;
+        --font-sans: "Inter", system-ui, sans-serif;
+        --font-serif: "Cormorant Garamond", Georgia, serif;
+        --max-width: 1400px;
+        --side-pad: clamp(1.25rem, 4vw, 4rem);
+      }
+
+      /* ── Base ── */
+      html {
+        background-color: var(--bg);
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--font-sans);
+        color: var(--text);
+        background-color: var(--bg);
+        min-height: 100vh;
+        line-height: 1.5;
+        font-weight: 300;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ── Back link ── */
+      .back-link {
+        display: inline-block;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 1.25rem var(--side-pad);
+        transition: color 0.2s;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        mix-blend-mode: difference;
+      }
+      .back-link:hover { color: var(--accent); }
+
+      /* ── Navigation ── */
+      .nav {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 90;
+        padding: 1.25rem var(--side-pad);
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+      .nav a {
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--muted);
+        transition: color 0.2s;
+      }
+      .nav a:hover { color: var(--text); }
+      .nav-line {
+        width: 1px;
+        height: 0.75rem;
+        background: var(--border);
+      }
+
+      /* ── Hero ── */
+      .hero {
+        width: 100%;
+        height: 100vh;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        overflow: hidden;
+      }
+      .hero-image {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, #d4cdc5 0%, #a8a29e 40%, #78716c 100%);
+      }
+      .hero-image::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 4rem var(--side-pad);
+        max-width: var(--max-width);
+        color: #fff;
+      }
+      .hero-category {
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        opacity: 0.7;
+      }
+      .hero-title {
+        font-family: var(--font-serif);
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        font-weight: 300;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        max-width: 800px;
+      }
+      .hero-subtitle {
+        font-size: 0.875rem;
+        font-weight: 300;
+        opacity: 0.7;
+        max-width: 500px;
+        line-height: 1.7;
+      }
+      .hero-meta {
+        display: flex;
+        gap: 2rem;
+        margin-top: 2rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.5;
+      }
+
+      /* ── Section spacing ── */
+      .section {
+        padding: 6rem var(--side-pad);
+        max-width: var(--max-width);
+        margin: 0 auto;
+      }
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 3.5rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1.5rem;
+      }
+      .section-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .section-title {
+        font-family: var(--font-serif);
+        font-size: clamp(1.75rem, 3vw, 2.5rem);
+        font-weight: 300;
+        line-height: 1.2;
+      }
+      .section-link {
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--muted);
+        transition: color 0.2s;
+        white-space: nowrap;
+      }
+      .section-link:hover { color: var(--text); }
+
+      /* ── Editorial grid — 2-column asymmetric ── */
+      .editorial-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      @media (min-width: 768px) {
+        .editorial-grid {
+          grid-template-columns: 1.4fr 1fr;
+          gap: 2rem;
+        }
+        .editorial-grid .project-card:nth-child(even) {
+          margin-top: 4rem;
+        }
+      }
+
+      /* ── Project card ── */
+      .project-card {
+        cursor: pointer;
+      }
+      .project-card-image {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        overflow: hidden;
+        position: relative;
+      }
+      .project-card-image .img-fill {
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .project-card:hover .img-fill {
+        transform: scale(1.04);
+      }
+      .project-card-body {
+        padding: 1.25rem 0;
+      }
+      .project-card-category {
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+      }
+      .project-card-title {
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        font-weight: 400;
+        line-height: 1.3;
+        margin-bottom: 0.5rem;
+        transition: color 0.2s;
+      }
+      .project-card:hover .project-card-title {
+        color: var(--accent);
+      }
+      .project-card-meta {
+        font-size: 0.7rem;
+        color: var(--muted);
+        letter-spacing: 0.05em;
+      }
+      .project-card a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* ── Featured row — full width ── */
+      .featured-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      @media (min-width: 768px) {
+        .featured-row {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .featured-image {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+      }
+      .featured-image .img-fill {
+        width: 100%;
+        height: 100%;
+      }
+      .featured-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 3rem var(--side-pad);
+        background: var(--bg-off);
+      }
+      .featured-text .project-card-category {
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 1rem;
+      }
+      .featured-text h3 {
+        font-family: var(--font-serif);
+        font-size: clamp(1.5rem, 2.5vw, 2rem);
+        font-weight: 300;
+        line-height: 1.3;
+        margin-bottom: 1rem;
+      }
+      .featured-text p {
+        font-size: 0.875rem;
+        color: var(--muted);
+        line-height: 1.8;
+        max-width: 420px;
+        margin-bottom: 1.5rem;
+      }
+      .featured-text .read-more {
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: gap 0.3s;
+      }
+      .featured-text .read-more:hover {
+        gap: 1rem;
+      }
+      .featured-text .read-more .arrow {
+        display: inline-block;
+        width: 1.5rem;
+        height: 1px;
+        background: var(--text);
+        position: relative;
+      }
+      .featured-text .read-more .arrow::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: -3px;
+        width: 7px;
+        height: 7px;
+        border-right: 1px solid var(--text);
+        border-top: 1px solid var(--text);
+        transform: rotate(45deg);
+      }
+
+      /* ── Three-column grid ── */
+      .tri-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      @media (min-width: 640px) {
+        .tri-grid { grid-template-columns: 1fr 1fr; }
+      }
+      @media (min-width: 1024px) {
+        .tri-grid { grid-template-columns: 1fr 1fr 1fr; }
+      }
+      .tri-grid .project-card-image {
+        aspect-ratio: 3 / 4;
+      }
+
+      /* ── Quote / pullquote ── */
+      .pullquote {
+        padding: 6rem var(--side-pad);
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .pullquote blockquote {
+        font-family: var(--font-serif);
+        font-size: clamp(1.5rem, 3vw, 2.25rem);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.5;
+        color: var(--text);
+        margin-bottom: 1.5rem;
+      }
+      .pullquote cite {
+        font-family: var(--font-sans);
+        font-style: normal;
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      /* ── About strip ── */
+      .about-strip {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+        background: var(--text);
+        color: #fff;
+      }
+      @media (min-width: 768px) {
+        .about-strip { grid-template-columns: 1fr 1fr; }
+      }
+      .about-image {
+        aspect-ratio: 1;
+        max-height: 600px;
+      }
+      .about-image .img-fill {
+        width: 100%;
+        height: 100%;
+      }
+      .about-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 4rem var(--side-pad);
+      }
+      .about-content .section-label {
+        color: rgba(255,255,255,0.4);
+        margin-bottom: 1.5rem;
+      }
+      .about-content h2 {
+        font-family: var(--font-serif);
+        font-size: clamp(1.5rem, 2.5vw, 2rem);
+        font-weight: 300;
+        line-height: 1.4;
+        margin-bottom: 1.5rem;
+      }
+      .about-content p {
+        font-size: 0.875rem;
+        line-height: 1.8;
+        color: rgba(255,255,255,0.6);
+        max-width: 420px;
+        margin-bottom: 1rem;
+      }
+      .about-content .stat-row {
+        display: flex;
+        gap: 3rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+      }
+      .stat-item {}
+      .stat-number {
+        font-family: var(--font-serif);
+        font-size: 2rem;
+        font-weight: 300;
+        color: var(--accent);
+      }
+      .stat-label {
+        font-size: 0.6rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.4);
+        margin-top: 0.25rem;
+      }
+
+      /* ── Footer ── */
+      .site-footer {
+        padding: 4rem var(--side-pad);
+        border-top: 1px solid var(--border);
+        max-width: var(--max-width);
+        margin: 0 auto;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      @media (min-width: 768px) {
+        .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+      }
+      .footer-brand {
+        font-family: var(--font-serif);
+        font-size: 1.25rem;
+        font-weight: 400;
+        margin-bottom: 0.75rem;
+      }
+      .footer-brand-desc {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.6;
+        max-width: 280px;
+      }
+      .footer-heading {
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 1rem;
+      }
+      .footer-links {
+        list-style: none;
+      }
+      .footer-links li + li { margin-top: 0.5rem; }
+      .footer-links a {
+        font-size: 0.8rem;
+        color: var(--text);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover { color: var(--accent); }
+      .footer-bottom {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.7rem;
+        color: var(--muted);
+      }
+
+      /* ── Image placeholder fills ── */
+      .img-concrete   { background: linear-gradient(145deg, #d6d3d1 0%, #a8a29e 60%, #78716c 100%); }
+      .img-glass      { background: linear-gradient(160deg, #bae6fd 0%, #7dd3fc 30%, #38bdf8 70%, #0ea5e9 100%); }
+      .img-timber     { background: linear-gradient(140deg, #d4a574 0%, #b08968 40%, #8b6914 100%); }
+      .img-stone      { background: linear-gradient(135deg, #e7e5e4 0%, #a8a29e 50%, #57534e 100%); }
+      .img-steel      { background: linear-gradient(150deg, #cbd5e1 0%, #94a3b8 40%, #475569 100%); }
+      .img-earth      { background: linear-gradient(135deg, #c2b280 0%, #8b7355 50%, #5c4033 100%); }
+      .img-night      { background: linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%); }
+      .img-facade     { background: linear-gradient(140deg, #fef3c7 0%, #fcd34d 30%, #d97706 100%); }
+      .img-portrait   { background: linear-gradient(135deg, #e7e5e4 0%, #d6d3d1 30%, #a8a29e 60%, #78716c 100%); }
+
+      /* ── Newsletter strip ── */
+      .newsletter {
+        padding: 5rem var(--side-pad);
+        background: var(--bg-off);
+        text-align: center;
+      }
+      .newsletter h3 {
+        font-family: var(--font-serif);
+        font-size: 1.75rem;
+        font-weight: 300;
+        margin-bottom: 0.75rem;
+      }
+      .newsletter p {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 2rem;
+      }
+      .newsletter-form {
+        display: flex;
+        max-width: 420px;
+        margin: 0 auto;
+        gap: 0;
+      }
+      .newsletter-form input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border);
+        border-right: none;
+        font-family: var(--font-sans);
+        font-size: 0.8rem;
+        background: var(--bg);
+        outline: none;
+      }
+      .newsletter-form input::placeholder { color: var(--muted); }
+      .newsletter-form button {
+        padding: 0.75rem 1.5rem;
+        background: var(--text);
+        color: #fff;
+        border: 1px solid var(--text);
+        font-family: var(--font-sans);
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .newsletter-form button:hover { background: var(--accent); border-color: var(--accent); }
+
+      /* ── Scroll indicator ── */
+      .scroll-indicator {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        color: rgba(255,255,255,0.5);
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      .scroll-line {
+        width: 1px;
+        height: 2rem;
+        background: rgba(255,255,255,0.3);
+        animation: scrollPulse 2s ease-in-out infinite;
+      }
+      @keyframes scrollPulse {
+        0%, 100% { opacity: 0.3; transform: scaleY(1); }
+        50% { opacity: 1; transform: scaleY(1.2); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Back link -->
+    <a href="/site/" class="back-link">&larr; Back to index</a>
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <a href="#">Projects</a>
+      <span class="nav-line"></span>
+      <a href="#">Studio</a>
+      <span class="nav-line"></span>
+      <a href="#">Journal</a>
+      <span class="nav-line"></span>
+      <a href="#">Contact</a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-image img-concrete"></div>
+      <div class="hero-content">
+        <p class="hero-category">Architecture &middot; Residential</p>
+        <h1 class="hero-title">Atelier Sora Architects</h1>
+        <p class="hero-subtitle">
+          A Tokyo-based architecture studio exploring the dialogue between
+          material honesty, spatial restraint, and the landscapes we inhabit.
+        </p>
+        <div class="hero-meta">
+          <span>Est. 2018</span>
+          <span>Tokyo, Japan</span>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- Selected Projects — editorial 2-column -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <p class="section-label">Selected Works</p>
+          <h2 class="section-title">Projects</h2>
+        </div>
+        <a href="#" class="section-link">View all &rarr;</a>
+      </div>
+
+      <div class="editorial-grid">
+        <!-- Project 1 -->
+        <div class="project-card">
+          <a href="#">
+            <div class="project-card-image">
+              <div class="img-fill img-glass"></div>
+            </div>
+            <div class="project-card-body">
+              <p class="project-card-category">Cultural</p>
+              <h3 class="project-card-title">Setouchi Maritime Museum</h3>
+              <p class="project-card-meta">Naoshima, Japan &middot; 2025</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project-card">
+          <a href="#">
+            <div class="project-card-image">
+              <div class="img-fill img-timber"></div>
+            </div>
+            <div class="project-card-body">
+              <p class="project-card-category">Residential</p>
+              <h3 class="project-card-title">House of Folded Earth</h3>
+              <p class="project-card-meta">Karuizawa, Japan &middot; 2024</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="project-card">
+          <a href="#">
+            <div class="project-card-image">
+              <div class="img-fill img-stone"></div>
+            </div>
+            <div class="project-card-body">
+              <p class="project-card-category">Hospitality</p>
+              <h3 class="project-card-title">Onsen Retreat Hakone</h3>
+              <p class="project-card-meta">Hakone, Japan &middot; 2024</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="project-card">
+          <a href="#">
+            <div class="project-card-image">
+              <div class="img-fill img-steel"></div>
+            </div>
+            <div class="project-card-body">
+              <p class="project-card-category">Commercial</p>
+              <h3 class="project-card-title">Shibuya Creative Tower</h3>
+              <p class="project-card-meta">Tokyo, Japan &middot; 2023</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured project — full width split -->
+    <div class="featured-row">
+      <div class="featured-image">
+        <div class="img-fill img-earth"></div>
+      </div>
+      <div class="featured-text">
+        <p class="project-card-category">Featured Project</p>
+        <h3>The Boundary Pavilion</h3>
+        <p>
+          A meditation space at the edge of a cedar forest in Yoshino.
+          The structure dissolves the boundary between interior and landscape
+          through floor-to-ceiling timber screens that filter light and rain
+          in equal measure.
+        </p>
+        <a href="#" class="read-more">
+          Explore project <span class="arrow"></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Pullquote -->
+    <div class="pullquote">
+      <blockquote>
+        &ldquo;Architecture should speak of its time and place,
+        but yearn for timelessness.&rdquo;
+      </blockquote>
+      <cite>Frank Gehry</cite>
+    </div>
+
+    <!-- Recent work — 3-column grid -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <p class="section-label">Archive</p>
+          <h2 class="section-title">Recent Work</h2>
+        </div>
+        <a href="#" class="section-link">All projects &rarr;</a>
+      </div>
+
+      <div class="tri-grid">
+        <!-- Item 1 -->
+        <div class="project-card">
+          <a href="#">
+            <div class="project-card-image">
+              <div class="img-fill img-night"></div>
+            </div>
+            <div class="project-card-body">
+              <p class="project-card-category">Installation</p>
+              <h3 class="project-card-title">Light Corridors</h3>
+              <p class="project-card-meta">Milan, Italy &middot; 2023</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="project-card">
+          <a href="#">
+            <div class="project-card-image">
+              <div class="img-fill img-facade"></div>
+            </div>
+            <div class="project-card-body">
+              <p class="project-card-category">Adaptive Reuse</p>
+              <h3 class="project-card-title">Warehouse 17 Conversion</h3>
+              <p class="project-card-meta">Osaka, Japan &middot; 2022</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="project-card">
+          <a href="#">
+            <div class="project-card-image">
+              <div class="img-fill img-concrete"></div>
+            </div>
+            <div class="project-card-body">
+              <p class="project-card-category">Residential</p>
+              <h3 class="project-card-title">Courtyard House No. 3</h3>
+              <p class="project-card-meta">Kyoto, Japan &middot; 2022</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- About strip — dark -->
+    <div class="about-strip">
+      <div class="about-image">
+        <div class="img-fill img-portrait"></div>
+      </div>
+      <div class="about-content">
+        <p class="section-label">About the Studio</p>
+        <h2>Design rooted in place, shaped by restraint</h2>
+        <p>
+          Atelier Sora is a multidisciplinary architecture studio founded in
+          Tokyo in 2018. Our work spans residential, cultural, and hospitality
+          projects across Japan and internationally.
+        </p>
+        <p>
+          We believe buildings should feel inevitable — as though they could
+          exist nowhere else, built from nothing less and nothing more.
+        </p>
+        <div class="stat-row">
+          <div class="stat-item">
+            <div class="stat-number">42</div>
+            <div class="stat-label">Projects</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">7</div>
+            <div class="stat-label">Awards</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">12</div>
+            <div class="stat-label">People</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="newsletter">
+      <h3>Stay in touch</h3>
+      <p>Quarterly dispatches on new projects, exhibitions, and studio life.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="your@email.com" />
+        <button type="button">Subscribe</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">Atelier Sora</div>
+          <p class="footer-brand-desc">
+            Architecture studio exploring material honesty
+            and spatial restraint since 2018.
+          </p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Studio</h4>
+          <ul class="footer-links">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Projects</h4>
+          <ul class="footer-links">
+            <li><a href="#">Residential</a></li>
+            <li><a href="#">Cultural</a></li>
+            <li><a href="#">Hospitality</a></li>
+            <li><a href="#">Installations</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Connect</h4>
+          <ul class="footer-links">
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Archinect</a></li>
+            <li><a href="#">Email</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Atelier Sora Architects</span>
+        <span>Ignant Architect Prototype</span>
+      </div>
+    </footer>
+  </body>
+</html>

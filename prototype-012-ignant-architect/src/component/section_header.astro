@@ -1,0 +1,29 @@
+---
+interface Props {
+  label: string;
+  title: string;
+  linkText?: string;
+  linkHref?: string;
+}
+
+const { label, title, linkText, linkHref } = Astro.props;
+---
+
+<div class="flex justify-between items-end mb-14 border-b border-rule pb-6">
+  <div>
+    <p class="text-[0.65rem] tracking-[0.2em] uppercase text-ink-muted">
+      {label}
+    </p>
+    <h2 class="font-serif text-3xl font-light leading-tight">
+      {title}
+    </h2>
+  </div>
+  {linkText && linkHref && (
+    <a
+      href={linkHref}
+      class="text-[0.7rem] tracking-[0.1em] uppercase no-underline text-ink-muted hover:text-ink transition-colors whitespace-nowrap"
+    >
+      {linkText} &rarr;
+    </a>
+  )}
+</div>
